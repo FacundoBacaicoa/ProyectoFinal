@@ -9,17 +9,17 @@ import java.util.Date;
  */
 public class Asistencia {
         private int id_asistencia;
-    private Socios id_Socio;
-    private Clases id_Clase;
+    private Socio Socio;//no llamar ID y en singular
+    private Clase Clase;
     private Date fechaAsistencia;
 
     public Asistencia() {
     }
 
-    public Asistencia(int id_asistencia, Socios id_Socio, Clases id_Clase, Date fechaAsistencia) {
+    public Asistencia(int id_asistencia, Socio Socio, Clase Clase, Date fechaAsistencia) {
         this.id_asistencia = id_asistencia;
-        this.id_Socio = id_Socio;
-        this.id_Clase = id_Clase;
+        this.Socio = Socio;
+        this.Clase = Clase;
         this.fechaAsistencia = fechaAsistencia;
     }
 
@@ -31,20 +31,20 @@ public class Asistencia {
         this.id_asistencia = id_asistencia;
     }
 
-    public Socios getId_Socio() {
-        return id_Socio;
+    public Socio getId_Socio() {
+        return Socio;
     }
 
-    public void setId_Socio(Socios id_Socio) {
-        this.id_Socio = id_Socio;
+    public void setId_Socio(Socio Socio) {
+        this.Socio = Socio;
     }
 
-    public Clases getId_Clase() {
-        return id_Clase;
+    public Clase getId_Clase() {
+        return Clase;
     }
 
-    public void setId_Clase(Clases id_Clase) {
-        this.id_Clase = id_Clase;
+    public void setId_Clase(Clase Clase) {
+        this.Clase = Clase;
     }
 
     public Date getFechaAsistencia() {
@@ -57,7 +57,7 @@ public class Asistencia {
 
     @Override
     public String toString() {
-        return "Asistencia{" + "id_asistencia=" + id_asistencia + ", id_Socio=" + id_Socio + ", id_Clase=" + id_Clase + ", fechaAsistencia=" + fechaAsistencia + '}';
+        return "Asistencia{" + "id_asistencia=" + id_asistencia + ", Socio=" + Socio + ", Clase=" + Clase + ", fechaAsistencia=" + fechaAsistencia + '}';
     }
 
   

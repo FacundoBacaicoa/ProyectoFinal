@@ -1,6 +1,6 @@
-package gestiongimansio.DAO;
+package gestiongimnasio.DAO;
 
-import gestiongimansio.Entidades.Socios;
+import gestiongimansio.Entidades.Socio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ public class SocioDAO {
         this.con = con;
     }
 
-    public void agregarSocio(Socios socio) throws SQLException {
+    public void agregarSocio(Socio socio) throws SQLException {
         String query = "INSERT INTO socios (dni, nombre, apellido, edad, correo, telefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, socio.getDni());
@@ -29,12 +29,12 @@ public class SocioDAO {
         }
     }
 
-    public List<Socios> obtenerSocios() throws SQLException {
-        List<Socios> socios = new ArrayList<>();
+    public List<Socio> obtenerSocios() throws SQLException {
+        List<Socio> socios = new ArrayList<>();
         String query = "SELECT * FROM socios";
         try (PreparedStatement ps = con.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Socios socio = new Socios(
+                Socio socio = new Socio(
                     rs.getInt("id_socio"),
                     rs.getString("dni"),
                     rs.getString("nombre"),
@@ -52,7 +52,7 @@ public class SocioDAO {
 
     // Otros métodos para actualizar y eliminar socios
 
-    public void actualizarSocio(Socios socio) throws SQLException {
+    public void actualizarSocio(Socio socio) throws SQLException {
         String query = "UPDATE socios SET dni = ?, nombre = ?, apellido = ?, edad = ?, correo = ?, telefono = ?, estado = ? WHERE id_socio = ?";
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, socio.getDni());

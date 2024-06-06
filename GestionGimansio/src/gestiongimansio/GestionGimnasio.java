@@ -1,13 +1,13 @@
 package gestiongimansio;
 
-import gestiongimansio.DAO.SocioDAO;
-import gestiongimansio.Entidades.Socios;
+import gestiongimnasio.DAO.SocioDAO;
+import gestiongimansio.Entidades.Socio;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-public class GestionGimansio {
+public class GestionGimnasio {
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/Gimnasio";
         String user = "root";
@@ -17,17 +17,17 @@ public class GestionGimansio {
             SocioDAO socioDAO = new SocioDAO(con);
 
             // Crear un nuevo socio
-            Socios nuevoSocio = new Socios(0, "12345678", "Juan", "Perez", 25, "juan@example.com", "123456789", true);
+            Socio nuevoSocio = new Socio(0, "12345678", "Juan", "Perez", 25, "juan@example.com", "123456789", true);
             socioDAO.agregarSocio(nuevoSocio);
 
             // Obtener y mostrar todos los socios
-            List<Socios> socios = socioDAO.obtenerSocios();
-            for (Socios socio : socios) {
+            List<Socio> socios = socioDAO.obtenerSocios();
+            for (Socio socio : socios) {
                 System.out.println(socio);
             }
 
             // Actualizar un socio
-            Socios socioActualizado = socios.get(0);
+            Socio socioActualizado = socios.get(0);
             socioActualizado.setNombre("Juan Carlos");
             socioDAO.actualizarSocio(socioActualizado);
 
