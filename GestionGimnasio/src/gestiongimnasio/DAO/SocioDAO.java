@@ -1,6 +1,6 @@
 package gestiongimnasio.DAO;
 
-import gestiongimansio.Entidades.Socio;
+import gestiongimnasio.Entidades.Socio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -1,5 +1,5 @@
 
-package gestiongimansio.Entidades;
+package gestiongimnasio.Entidades;
 
 import java.math.BigDecimal;
 import java.util.Date;

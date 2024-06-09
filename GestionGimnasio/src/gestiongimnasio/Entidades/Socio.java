@@ -1,5 +1,5 @@
 
-package gestiongimansio.Entidades;
+package gestiongimnasio.Entidades;
 
 /**
  *

@@ -1,5 +1,5 @@
 
-package gestiongimansio.Entidades;
+package gestiongimnasio.Entidades;
 
 /**
  *
@@ -7,7 +7,7 @@ package gestiongimansio.Entidades;
  */
 public class Entrenador {
      private int id_entrenadores;
-    private String dni;
+    private int dni;
     private String nombre;
     private String apellido;
     private String especialidad;
@@ -16,7 +16,7 @@ public class Entrenador {
     public Entrenador() {
     }
 
-    public Entrenador(int id_entrenadores, String dni, String nombre, String apellido, String especialidad, boolean estado) {
+    public Entrenador(int id_entrenadores, int dni, String nombre, String apellido, String especialidad, boolean estado) {
         this.id_entrenadores = id_entrenadores;
         this.dni = dni;
         this.nombre = nombre;
@@ -33,11 +33,11 @@ public class Entrenador {
         this.id_entrenadores = id_entrenador;
     }
 
-    public String getDni() {
+    public int getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(int dni) {
         this.dni = dni;
     }
 
