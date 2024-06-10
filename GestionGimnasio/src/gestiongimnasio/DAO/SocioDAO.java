@@ -74,7 +74,7 @@ public class SocioDAO {
             ps.executeUpdate();
         }
     }
-    public List<Socio> buscarSociosPorNombre(String nombre) throws SQLException {
+     public List<Socio> buscarSociosPorNombre(String nombre) throws SQLException {
         List<Socio> socios = new ArrayList<>();
         String query = "SELECT * FROM socios WHERE nombre LIKE ?";
         try (PreparedStatement ps = con.prepareStatement(query)) {
@@ -96,5 +96,28 @@ public class SocioDAO {
             }
         }
         return socios;
+    }
+
+    public Socio buscarSocioPorNumero(int id) throws SQLException {
+        Socio socio = null;
+        String query = "SELECT * FROM socios WHERE id_socio = ?";
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    socio = new Socio(
+                        rs.getInt("id_socio"),
+                        rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getInt("edad"),
+                        rs.getString("correo"),
+                        rs.getString("telefono"),
+                        rs.getBoolean("estado")
+                    );
+                }
+            }
+        }
+        return socio;
     }
 }
