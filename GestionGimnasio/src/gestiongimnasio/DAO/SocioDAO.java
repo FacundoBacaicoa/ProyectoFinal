@@ -74,4 +74,27 @@ public class SocioDAO {
             ps.executeUpdate();
         }
     }
+    public List<Socio> buscarSociosPorNombre(String nombre) throws SQLException {
+        List<Socio> socios = new ArrayList<>();
+        String query = "SELECT * FROM socios WHERE nombre LIKE ?";
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, "%" + nombre + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Socio socio = new Socio(
+                        rs.getInt("id_socio"),
+                        rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getInt("edad"),
+                        rs.getString("correo"),
+                        rs.getString("telefono"),
+                        rs.getBoolean("estado")
+                    );
+                    socios.add(socio);
+                }
+            }
+        }
+        return socios;
+    }
 }
