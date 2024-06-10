@@ -62,7 +62,7 @@ public class SocioDAO {
             ps.setString(5, socio.getCorreo());
             ps.setString(6, socio.getTelefono());
             ps.setBoolean(7, socio.isEstado());
-            ps.setInt(8, socio.getId_membresia());
+            ps.setInt(8, socio.getId_Socio());
             ps.executeUpdate();
         }
     }

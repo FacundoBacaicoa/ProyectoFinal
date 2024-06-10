@@ -8,7 +8,7 @@ package gestiongimnasio.Entidades;
 public class Clase {
        private int id_clase;
     private String nombre;
-    private Entrenador entrenador;
+    private Entrenador id_entrenador;
     private String horario;
     private int capacidad;
     private boolean estado;
@@ -16,21 +16,21 @@ public class Clase {
     public Clase() {
     }
 
-    public Clase(int id_clase, String nombre,Entrenador entrenador, String horario, int capacidad, boolean estado) {
+    public Clase(int id_clase, String nombre,Entrenador id_entrenador, String horario, int capacidad, boolean estado) {
         this.id_clase = id_clase;
         this.nombre = nombre;
-        this.entrenador = entrenador;
+        this.id_entrenador = id_entrenador;
         this.horario = horario;
         this.capacidad = capacidad;
         this.estado = estado;
     }
 
     public Entrenador getIdEntrenador() {
-        return entrenador;
+        return id_entrenador;
     }
 
-    public void setIdEntrenador(Entrenador idEntrenador) {
-        this.entrenador = idEntrenador;
+    public void setIdEntrenador(Entrenador id_entrenador) {
+        this.id_entrenador = id_entrenador;
     }
 
     public int getId_clase() {
@@ -77,7 +77,7 @@ public class Clase {
 
     @Override
     public String toString() {
-        return "Clases{" + "id_clase=" + id_clase + ", nombre=" + nombre + ", entrenador=" + entrenador + ", horario=" + horario + ", capacidad=" + capacidad + '}';
+        return "Clases{" + "id_clase=" + id_clase + ", nombre=" + nombre + ", entrenador=" + id_entrenador + ", horario=" + horario + ", capacidad=" + capacidad + '}';
     }
 
 }

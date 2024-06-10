@@ -6,7 +6,7 @@ package gestiongimnasio.Entidades;
  * @author facun
  */
 public class Socio {
-    private int socio;
+    private int id_socio;
     private String dni;
     private String nombre;
     private String apellido;
@@ -19,7 +19,7 @@ public class Socio {
     }
 
     public Socio(int id_socio, String dni, String nombre, String apellido, int edad, String correo, String telefono, boolean estado) {
-        this.socio= id_socio;
+        this.id_socio= id_socio;
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -29,12 +29,12 @@ public class Socio {
         this.estado = estado;
     }
 
-    public int getId_membresia() {
-        return socio;
+    public int getId_Socio() {
+        return id_socio;
     }
 
-    public void setId_membresia(int id_membresia) {
-        this.socio = id_membresia;
+    public void setId_Socio(int id_membresia) {
+        this.id_socio = id_membresia;
     }
 
     public String getDni() {
