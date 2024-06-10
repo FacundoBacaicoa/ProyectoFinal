@@ -57,7 +57,7 @@ public class MembresiaData {
     }
 }
   private BigDecimal calcularCosto(int cantidadPases, int duracionMeses) {
-    // Implementa la lógica para calcular el costo según tus reglas de negocio
+    // calcula el costo según tus reglas de negocio
     BigDecimal costoPorPase = new BigDecimal("10.0"); // Ejemplo: $10 por pase
     BigDecimal costo = costoPorPase.multiply(new BigDecimal(cantidadPases));
     return costo;
@@ -107,4 +107,5 @@ public class MembresiaData {
         System.out.println("Error al cancelar la membresía: " + e.getMessage());
     }
 }
+  
 }
