@@ -111,22 +111,47 @@ public class ClaseData {
 }
     
     public void inscribirSocioEnClase(Socio socio, Clase clase) {
-    String sql = "INSERT INTO inscripciones (id_socio, id_clase) VALUES (?, ?)";
-    
+    String sqlCheckCapacity = "SELECT capacidad FROM clases WHERE id_clase = ?";
+    String sqlInsert = "INSERT INTO inscripciones (id_socio, id_clase) VALUES (?, ?)";
+    String sqlUpdateCapacity = "UPDATE clases SET capacidad = capacidad - 1 WHERE id_clase = ?";
+
     try {
-        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ps.setInt(1, socio.getId_Socio());
-        ps.setInt(2, clase.getId_clase());
-        
-        int filasInsertadas = ps.executeUpdate();
-        
-        if (filasInsertadas > 0) {
-            System.out.println("El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre());
-        } else {
-            System.out.println("No se pudo inscribir al socio en la clase.");
+        // Verificar la capacidad de la clase
+        PreparedStatement psCheck = con.prepareStatement(sqlCheckCapacity);
+        psCheck.setInt(1, clase.getId_clase());
+        ResultSet rsCheck = psCheck.executeQuery();
+
+        if (rsCheck.next()) {
+            int capacidad = rsCheck.getInt("capacidad");
+            if (capacidad > 0) {
+                // Inscribir al socio en la clase
+                PreparedStatement psInsert = con.prepareStatement(sqlInsert);
+                psInsert.setInt(1, socio.getId_Socio());
+                psInsert.setInt(2, clase.getId_clase());
+                int filasInsertadas = psInsert.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    // Actualizar la capacidad de la clase
+                    PreparedStatement psUpdate = con.prepareStatement(sqlUpdateCapacity);
+                    psUpdate.setInt(1, clase.getId_clase());
+                    psUpdate.executeUpdate();
+
+                    JOptionPane.showMessageDialog(null, "El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre());
+                    psUpdate.close();  // Asegúrate de cerrar psUpdate aquí
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo inscribir al socio en la clase.");
+                }
+
+                psInsert.close();  // Cerrar psInsert aquí
+            } else {
+                JOptionPane.showMessageDialog(null, "La clase ya ha alcanzado su capacidad máxima.");
+            }
         }
+
+        rsCheck.close();  // Cerrar rsCheck aquí
+        psCheck.close();  // Cerrar psCheck aquí
     } catch (SQLException e) {
-        System.out.println("Error al inscribir al socio en la clase: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al inscribir al socio en la clase: " + e.getMessage());
     }
-}
+}   
 }
