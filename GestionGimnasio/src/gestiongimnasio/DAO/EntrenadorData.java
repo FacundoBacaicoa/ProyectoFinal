@@ -147,12 +147,38 @@ public class EntrenadorData {
     }
     return entrenador;
 }
-    public void agregarEntrenadorSiNoExiste(Entrenador entrenador) {
-    Entrenador existente = buscarEntrenadorPorId(entrenador.getId_entrenadores());
+   public void agregarEntrenadorSiNoExiste(Entrenador entrenador) {
+    Entrenador existente = buscarEntrenadorPorDNI(entrenador.getDni());
     if (existente == null) {
         guardarEntrenador(entrenador);
+    } else {
+        entrenador.setId_entrenadores(existente.getId_entrenadores()); // Actualiza el ID del entrenador existente
     }
 }
+
+    public Entrenador buscarEntrenadorPorDNI(int dni) {
+    Entrenador entrenador = null;
+    String sql = "SELECT Id_Entrenador, DNI, Nombre, Apellido, Especialidad, Estado FROM entrenadores WHERE DNI = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, dni);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                entrenador = new Entrenador(
+                    rs.getInt("Id_Entrenador"),
+                    rs.getInt("DNI"),
+                    rs.getString("Nombre"),
+                    rs.getString("Apellido"),
+                    rs.getString("Especialidad"),
+                    rs.getBoolean("Estado")
+                );
+            }
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener el entrenador: " + ex.getMessage());
+    }
+    return entrenador;
+}
+
 
 
 }
