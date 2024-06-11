@@ -76,13 +76,15 @@ public class ClaseData {
                  "AND (? IS NULL OR c.horario LIKE ?)";
 
     try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        Clase clase1 = new Clase();
-        ps.setString(1, clase1.getNombre());
-        ps.setInt(2, clase1.getIdEntrenador().getId_entrenadores());
-        ps.setTime(3, Time.valueOf(clase1.getHorario()));
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, nombre != null ? "%" + nombre + "%" : null);
+            ps.setString(2, nombre != null ? "%" + nombre + "%" : null);
+            ps.setString(3, entrenador != null ? "%" + entrenador + "%" : null);
+            ps.setString(4, entrenador != null ? "%" + entrenador + "%" : null);
+            ps.setString(5, horario != null ? "%" + horario + "%" : null);
+            ps.setString(6, horario != null ? "%" + horario + "%" : null);
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
             Clase clase = new Clase();
