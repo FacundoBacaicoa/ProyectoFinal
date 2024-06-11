@@ -125,4 +125,36 @@ public class EntrenadorData {
         
         return entrenador;
     }
+    public Entrenador buscarEntrenadorPorId(int id) {
+    Entrenador entrenador = null;
+    String sql = "SELECT Id_Entrenador, DNI, Nombre, Apellido, Especialidad, Estado FROM entrenadores WHERE Id_Entrenador = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                entrenador = new Entrenador(
+                    rs.getInt("Id_Entrenador"),
+                    rs.getInt("DNI"),
+                    rs.getString("Nombre"),
+                    rs.getString("Apellido"),
+                    rs.getString("Especialidad"),
+                    rs.getBoolean("Estado")
+                );
+            }
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener el entrenador: " + ex.getMessage());
+    }
+    return entrenador;
 }
+    public void agregarEntrenadorSiNoExiste(Entrenador entrenador) {
+    Entrenador existente = buscarEntrenadorPorId(entrenador.getId_entrenadores());
+    if (existente == null) {
+        guardarEntrenador(entrenador);
+    }
+}
+
+
+}
+
+
