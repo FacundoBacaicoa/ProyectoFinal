@@ -44,7 +44,7 @@ private DefaultTableModel modelo;
 
             },
             new String [] {
-                "ID", "Dni", "Nombre", "Apellido", "Edad", "Correo", "Telefono", "Estado"
+
             }
         ));
         tabla.setToolTipText("");

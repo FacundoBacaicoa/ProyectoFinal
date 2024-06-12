@@ -163,6 +163,11 @@ public class VistasMain extends javax.swing.JFrame {
         jmSocios.setText("Socios");
 
         jmAnadirSocios.setText("Añadir Socios");
+        jmAnadirSocios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmAnadirSociosActionPerformed(evt);
+            }
+        });
         jmSocios.add(jmAnadirSocios);
 
         jmListaSocios.setText("Lista de Socios");
@@ -236,6 +241,10 @@ public class VistasMain extends javax.swing.JFrame {
         listar.getContentPane().setBackground(new Color(56, 56, 56));
         escritorio.add(listar);        
     }//GEN-LAST:event_jmListaSociosActionPerformed
+
+    private void jmAnadirSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmAnadirSociosActionPerformed
+
+    }//GEN-LAST:event_jmAnadirSociosActionPerformed
 
     /**
      * @param args the command line arguments

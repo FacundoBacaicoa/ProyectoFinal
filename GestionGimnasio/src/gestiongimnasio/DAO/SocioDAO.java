@@ -95,39 +95,36 @@ public class SocioDAO {
         }
     }
 
-    public DefaultTableModel buscarSocio(String buscar) {
-        String[] nombresColumnas = {"ID_Socio", "Nombre", "Apellido"};
+public DefaultTableModel buscarSocio(String buscar) {
+    String[] nombresColumnas = {"ID_Socio", "Nombre", "Apellido", "Edad", "Correo", "Teléfono", "Estado"};
+    String[] registros = new String[7];
+    DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
-        String[] registros = new String[3];
+    String sql = "SELECT ID_Socio, Nombre, Apellido, Edad, Correo, Teléfono, Estado " +
+                 "FROM socios " +
+                 "WHERE Nombre LIKE '%" + buscar + "%' " +
+                 "OR Apellido LIKE '%" + buscar + "%' " +
+                 "OR CAST(ID_Socio AS CHAR) LIKE '%" + buscar + "%' " +
+                 "OR Correo LIKE '%" + buscar + "%' " +
+                 "OR Teléfono LIKE '%" + buscar + "%'";
 
-        DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
 
-        String sql = "SELECT ID_Socio, Nombre, Apellido"
-                + "FROM socios "
-                + "WHERE Nombre LIKE '%" + buscar + "%' "
-                + "OR Apellido LIKE '%" + buscar + "%' "
-                + "OR ID_Socio LIKE '%" + buscar + "%'";
-
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-
-                registros[0] = rs.getString("ID_Socio");
-
-                registros[1] = rs.getString("Nombre");
-
-                registros[2] = rs.getString("Apellido");
-
-                modelo.addRow(registros);
-
-            }
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
-
+        while (rs.next()) {
+            registros[0] = rs.getString("ID_Socio");
+            registros[1] = rs.getString("Nombre");
+            registros[2] = rs.getString("Apellido");
+            registros[3] = rs.getString("Edad");
+            registros[4] = rs.getString("Correo");
+            registros[5] = rs.getString("Teléfono");
+            registros[6] = rs.getString("Estado");
+            modelo.addRow(registros);
         }
-        return modelo;
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
     }
+    return modelo;
+}
 }
