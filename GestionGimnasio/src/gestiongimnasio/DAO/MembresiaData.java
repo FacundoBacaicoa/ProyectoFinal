@@ -27,7 +27,7 @@ public class MembresiaData {
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, socio.getId_Socio());
+            ps.setInt(1, socio.getId_Socio(rs.getInt(1)));
             ps.setInt(2, cantidadPases);
 
             LocalDate fechaInicio = LocalDate.now();

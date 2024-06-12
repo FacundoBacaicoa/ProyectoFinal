@@ -20,20 +20,22 @@ public class SocioDAO {
         con = Conexion.getConexion();
     }
 
-    public void agregarSocio(Socio socio) throws SQLException {
-        String query = "INSERT INTO socios (DNI, Nombre, Apellido,Edad,Correo,Teléfono,Estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, socio.getDni());
-            ps.setString(2, socio.getNombre());
-            ps.setString(3, socio.getApellido());
-            ps.setInt(4, socio.getEdad());
-            ps.setString(5, socio.getCorreo());
-            ps.setInt(6, socio.getTelefono());
-            ps.setBoolean(7, socio.isEstado());
-            ps.executeUpdate();
-        }
+public void agregarSocio(Socio socio) throws SQLException {
+    String query = "INSERT INTO socios (DNI, Nombre, Apellido, Edad, Correo, Teléfono, Estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(query)) {
+        ps.setInt(1, socio.getDni());
+        ps.setString(2, socio.getNombre());
+        ps.setString(3, socio.getApellido());
+        ps.setInt(4, socio.getEdad());
+        ps.setString(5, socio.getCorreo());
+        ps.setInt(6, socio.getTelefono());
+        ps.setBoolean(7, socio.isEstado());
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Socio guardado correctamente.");
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "No se pudo acceder a la tabla Socio. Error: " + e.getMessage());
     }
-
+}
     public DefaultTableModel listarSocios() {
 
         String[] nombresColumnas = {"ID_Socio", "DNI" , "Nombre", "Apellido","Edad","Correo","Teléfono","Estado"};//Indica el nombre de las columnas en la tabla
@@ -82,7 +84,7 @@ public class SocioDAO {
             ps.setString(5, socio.getCorreo());
             ps.setInt(6, socio.getTelefono());
             ps.setBoolean(7, socio.isEstado());
-            ps.setInt(8, socio.getId_Socio());
+            ps.setInt(8, socio.getId_Socio(1));
             ps.executeUpdate();
         }
     }

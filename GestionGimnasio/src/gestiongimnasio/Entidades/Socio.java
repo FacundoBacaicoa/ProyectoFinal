@@ -30,10 +30,16 @@ public class Socio {
     }
 
     public Socio(int dni, String nombre, String apellido, int edad, String correo, int telefono, Boolean estado) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.estado = estado;
     }
 
-    public int getId_Socio() {
+    public int getId_Socio(int aInt) {
         return id_socio;
     }
 

@@ -171,12 +171,15 @@ private Entrenador nuevoEntrenador=null;
             if (nuevoEntrenador==null) {
                 nuevoEntrenador = new Entrenador(dni,nombre,apellido,especialidad,estado);
                 entrenadorData.guardarEntrenador(nuevoEntrenador);
+                limpiarCampos();
 
             }else{
                 nuevoEntrenador.setDni(dni);
                 nuevoEntrenador.setApellido(apellido);
                 nuevoEntrenador.setNombre(nombre);
                 nuevoEntrenador.setEstado(true);
+                entrenadorData.guardarEntrenador(nuevoEntrenador);
+                nuevoEntrenador = new Entrenador();
                 
             }
         }catch(NumberFormatException nfe){
@@ -206,10 +209,10 @@ private Entrenador nuevoEntrenador=null;
     // End of variables declaration//GEN-END:variables
 
 private void limpiarCampos(){
-    jtDni.setText(" ");
-    jtApellido.setText(" ");
-    jtNombre.setText(" ");
-    jtEspecialidad.setText(" ");
+    jtDni.setText("");
+    jtApellido.setText("");
+    jtNombre.setText("");
+    jtEspecialidad.setText("");
     jrEstado.setSelected(true);
     
 }    
