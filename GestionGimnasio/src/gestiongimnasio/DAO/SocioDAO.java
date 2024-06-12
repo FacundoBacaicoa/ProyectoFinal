@@ -23,12 +23,12 @@ public class SocioDAO {
     public void agregarSocio(Socio socio) throws SQLException {
         String query = "INSERT INTO socios (DNI, Nombre, Apellido,Edad,Correo,Teléfono,Estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, socio.getDni());
+            ps.setInt(1, socio.getDni());
             ps.setString(2, socio.getNombre());
             ps.setString(3, socio.getApellido());
             ps.setInt(4, socio.getEdad());
             ps.setString(5, socio.getCorreo());
-            ps.setString(6, socio.getTelefono());
+            ps.setInt(6, socio.getTelefono());
             ps.setBoolean(7, socio.isEstado());
             ps.executeUpdate();
         }
@@ -75,12 +75,12 @@ public class SocioDAO {
     public void actualizarSocio(Socio socio) throws SQLException {
         String query = "UPDATE socios SET DNI = ?, Nombre = ?, Apellido = ?, Edad = ?, Correo = ?, Teléfono = ?, Estado = ? WHERE ID_Socio = ?";
         try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, socio.getDni());
+            ps.setInt(1, socio.getDni());
             ps.setString(2, socio.getNombre());
             ps.setString(3, socio.getApellido());
             ps.setInt(4, socio.getEdad());
             ps.setString(5, socio.getCorreo());
-            ps.setString(6, socio.getTelefono());
+            ps.setInt(6, socio.getTelefono());
             ps.setBoolean(7, socio.isEstado());
             ps.setInt(8, socio.getId_Socio());
             ps.executeUpdate();
@@ -104,9 +104,9 @@ public DefaultTableModel buscarSocio(String buscar) {
                  "FROM socios " +
                  "WHERE Nombre LIKE '%" + buscar + "%' " +
                  "OR Apellido LIKE '%" + buscar + "%' " +
-                 "OR CAST(ID_Socio AS CHAR) LIKE '%" + buscar + "%' " +
-                 "OR Correo LIKE '%" + buscar + "%' " +
-                 "OR Teléfono LIKE '%" + buscar + "%'";
+                 "OR ID_Socio  LIKE '%" + buscar + "%' " ;
+               
+                
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);

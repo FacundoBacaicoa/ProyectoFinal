@@ -234,7 +234,7 @@ public class VistasMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmClaseListaActionPerformed
 
     private void jmListaSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmListaSociosActionPerformed
-  escritorio.removeAll();
+        escritorio.removeAll();
         escritorio.repaint();
         ListaSocios listar=new ListaSocios();
         listar.setVisible(true);
@@ -243,7 +243,12 @@ public class VistasMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmListaSociosActionPerformed
 
     private void jmAnadirSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmAnadirSociosActionPerformed
-
+        escritorio.removeAll();
+        escritorio.repaint();
+       AñadirSocio añadirS=new AñadirSocio();
+        añadirS.setVisible(true);
+        añadirS.getContentPane().setBackground(new Color(56, 56, 56));
+        escritorio.add(añadirS);        
     }//GEN-LAST:event_jmAnadirSociosActionPerformed
 
     /**

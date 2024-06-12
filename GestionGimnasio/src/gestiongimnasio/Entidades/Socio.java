@@ -7,18 +7,18 @@ package gestiongimnasio.Entidades;
  */
 public class Socio {
     private int id_socio;
-    private String dni;
+    private int dni;
     private String nombre;
     private String apellido;
     private int edad;
     private String correo;
-    private String telefono;
+    private int telefono;
     private boolean estado;
 
     public Socio() {
     }
 
-    public Socio(int id_socio, String dni, String nombre, String apellido, int edad, String correo, String telefono, boolean estado) {
+    public Socio(int id_socio, int dni, String nombre, String apellido, int edad, String correo, int telefono, boolean estado) {
         this.id_socio= id_socio;
         this.dni = dni;
         this.nombre = nombre;
@@ -29,6 +29,10 @@ public class Socio {
         this.estado = estado;
     }
 
+    public Socio(int dni, String nombre, String apellido, int edad, String correo, int telefono, Boolean estado) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
     public int getId_Socio() {
         return id_socio;
     }
@@ -37,11 +41,11 @@ public class Socio {
         this.id_socio = id_membresia;
     }
 
-    public String getDni() {
+    public int getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(int dni) {
         this.dni = dni;
     }
 
@@ -77,11 +81,11 @@ public class Socio {
         this.correo = correo;
     }
 
-    public String getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 
