@@ -13,11 +13,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListaEntrenadores extends javax.swing.JInternalFrame {
     
-     private DefaultTableModel tableModel;
+     private DefaultTableModel modelo;
     
     public ListaEntrenadores() {
-        initComponents();
+    initComponents();
+    modelo = new DefaultTableModel();
+    mostrarEntrenadores();
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,6 +36,11 @@ public class ListaEntrenadores extends javax.swing.JInternalFrame {
         tabla = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         txt_buscar = new javax.swing.JTextField();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setText("LISTA DE ENTRENADORES");
 
@@ -94,7 +102,7 @@ public class ListaEntrenadores extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txt_buscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarKeyReleased
-         buscarEntrenador(txt_buscar.getText());
+         buscarEntrenadores(txt_buscar.getText());
     }//GEN-LAST:event_txt_buscarKeyReleased
 
 
@@ -107,29 +115,22 @@ public class ListaEntrenadores extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     
-  public void mostrarEntrenador()
+  public void mostrarEntrenadores()
     {
         EntrenadorData entrenador = new EntrenadorData();
-        
-        DefaultTableModel modelo = (DefaultTableModel) entrenador.mostrarEntrenadores();
-        
-        tabla.setModel(modelo);    
-        
-        tabla.getColumnModel().getColumn(0).setMaxWidth(70);
-        
-        tabla.getColumnModel().getColumn(0).setMinWidth(70);
-        
-        tabla.getColumnModel().getColumn(2).setMaxWidth(333);
-        
-        tabla.getColumnModel().getColumn(2).setMinWidth(333);
-            
-    }    
-    
-    private void buscarEntrenador(String buscar) {
-              EntrenadorData entrenador = new EntrenadorData();
-        
+
         DefaultTableModel modelo = entrenador.mostrarEntrenadores();
-        
+
+        tabla.setModel(modelo);
+    } 
+
+    public void buscarEntrenadores(String buscar)
+    {
+        EntrenadorData entrenador = new EntrenadorData();
+
+        DefaultTableModel modelo = entrenador.buscarEntrenadores(buscar);
+
         tabla.setModel(modelo);
     }
 }
+

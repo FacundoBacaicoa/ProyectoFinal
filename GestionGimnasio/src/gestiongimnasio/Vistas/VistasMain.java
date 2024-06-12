@@ -48,7 +48,6 @@ public class VistasMain extends javax.swing.JFrame {
         jmEntrenador = new javax.swing.JMenu();
         jmAnadirEntrenador = new javax.swing.JMenuItem();
         jmListaEntrenadores = new javax.swing.JMenuItem();
-        jmBuscarEntrenador = new javax.swing.JMenuItem();
         jmClases = new javax.swing.JMenu();
         jmClaseAnadir = new javax.swing.JMenuItem();
         jmClaseLista = new javax.swing.JMenuItem();
@@ -99,21 +98,13 @@ public class VistasMain extends javax.swing.JFrame {
         });
         jmEntrenador.add(jmAnadirEntrenador);
 
-        jmListaEntrenadores.setText("Lista de Entrenadores");
+        jmListaEntrenadores.setText("Lista y Busqueda de Entrenadores");
         jmListaEntrenadores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmListaEntrenadoresActionPerformed(evt);
             }
         });
         jmEntrenador.add(jmListaEntrenadores);
-
-        jmBuscarEntrenador.setText("Buscar Entrenador");
-        jmBuscarEntrenador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmBuscarEntrenadorActionPerformed(evt);
-            }
-        });
-        jmEntrenador.add(jmBuscarEntrenador);
 
         jMenuBar1.add(jmEntrenador);
 
@@ -224,10 +215,6 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.add(listEntrenador);
     }//GEN-LAST:event_jmListaEntrenadoresActionPerformed
 
-    private void jmBuscarEntrenadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmBuscarEntrenadorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jmBuscarEntrenadorActionPerformed
-
     private void jmClaseInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseInscribirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jmClaseInscribirActionPerformed
@@ -283,7 +270,6 @@ public class VistasMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jmAnadirEntrenador;
     private javax.swing.JMenuItem jmAnadirSocios;
-    private javax.swing.JMenuItem jmBuscarEntrenador;
     private javax.swing.JMenuItem jmBuscarSocios;
     private javax.swing.JMenuItem jmClaseAnadir;
     private javax.swing.JMenuItem jmClaseBuscar;

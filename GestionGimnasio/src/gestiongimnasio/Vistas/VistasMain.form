@@ -56,18 +56,10 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmListaEntrenadores">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lista de Entrenadores"/>
+                <Property name="text" type="java.lang.String" value="Lista y Busqueda de Entrenadores"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmListaEntrenadoresActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmBuscarEntrenador">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar Entrenador"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmBuscarEntrenadorActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
