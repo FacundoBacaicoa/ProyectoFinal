@@ -126,7 +126,7 @@ public class ClaseData {
             if (capacidad > 0) {
                 // Inscribir al socio en la clase
                 PreparedStatement psInsert = con.prepareStatement(sqlInsert);
-                psInsert.setInt(1, socio.getId_Socio(rs.getInt(1)));
+                 psInsert.setInt(1, socio.getId_Socio(1));
                 psInsert.setInt(2, clase.getId_clase());
                 int filasInsertadas = psInsert.executeUpdate();
 
