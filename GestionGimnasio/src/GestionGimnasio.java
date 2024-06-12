@@ -6,12 +6,12 @@ import gestiongimnasio.Entidades.Entrenador;
 public class GestionGimnasio {
     public static void main(String[] args) {
         ClaseData claseD = new ClaseData();
-        EntrenadorData entrenadorData = new EntrenadorData();
+        //EntrenadorData entrenadorData = new EntrenadorData(dni, apellido, nombre, especialidad, estado);
         
         Entrenador entrenador = new Entrenador(0, 12345678, "Lucas", "Hernandez", "Funcional", true);
         
         // Verificar si el entrenador existe, si no, añadirlo
-        entrenadorData.agregarEntrenadorSiNoExiste(entrenador);
+       // entrenadorData.agregarEntrenadorSiNoExiste(entrenador);
 
         // Ahora podemos agregar la clase
         // Comentamos esta línea para evitar que se ejecute automáticamente

@@ -24,7 +24,15 @@ public class Entrenador {
         this.especialidad = especialidad;
         this.estado = estado;
     }
-
+    
+        public Entrenador(int dni, String nombre, String apellido, String especialidad, boolean estado) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.especialidad = especialidad;
+        this.estado = estado;
+    }
+    
     public int getId_entrenadores() {
         return id_entrenadores;
     }
