@@ -7,16 +7,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class SocioDAO {
-    private Connection con;
 
-    public SocioDAO(Connection con) {
-        this.con = con;
+    
+
+     private Connection con = null;
+
+    public SocioDAO() {
+        con = Conexion.getConexion();
     }
 
     public void agregarSocio(Socio socio) throws SQLException {
-        String query = "INSERT INTO socios (dni, nombre, apellido, edad, correo, telefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO socios (DNI, Nombre, Apellido,Edad,Correo,Teléfono,Estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, socio.getDni());
             ps.setString(2, socio.getNombre());
@@ -29,31 +34,46 @@ public class SocioDAO {
         }
     }
 
-    public List<Socio> obtenerSocios() throws SQLException {
-        List<Socio> socios = new ArrayList<>();
-        String query = "SELECT * FROM socios";
-        try (PreparedStatement ps = con.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+    public DefaultTableModel listarSocios() {
+
+        String[] nombresColumnas = {"ID_Socio", "DNI" , "Nombre", "Apellido","Edad","Correo","Teléfono","Estado"};//Indica el nombre de las columnas en la tabla
+
+        String[] registros = new String[8];
+
+        DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
+
+        String sql = "SELECT ID_Socio,DNI, Nombre, Apellido,Edad,Correo,Teléfono,Estado FROM socios";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Socio socio = new Socio(
-                    rs.getInt("id_socio"),
-                    rs.getString("dni"),
-                    rs.getString("nombre"),
-                    rs.getString("apellido"),
-                    rs.getInt("edad"),
-                    rs.getString("correo"),
-                    rs.getString("telefono"),
-                    rs.getBoolean("estado")
-                );
-                socios.add(socio);
+                registros[0] = rs.getString("ID_Socio");
+
+                registros[1] = rs.getString("DNI");
+
+                registros[2] = rs.getString("Nombre");
+
+                registros[3] = rs.getString("Apellido");
+
+                registros[4] = rs.getString("Edad");
+
+                registros[5] = rs.getString("Correo");
+
+                registros[6] = rs.getString("Teléfono");
+
+                registros[7] = rs.getString("Estado");
+                modelo.addRow(registros);
             }
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
+
         }
-        return socios;
+        return modelo;
     }
 
-    // Otros métodos para actualizar y eliminar socios
-
     public void actualizarSocio(Socio socio) throws SQLException {
-        String query = "UPDATE socios SET dni = ?, nombre = ?, apellido = ?, edad = ?, correo = ?, telefono = ?, estado = ? WHERE id_socio = ?";
+        String query = "UPDATE socios SET DNI = ?, Nombre = ?, Apellido = ?, Edad = ?, Correo = ?, Teléfono = ?, Estado = ? WHERE ID_Socio = ?";
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, socio.getDni());
             ps.setString(2, socio.getNombre());
@@ -68,56 +88,46 @@ public class SocioDAO {
     }
 
     public void eliminarSocio(int id) throws SQLException {
-        String query = "DELETE FROM socios WHERE id_socio = ?";
+        String query = "DELETE FROM socios WHERE ID_Socio = ?";
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
-     public List<Socio> buscarSociosPorNombre(String nombre) throws SQLException {
-        List<Socio> socios = new ArrayList<>();
-        String query = "SELECT * FROM socios WHERE nombre LIKE ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, "%" + nombre + "%");
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Socio socio = new Socio(
-                        rs.getInt("id_socio"),
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getInt("edad"),
-                        rs.getString("correo"),
-                        rs.getString("telefono"),
-                        rs.getBoolean("estado")
-                    );
-                    socios.add(socio);
-                }
-            }
-        }
-        return socios;
-    }
 
-    public Socio buscarSocioPorNumero(int id) throws SQLException {
-        Socio socio = null;
-        String query = "SELECT * FROM socios WHERE id_socio = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    socio = new Socio(
-                        rs.getInt("id_socio"),
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getInt("edad"),
-                        rs.getString("correo"),
-                        rs.getString("telefono"),
-                        rs.getBoolean("estado")
-                    );
-                }
+    public DefaultTableModel buscarSocio(String buscar) {
+        String[] nombresColumnas = {"ID_Socio", "Nombre", "Apellido"};
+
+        String[] registros = new String[3];
+
+        DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
+
+        String sql = "SELECT ID_Socio, Nombre, Apellido"
+                + "FROM socios "
+                + "WHERE Nombre LIKE '%" + buscar + "%' "
+                + "OR Apellido LIKE '%" + buscar + "%' "
+                + "OR ID_Socio LIKE '%" + buscar + "%'";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                registros[0] = rs.getString("ID_Socio");
+
+                registros[1] = rs.getString("Nombre");
+
+                registros[2] = rs.getString("Apellido");
+
+                modelo.addRow(registros);
+
             }
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
+
         }
-        return socio;
+        return modelo;
     }
 }
