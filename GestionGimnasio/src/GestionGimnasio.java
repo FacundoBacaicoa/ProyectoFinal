@@ -1,4 +1,3 @@
-
 import gestiongimnasio.DAO.ClaseData;
 import gestiongimnasio.DAO.EntrenadorData;
 import gestiongimnasio.Entidades.Clase;
@@ -15,7 +14,8 @@ public class GestionGimnasio {
         entrenadorData.agregarEntrenadorSiNoExiste(entrenador);
 
         // Ahora podemos agregar la clase
-        Clase nuevaClase = new Clase(0, "Yoga", entrenador, "18:00:00", 20, true);
-        claseD.guardarClase(nuevaClase);
+        // Comentamos esta línea para evitar que se ejecute automáticamente
+        // Clase nuevaClase = new Clase(0, "Yoga", entrenador, "18:00:00", 20, true);
+        // claseD.guardarClase(nuevaClase);
     }
 }

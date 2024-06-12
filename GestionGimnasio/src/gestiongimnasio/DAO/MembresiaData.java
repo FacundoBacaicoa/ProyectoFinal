@@ -23,7 +23,7 @@ public class MembresiaData {
     }
 
     public void registrarMembresia(Socio socio, int cantidadPases, int duracionMeses) {
-        String sql = "INSERT INTO membresias (id_socio, cantidad_pases, fecha_inicio, fecha_fin, costo, estado) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO membresias (Id_Socio, CantidadPases, Fecha_inicio, Fecha_fin, Costo, Estado) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -57,14 +57,13 @@ public class MembresiaData {
     }
 
     private BigDecimal calcularCosto(int cantidadPases, int duracionMeses) {
-        // calcula el costo según tus reglas de negocio
         BigDecimal costoPorPase = new BigDecimal("10.0"); // Ejemplo: $10 por pase
         BigDecimal costo = costoPorPase.multiply(new BigDecimal(cantidadPases));
         return costo;
     }
 
     public void renovarMembresia(Membresia membresia, int duracionMeses) {
-        String sql = "UPDATE membresias SET fecha_fin = DATE_ADD(fecha_fin, INTERVAL ? MONTH), costo = costo + ? WHERE id_membresia = ?";
+        String sql = "UPDATE membresias SET Fecha_fin = DATE_ADD(Fecha_fin, INTERVAL ? MONTH), Costo = Costo + ? WHERE Id_Membresia = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -91,7 +90,7 @@ public class MembresiaData {
     }
 
     public void cancelarMembresia(Membresia membresia) {
-        String sql = "UPDATE membresias SET estado = false WHERE id_membresia = ?";
+        String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -112,7 +111,7 @@ public class MembresiaData {
 
     public List<Membresia> obtenerMembresiasPorSocio(int idSocio) {
         List<Membresia> membresias = new ArrayList<>();
-        String sql = "SELECT * FROM membresias WHERE id_socio = ?";
+        String sql = "SELECT * FROM membresias WHERE Id_Socio = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -121,18 +120,17 @@ public class MembresiaData {
 
             while (rs.next()) {
                 Membresia membresia = new Membresia();
-                membresia.setId_membresia(rs.getInt("id_membresia"));
+                membresia.setId_membresia(rs.getInt("Id_Membresia"));
 
-                // Aquí obtienes el objeto Socio asociado
                 Socio socio = new Socio();
-                socio.setId_Socio(rs.getInt("id_socio"));
+                socio.setId_Socio(rs.getInt("Id_Socio"));
                 membresia.setSocio(socio);
 
-                membresia.setCantidadPases(rs.getInt("cantidad_pases"));
-                membresia.setFechaInicio(rs.getDate("fecha_inicio"));
-                membresia.setFechaFin(rs.getDate("fecha_fin"));
-                membresia.setCosto(rs.getBigDecimal("costo"));
-                membresia.setEstado(rs.getBoolean("estado"));
+                membresia.setCantidadPases(rs.getInt("CantidadPases"));
+                membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
+                membresia.setFechaFin(rs.getDate("Fecha_fin"));
+                membresia.setCosto(rs.getBigDecimal("Costo"));
+                membresia.setEstado(rs.getBoolean("Estado"));
 
                 membresias.add(membresia);
             }
