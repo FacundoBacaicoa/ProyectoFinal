@@ -49,6 +49,11 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("Cantidad De Pases");
 
         jLabel2.setText("Duracion del mes");

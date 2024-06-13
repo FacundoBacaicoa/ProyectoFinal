@@ -35,6 +35,11 @@ public class BuscarClase extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jTextField1.setText("ingrese su busqueda por clase");
 
         jButton1.setText("Buscar");

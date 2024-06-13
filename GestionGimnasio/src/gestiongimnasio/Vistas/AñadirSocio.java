@@ -51,6 +51,7 @@ private Socio nuevosocio=null;
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 3, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));

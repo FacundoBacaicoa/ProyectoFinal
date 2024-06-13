@@ -38,6 +38,11 @@ public class AñadirClase extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("nombre de la clase");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {

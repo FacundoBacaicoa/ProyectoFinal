@@ -33,6 +33,11 @@ public class InscribiraClase extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione clase"}));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione socio"}));

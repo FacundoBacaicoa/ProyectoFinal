@@ -37,6 +37,11 @@ private DefaultTableModel modelo;
         txt_buscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("Listado de  Socios");
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(

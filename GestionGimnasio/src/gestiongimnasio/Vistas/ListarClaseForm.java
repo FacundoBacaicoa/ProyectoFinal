@@ -30,6 +30,11 @@ public class ListarClaseForm extends javax.swing.JInternalFrame {
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jButton1.setText("actualizar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
