@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -130,5 +132,33 @@ public DefaultTableModel buscarSocio(String buscar) {
         JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
     }
     return modelo;
+}
+public List<Socio> obtenerTodosLosSocios() {
+    List<Socio> socios = new ArrayList<>();
+    String sql = "SELECT * FROM socios";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Socio socio = new Socio();
+            socio.setId_Socio(rs.getInt("ID_Socio"));
+            socio.setDni(rs.getInt("DNI"));
+            socio.setNombre(rs.getString("Nombre"));
+            socio.setApellido(rs.getString("Apellido"));
+            socio.setEdad(rs.getInt("Edad"));
+            socio.setCorreo(rs.getString("Correo"));
+            socio.setTelefono(rs.getString("Teléfono"));
+            socio.setEstado(rs.getBoolean("Estado"));
+            socios.add(socio);
+        }
+
+        ps.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener la lista de socios: " + ex.getMessage());
+    }
+
+    return socios;
 }
 }

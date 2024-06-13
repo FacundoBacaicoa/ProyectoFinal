@@ -1,9 +1,12 @@
-
 package gestiongimnasio.Vistas;
+
 import com.vistasJorge.HistoriadeMembresiasForm;
 import com.vistasJorge.RegistrarMembresiaForm;
 import com.vistasJorge.GestionarMembresiaForm;
-
+import ClasesVistasCintia.AñadirClase;
+import ClasesVistasCintia.BuscarClase;
+import ClasesVistasCintia.InscribiraClase;
+import ClasesVistasCintia.ListarClaseForm;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -22,7 +25,6 @@ public class VistasMain extends javax.swing.JFrame {
         initComponents();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -220,11 +222,21 @@ public class VistasMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmAnadirEntrenadorActionPerformed
 
     private void jmClaseAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseAnadirActionPerformed
-        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        AñadirClase anadirClase = new AñadirClase();
+        anadirClase.setVisible(true);
+        anadirClase.getContentPane().setBackground(new Color(56, 56, 56));
+        escritorio.add(anadirClase);
     }//GEN-LAST:event_jmClaseAnadirActionPerformed
 
     private void jmClaseBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseBuscarActionPerformed
-        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        BuscarClase buscarClase = new BuscarClase();
+        buscarClase.setVisible(true);
+        buscarClase.getContentPane().setBackground(new Color(56, 56, 56));
+        escritorio.add(buscarClase);
     }//GEN-LAST:event_jmClaseBuscarActionPerformed
 
     private void jmListaEntrenadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmListaEntrenadoresActionPerformed
@@ -237,33 +249,55 @@ public class VistasMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmListaEntrenadoresActionPerformed
 
     private void jmClaseInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseInscribirActionPerformed
-        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        InscribiraClase inscribiraClase = new InscribiraClase();
+        inscribiraClase.setVisible(true);
+        inscribiraClase.getContentPane().setBackground(new Color(56, 56, 56));
+        escritorio.add(inscribiraClase);
     }//GEN-LAST:event_jmClaseInscribirActionPerformed
 
     private void jmClaseListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseListaActionPerformed
-        // TODO add your handling code here:
+        // Remover todos los componentes del escritorio
+        escritorio.removeAll();
+        escritorio.repaint();
+
+        // Crear una nueva instancia de ListarClaseForm
+        ListarClaseForm listarClaseForm = new ListarClaseForm();
+
+        // Configurar y añadir la instancia al escritorio
+        listarClaseForm.setVisible(true);
+        listarClaseForm.getContentPane().setBackground(new Color(56, 56, 56));
+        escritorio.add(listarClaseForm);
+
+        // Asegurarse de que la ventana interna sea visible
+        try {
+            listarClaseForm.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jmClaseListaActionPerformed
 
     private void jmListaSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmListaSociosActionPerformed
         escritorio.removeAll();
         escritorio.repaint();
-        ListaSocios listar=new ListaSocios();
+        ListaSocios listar = new ListaSocios();
         listar.setVisible(true);
         listar.getContentPane().setBackground(new Color(56, 56, 56));
-        escritorio.add(listar);        
+        escritorio.add(listar);
     }//GEN-LAST:event_jmListaSociosActionPerformed
 
     private void jmAnadirSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmAnadirSociosActionPerformed
         escritorio.removeAll();
         escritorio.repaint();
-       AñadirSocio añadirS=new AñadirSocio();
+        AñadirSocio añadirS = new AñadirSocio();
         añadirS.setVisible(true);
         añadirS.getContentPane().setBackground(new Color(56, 56, 56));
-        escritorio.add(añadirS);        
+        escritorio.add(añadirS);
     }//GEN-LAST:event_jmAnadirSociosActionPerformed
 
     private void jmHistorialMemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmHistorialMemActionPerformed
-         escritorio.removeAll();
+        escritorio.removeAll();
         escritorio.repaint();
         HistoriadeMembresiasForm historiadeMembresiasForm = new HistoriadeMembresiasForm();
         historiadeMembresiasForm.setVisible(true);
@@ -277,29 +311,30 @@ public class VistasMain extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         escritorio.removeAll();
-    escritorio.repaint();
-    GestionarMembresiaForm gestionarMembresiaForm = new GestionarMembresiaForm();
-    gestionarMembresiaForm.setVisible(true);
-    escritorio.add(gestionarMembresiaForm);
-    try {
-        gestionarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
-    } catch (java.beans.PropertyVetoException e) {
-        e.printStackTrace();
-    }
+        escritorio.repaint();
+        GestionarMembresiaForm gestionarMembresiaForm = new GestionarMembresiaForm();
+        gestionarMembresiaForm.setVisible(true);
+        escritorio.add(gestionarMembresiaForm);
+        try {
+            gestionarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jmRegMembresiasActionPerformed(java.awt.event.ActionEvent evt) {
-     escritorio.removeAll();
-    escritorio.repaint();
-    RegistrarMembresiaForm registrarMembresiaForm = new RegistrarMembresiaForm();
-    registrarMembresiaForm.setVisible(true);
-    escritorio.add(registrarMembresiaForm);
-    try {
-        registrarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
-    } catch (java.beans.PropertyVetoException e) {
-        e.printStackTrace();
+        escritorio.removeAll();
+        escritorio.repaint();
+        RegistrarMembresiaForm registrarMembresiaForm = new RegistrarMembresiaForm();
+        registrarMembresiaForm.setVisible(true);
+        escritorio.add(registrarMembresiaForm);
+        try {
+            registrarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
+        } catch (java.beans.PropertyVetoException e) {
+            e.printStackTrace();
+        }
     }
-}
+
     /**
      * @param args the command line arguments
      */

@@ -49,18 +49,11 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
 
-        contentPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jLabel1.setText("Cantidad De Pases");
-        contentPane.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 40));
-        contentPane.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 47, 40));
 
         jLabel2.setText("Duracion del mes");
-        contentPane.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 120, 40));
-        contentPane.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 47, 40));
 
         jLabel3.setText("Fecha fin");
-        contentPane.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 84, 40));
 
         buttonOK.setText("Registrar membresia");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -68,39 +61,28 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                 buttonOKActionPerformed(evt);
             }
         });
-        contentPane.add(buttonOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, -1, -1));
 
         jLabel4.setText("SocioId");
-        contentPane.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 60, 40));
-        contentPane.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 47, 40));
 
         jLabel5.setText("Costo");
-        contentPane.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 84, 40));
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
             }
         });
-        contentPane.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 80, 40));
 
         jLabel6.setText("Fecha de inicio");
-        contentPane.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 84, 40));
 
         jLabel7.setText("MembresiaId");
-        contentPane.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 40, 84, 40));
 
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField7ActionPerformed(evt);
             }
         });
-        contentPane.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 80, 40));
 
         jCheckBox1.setText("Estado");
-        contentPane.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, -1));
-        contentPane.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
-        contentPane.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
 
         jButton1.setText("salir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -108,17 +90,97 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        contentPane.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 240, -1, -1));
+
+        javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
+        contentPane.setLayout(contentPaneLayout);
+        contentPaneLayout.setHorizontalGroup(
+            contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(22, 22, 22)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(jCheckBox1))
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(140, 140, 140)
+                .addComponent(buttonOK)
+                .addGap(50, 50, 50)
+                .addComponent(jButton1))
+        );
+        contentPaneLayout.setVerticalGroup(
+            contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contentPaneLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jCheckBox1)))
+                .addGap(6, 6, 6)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(60, 60, 60)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonOK)
+                    .addComponent(jButton1)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
