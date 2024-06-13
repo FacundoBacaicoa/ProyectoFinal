@@ -1,4 +1,4 @@
-package ClasesVistasCintia;
+package gestiongimnasio.Vistas;
 
 import gestiongimnasio.DAO.ClaseData;
 import gestiongimnasio.DAO.EntrenadorData;

@@ -1,5 +1,5 @@
 
-package com.vistasJorge;
+package gestiongimnasio.Vistas;
 import gestiongimnasio.DAO.MembresiaData;
 import gestiongimnasio.Entidades.Membresia;
 import javax.swing.*;

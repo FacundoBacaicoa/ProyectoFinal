@@ -1,12 +1,5 @@
 package gestiongimnasio.Vistas;
 
-import com.vistasJorge.HistoriadeMembresiasForm;
-import com.vistasJorge.RegistrarMembresiaForm;
-import com.vistasJorge.GestionarMembresiaForm;
-import ClasesVistasCintia.AñadirClase;
-import ClasesVistasCintia.BuscarClase;
-import ClasesVistasCintia.InscribiraClase;
-import ClasesVistasCintia.ListarClaseForm;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
