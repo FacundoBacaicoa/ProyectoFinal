@@ -3,13 +3,12 @@ package gestiongimnasio.DAO;
 import gestiongimnasio.Entidades.Membresia;
 import gestiongimnasio.Entidades.Socio;
 import java.math.BigDecimal;
-import org.mariadb.jdbc.Connection;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
-import org.mariadb.jdbc.Statement;
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -22,23 +21,30 @@ public class MembresiaData {
         con = Conexion.getConexion();
     }
 
-    public void registrarMembresia(Socio socio, int cantidadPases, int duracionMeses) {
+    public boolean socioExists(int socioId) {
+        String sql = "SELECT 1 FROM socios WHERE ID_Socio = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, socioId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void registrarMembresia(Membresia membresia) {
         String sql = "INSERT INTO membresias (Id_Socio, CantidadPases, Fecha_inicio, Fecha_fin, Costo, Estado) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-           ps.setInt(1, socio.getId_Socio(1));
-            ps.setInt(2, cantidadPases);
-
-            LocalDate fechaInicio = LocalDate.now();
-            ps.setDate(3, java.sql.Date.valueOf(fechaInicio));
-
-            LocalDate fechaFin = fechaInicio.plusMonths(duracionMeses);
-            ps.setDate(4, java.sql.Date.valueOf(fechaFin));
-
-            BigDecimal costo = calcularCosto(cantidadPases, duracionMeses);
-            ps.setBigDecimal(5, costo);
-            ps.setBoolean(6, true);
+            PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, membresia.getSocio().getId_Socio());
+            ps.setInt(2, membresia.getCantidadPases());
+            ps.setDate(3, new java.sql.Date(membresia.getFechaInicio().getTime()));
+            ps.setDate(4, new java.sql.Date(membresia.getFechaFin().getTime()));
+            ps.setBigDecimal(5, membresia.getCosto());
+            ps.setBoolean(6, membresia.isEstado());
 
             int filasInsertadas = ps.executeUpdate();
 
@@ -52,7 +58,7 @@ public class MembresiaData {
                 System.out.println("No se pudo registrar la membresía.");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Membresias");
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Membresias: " + e.getMessage());
         }
     }
 
@@ -78,7 +84,7 @@ public class MembresiaData {
 
             if (filasActualizadas > 0) {
                 LocalDate nuevaFechaFin = membresia.getFechaFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusMonths(duracionMeses);
-                membresia.setFechaFin(java.sql.Date.valueOf(nuevaFechaFin));
+                membresia.setFechaFin(Date.valueOf(nuevaFechaFin));
                 membresia.setCosto(membresia.getCosto().add(costoRenovacion));
                 System.out.println("Membresía renovada hasta: " + nuevaFechaFin);
             } else {
@@ -140,4 +146,84 @@ public class MembresiaData {
 
         return membresias;
     }
+
+    public Membresia obtenerMembresiaPorId(int idMembresia) {{
+    Membresia membresia = null;
+    String sql = "SELECT * FROM membresias WHERE ID_Membresia = ?";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idMembresia);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                membresia = new Membresia();
+                membresia.setId_membresia(rs.getInt("ID_Membresia"));
+
+                Socio socio = new Socio();
+                socio.setId_Socio(rs.getInt("Id_Socio"));
+                membresia.setSocio(socio);
+
+                membresia.setCantidadPases(rs.getInt("CantidadPases"));
+                membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
+                membresia.setFechaFin(rs.getDate("Fecha_fin"));
+                membresia.setCosto(rs.getBigDecimal("Costo"));
+                membresia.setEstado(rs.getBoolean("Estado"));
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return membresia;
+    }
+    }
+
+    public List<Membresia> obtenerMembresias() {
+        List<Membresia> membresias = new ArrayList<>();
+        String sql = "SELECT * FROM membresias";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Membresia membresia = new Membresia();
+                membresia.setId_membresia(rs.getInt("ID_Membresia"));
+
+                Socio socio = new Socio();
+                socio.setId_Socio(rs.getInt("Id_Socio"));
+                membresia.setSocio(socio);
+
+                membresia.setCantidadPases(rs.getInt("CantidadPases"));
+                membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
+                membresia.setFechaFin(rs.getDate("Fecha_fin"));
+                membresia.setCosto(rs.getBigDecimal("Costo"));
+                membresia.setEstado(rs.getBoolean("Estado"));
+
+                membresias.add(membresia);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return membresias;
+    }
+    public void actualizarMembresia(Membresia membresia) {
+    String sql = "UPDATE membresias SET Fecha_fin = ? WHERE ID_Membresia = ?";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setDate(1, new java.sql.Date(membresia.getFechaFin().getTime()));
+        ps.setInt(2, membresia.getId_membresia());
+        
+        int filasActualizadas = ps.executeUpdate();
+        
+        if (filasActualizadas > 0) {
+            System.out.println("Membresía actualizada exitosamente.");
+        } else {
+            System.out.println("No se pudo actualizar la membresía.");
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al actualizar la membresía: " + e.getMessage());
+    }
+}
+
 }

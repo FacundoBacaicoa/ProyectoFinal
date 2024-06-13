@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package gestiongimnasio.Vistas;
 
 import gestiongimnasio.DAO.SocioDAO;
@@ -187,7 +184,7 @@ private Socio nuevosocio=null;
         String apellido=Jtapellido.getText();
         int edad=Integer.parseInt(Jtedad.getText());
         String correo=Jtcorreo.getText();
-        int telefono=Integer.parseInt(Jttelefono.getText());
+        String telefono = Jttelefono.getText();
            if (nombre.isEmpty()|| apellido.isEmpty()) {
                JOptionPane.showMessageDialog(this, "No puede haber campos vacios");
            }

@@ -5,8 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,7 +27,7 @@ public void agregarSocio(Socio socio) throws SQLException {
         ps.setString(3, socio.getApellido());
         ps.setInt(4, socio.getEdad());
         ps.setString(5, socio.getCorreo());
-        ps.setInt(6, socio.getTelefono());
+        ps.setString(6, socio.getTelefono()); // Cambiar a setString
         ps.setBoolean(7, socio.isEstado());
         ps.executeUpdate();
         JOptionPane.showMessageDialog(null, "Socio guardado correctamente.");
@@ -36,6 +35,8 @@ public void agregarSocio(Socio socio) throws SQLException {
         JOptionPane.showMessageDialog(null, "No se pudo acceder a la tabla Socio. Error: " + e.getMessage());
     }
 }
+
+
     public DefaultTableModel listarSocios() {
 
         String[] nombresColumnas = {"ID_Socio", "DNI" , "Nombre", "Apellido","Edad","Correo","Teléfono","Estado"};//Indica el nombre de las columnas en la tabla
@@ -75,19 +76,20 @@ public void agregarSocio(Socio socio) throws SQLException {
     }
 
     public void actualizarSocio(Socio socio) throws SQLException {
-        String query = "UPDATE socios SET DNI = ?, Nombre = ?, Apellido = ?, Edad = ?, Correo = ?, Teléfono = ?, Estado = ? WHERE ID_Socio = ?";
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, socio.getDni());
-            ps.setString(2, socio.getNombre());
-            ps.setString(3, socio.getApellido());
-            ps.setInt(4, socio.getEdad());
-            ps.setString(5, socio.getCorreo());
-            ps.setInt(6, socio.getTelefono());
-            ps.setBoolean(7, socio.isEstado());
-            ps.setInt(8, socio.getId_Socio(1));
-            ps.executeUpdate();
-        }
+    String query = "UPDATE socios SET DNI = ?, Nombre = ?, Apellido = ?, Edad = ?, Correo = ?, Teléfono = ?, Estado = ? WHERE ID_Socio = ?";
+    try (PreparedStatement ps = con.prepareStatement(query)) {
+        ps.setInt(1, socio.getDni());
+        ps.setString(2, socio.getNombre());
+        ps.setString(3, socio.getApellido());
+        ps.setInt(4, socio.getEdad());
+        ps.setString(5, socio.getCorreo());
+        ps.setString(6, socio.getTelefono()); // Cambiar a setString
+        ps.setBoolean(7, socio.isEstado());
+        ps.setInt(8, socio.getId_Socio());
+        ps.executeUpdate();
     }
+}
+
 
     public void eliminarSocio(int id) throws SQLException {
         String query = "DELETE FROM socios WHERE ID_Socio = ?";

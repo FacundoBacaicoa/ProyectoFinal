@@ -1,25 +1,20 @@
-
 package gestiongimnasio.Entidades;
 
-/**
- *
- * @author facun
- */
 public class Socio {
-    private int id_socio;
+    private int Id_socio;
     private int dni;
     private String nombre;
     private String apellido;
     private int edad;
     private String correo;
-    private int telefono;
+    private String telefono;
     private boolean estado;
 
     public Socio() {
+        // Constructor vacío
     }
 
-    public Socio(int id_socio, int dni, String nombre, String apellido, int edad, String correo, int telefono, boolean estado) {
-        this.id_socio= id_socio;
+    public Socio(int dni, String nombre, String apellido, int edad, String correo, String telefono, boolean estado) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -29,22 +24,12 @@ public class Socio {
         this.estado = estado;
     }
 
-    public Socio(int dni, String nombre, String apellido, int edad, String correo, int telefono, Boolean estado) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.edad = edad;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.estado = estado;
+    public int getId_Socio() {
+        return Id_socio;
     }
 
-    public int getId_Socio(int aInt) {
-        return id_socio;
-    }
-
-    public void setId_Socio(int id_membresia) {
-        this.id_socio = id_membresia;
+    public void setId_Socio(int id) {
+        this.Id_socio = id;
     }
 
     public int getDni() {
@@ -87,11 +72,11 @@ public class Socio {
         this.correo = correo;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -102,10 +87,4 @@ public class Socio {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
-
-    @Override
-    public String toString() {
-        return "Socios{" + "socio=" + id_socio + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + '}';
-    }
-    
 }
