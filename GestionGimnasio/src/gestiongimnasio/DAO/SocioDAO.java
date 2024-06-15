@@ -161,4 +161,33 @@ public List<Socio> obtenerTodosLosSocios() {
 
     return socios;
 }
+public Socio buscarSocioPorNombreApellido(String nombre, String apellido) {
+        String sql = "SELECT * FROM socios WHERE Nombre = ? AND Apellido = ?";
+        Socio socio = null;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                socio = new Socio();
+                socio.setId_Socio(rs.getInt("ID_Socio"));
+                socio.setDni(rs.getInt("DNI"));
+                socio.setNombre(rs.getString("Nombre"));
+                socio.setApellido(rs.getString("Apellido"));
+                socio.setEdad(rs.getInt("Edad"));
+                socio.setCorreo(rs.getString("Correo"));
+                socio.setTelefono(rs.getString("Teléfono"));
+                socio.setEstado(rs.getBoolean("Estado"));
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al buscar socio: " + ex.getMessage());
+        }
+
+        return socio;
+    }
 }
