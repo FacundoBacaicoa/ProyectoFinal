@@ -47,7 +47,7 @@ public class EntrenadorData {
     }
 
     public void modificarEntrenador(Entrenador entrenador) {
-        String sql = "UPDATE entrenadores SET DNI=?, Nombre=?, Apellido=?, Especialidad=?, Estado=? WHERE id_entrenadores=?";
+        String sql = "UPDATE entrenadores SET DNI=?, Nombre=?, Apellido=?, Especialidad=?, Estado=? WHERE ID_Entrenador=?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
