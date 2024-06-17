@@ -67,39 +67,37 @@ public class EntrenadorData {
         }
     }
 
-     public DefaultTableModel mostrarEntrenadores()
-    {
-        
-        String []  nombresColumnas = {"ID","Nombre","Apellido","Especialidad", "Estado "};//Indica el nombre de las columnas en la tabla
-        
-        String [] registros = new String[5];
-        
-        DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
-  
-        String sql = "SELECT ID_Entrenador, Nombre, Apellido, Especialidad, Estado FROM entrenadores";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                registros[0] = rs.getString("ID_Entrenador");
-
-                registros[1] = rs.getString("Nombre");
-
-                registros[2] = rs.getString("Apellido");
-                
-                registros[3] = rs.getString("Especialidad");
-                
-                registros[4] = rs.getString("Estado");
-
-                modelo.addRow(registros);
+    public DefaultTableModel mostrarEntrenadores() {
+    String[] nombresColumnas = {"ID", "Nombre", "Apellido", "Especialidad", "Estado"};
+    DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas) {
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == 0) {
+                return Integer.class; // Asegurar que la columna ID es Integer
             }
-        } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
-
+            return String.class;
         }
-         return modelo;
+    };
+
+    String sql = "SELECT ID_Entrenador, Nombre, Apellido, Especialidad, Estado FROM entrenadores";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Object[] registros = new Object[5];
+            registros[0] = rs.getInt("ID_Entrenador"); // Asegurar que es un Integer
+            registros[1] = rs.getString("Nombre");
+            registros[2] = rs.getString("Apellido");
+            registros[3] = rs.getString("Especialidad");
+            registros[4] = rs.getBoolean("Estado");
+
+            modelo.addRow(registros);
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al conectar. " + e.getMessage());
     }
+    return modelo;
+}
 
      public DefaultTableModel buscarEntrenadores(String buscar)
     {   

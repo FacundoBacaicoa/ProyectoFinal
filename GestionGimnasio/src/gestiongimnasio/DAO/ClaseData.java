@@ -38,10 +38,13 @@ public class ClaseData {
             }
         }
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Clase");
-    }
+        if (ex.getErrorCode() == 1062) { // Código de error para clave duplicada en MySQL
+            JOptionPane.showMessageDialog(null, "Error: El entrenador ya tiene una clase en el horario seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Clase: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 }
-
+   }
     public void listarClases() {
         String sql = "SELECT ID_Clase, Nombre, ID_Entrenador, Horario, Capacidad, Estado FROM clases";
         ArrayList<Clase> clases = new ArrayList<>();
@@ -66,14 +69,14 @@ public class ClaseData {
 
     }
     
-      public List<Clase> buscarClases(String nombre, String entrenador, String horario) {
+     public List<Clase> buscarClases(String nombre, String entrenador, String horario) {
     List<Clase> clases = new ArrayList<>();
     String sql = "SELECT c.id_clase, c.nombre AS nombre_clase, e.ID_Entrenador, e.nombre AS nombre_entrenador, e.apellido, c.horario, c.capacidad, c.estado " +
                  "FROM clases c " +
                  "JOIN entrenadores e ON c.id_entrenador = e.ID_Entrenador " +
                  "WHERE (? IS NULL OR c.nombre LIKE ?) " +
                  "AND (? IS NULL OR CONCAT(e.nombre, ' ', e.apellido) LIKE ?) " +
-                 "AND (? IS NULL OR c.horario LIKE ?)";
+                 "AND (? IS NULL OR c.horario = ?)";
 
     try {
         PreparedStatement ps = con.prepareStatement(sql);
@@ -81,9 +84,9 @@ public class ClaseData {
         ps.setString(2, nombre != null ? "%" + nombre + "%" : null);
         ps.setString(3, entrenador != null ? "%" + entrenador + "%" : null);
         ps.setString(4, entrenador != null ? "%" + entrenador + "%" : null);
-        ps.setString(5, horario != null ? "%" + horario + "%" : null);
-        ps.setString(6, horario != null ? "%" + horario + "%" : null);
-
+       ps.setString(5, horario != null ? horario : null);
+       ps.setString(6, horario != null ? "%" + horario + "%" : null);
+        
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -104,7 +107,7 @@ public class ClaseData {
         rs.close();
         ps.close();
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al buscar clases");
+        JOptionPane.showMessageDialog(null, "Error al buscar clases: " + ex.getMessage());
     }
 
     return clases;
