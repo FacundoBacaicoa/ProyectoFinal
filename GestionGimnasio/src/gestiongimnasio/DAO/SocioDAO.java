@@ -77,7 +77,7 @@ public void agregarSocio(Socio socio) throws SQLException {
         return modelo;
     }
 
-    public void actualizarSocio(Socio socio) throws SQLException {
+   public boolean actualizarSocio(Socio socio) {
     String query = "UPDATE socios SET DNI = ?, Nombre = ?, Apellido = ?, Edad = ?, Correo = ?, Teléfono = ?, Estado = ? WHERE ID_Socio = ?";
     try (PreparedStatement ps = con.prepareStatement(query)) {
         ps.setInt(1, socio.getDni());
@@ -85,10 +85,14 @@ public void agregarSocio(Socio socio) throws SQLException {
         ps.setString(3, socio.getApellido());
         ps.setInt(4, socio.getEdad());
         ps.setString(5, socio.getCorreo());
-        ps.setString(6, socio.getTelefono()); // Cambiar a setString
+        ps.setString(6, socio.getTelefono());
         ps.setBoolean(7, socio.isEstado());
         ps.setInt(8, socio.getId_Socio());
-        ps.executeUpdate();
+        int filasActualizadas = ps.executeUpdate();
+        return filasActualizadas > 0;
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar socio: " + ex.getMessage());
+        return false;
     }
 }
 
@@ -190,4 +194,30 @@ public Socio buscarSocioPorNombreApellido(String nombre, String apellido) {
 
         return socio;
     }
+
+public Socio buscarSocioPorDni(int id) {
+    String sql = "SELECT * FROM socios WHERE DNI = ?";
+    Socio socio = null;
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            socio = new Socio();
+            socio.setId_Socio(rs.getInt("ID_Socio"));
+            socio.setDni(rs.getInt("DNI"));
+            socio.setNombre(rs.getString("Nombre"));
+            socio.setApellido(rs.getString("Apellido"));
+            socio.setEdad(rs.getInt("Edad"));
+            socio.setCorreo(rs.getString("Correo"));
+            socio.setTelefono(rs.getString("Teléfono"));
+            socio.setEstado(rs.getBoolean("Estado"));
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al buscar socio: " + ex.getMessage());
+    }
+    return socio;
+}
+
 }
