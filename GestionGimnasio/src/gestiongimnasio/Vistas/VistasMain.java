@@ -51,7 +51,6 @@ public class VistasMain extends javax.swing.JFrame {
         jmSocios = new javax.swing.JMenu();
         jmAnadirSocios = new javax.swing.JMenuItem();
         jmListaSocios = new javax.swing.JMenuItem();
-        jmBuscarSocios = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -168,7 +167,7 @@ public class VistasMain extends javax.swing.JFrame {
         jmSocios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestiongimnasio/Recursos/Socios.png"))); // NOI18N
         jmSocios.setText("Socios");
 
-        jmAnadirSocios.setText("Añadir Socios");
+        jmAnadirSocios.setText("Añadir o modificar Socios");
         jmAnadirSocios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmAnadirSociosActionPerformed(evt);
@@ -176,16 +175,13 @@ public class VistasMain extends javax.swing.JFrame {
         });
         jmSocios.add(jmAnadirSocios);
 
-        jmListaSocios.setText("Lista de Socios");
+        jmListaSocios.setText("Listado de Socios");
         jmListaSocios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmListaSociosActionPerformed(evt);
             }
         });
         jmSocios.add(jmListaSocios);
-
-        jmBuscarSocios.setText("Buscar Socios");
-        jmSocios.add(jmBuscarSocios);
 
         jMenuBar1.add(jmSocios);
 
@@ -375,7 +371,6 @@ public class VistasMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jmAnadirEntrenador;
     private javax.swing.JMenuItem jmAnadirSocios;
-    private javax.swing.JMenuItem jmBuscarSocios;
     private javax.swing.JMenuItem jmClaseAnadir;
     private javax.swing.JMenuItem jmClaseBuscar;
     private javax.swing.JMenuItem jmClaseInscribir;

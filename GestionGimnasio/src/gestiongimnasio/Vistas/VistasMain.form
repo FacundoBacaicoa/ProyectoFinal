@@ -151,7 +151,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jmAnadirSocios">
               <Properties>
-                <Property name="text" type="java.lang.String" value="A&#xf1;adir Socios"/>
+                <Property name="text" type="java.lang.String" value="A&#xf1;adir o modificar Socios"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmAnadirSociosActionPerformed"/>
@@ -159,16 +159,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jmListaSocios">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lista de Socios"/>
+                <Property name="text" type="java.lang.String" value="Listado de Socios"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmListaSociosActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmBuscarSocios">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar Socios"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
