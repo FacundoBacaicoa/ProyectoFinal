@@ -113,46 +113,70 @@ public class ClaseData {
     return clases;
 }
     
-  public void inscribirSocioEnClase(Socio socio, Clase clase) {
+public void inscribirSocioEnClase(Socio socio, Clase clase) {
     String sqlCheckCapacity = "SELECT capacidad FROM clases WHERE id_clase = ?";
     String sqlInsert = "INSERT INTO asistencia (id_socio, id_clase, fecha_asistencia) VALUES (?, ?, CURRENT_DATE)";
     String sqlUpdateCapacity = "UPDATE clases SET capacidad = capacidad - 1 WHERE id_clase = ?";
+    String sqlUpdatePases = "UPDATE membresias SET cantidadPases = cantidadPases - 1 WHERE id_socio = ? AND estado = true";
 
     try {
-        // Verificar la capacidad de la clase
-        PreparedStatement psCheck = con.prepareStatement(sqlCheckCapacity);
-        psCheck.setInt(1, clase.getId_clase());
-        ResultSet rsCheck = psCheck.executeQuery();
+        String sqlGetMembresia = "SELECT id_membresia, cantidadPases FROM membresias WHERE id_socio = ? AND estado = true";
+        PreparedStatement psGetMembresia = con.prepareStatement(sqlGetMembresia);
+        psGetMembresia.setInt(1, socio.getId_Socio());
+        ResultSet rsMembresia = psGetMembresia.executeQuery();
 
-        if (rsCheck.next()) {
-            int capacidad = rsCheck.getInt("capacidad");
-            if (capacidad > 0) {
-                // Inscribir al socio en la clase
-                PreparedStatement psInsert = con.prepareStatement(sqlInsert);
-                psInsert.setInt(1, socio.getId_Socio());
-                psInsert.setInt(2, clase.getId_clase());
-                int filasInsertadas = psInsert.executeUpdate();
+        if (rsMembresia.next()) {
+            int idMembresia = rsMembresia.getInt("id_membresia");
+            int cantidadPases = rsMembresia.getInt("cantidadPases");
 
-                if (filasInsertadas > 0) {
-                    // Actualizar la capacidad de la clase
-                    PreparedStatement psUpdate = con.prepareStatement(sqlUpdateCapacity);
-                    psUpdate.setInt(1, clase.getId_clase());
-                    psUpdate.executeUpdate();
-
-                    JOptionPane.showMessageDialog(null, "El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre());
-                    psUpdate.close();
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo inscribir al socio en la clase.");
-                }
-
-                psInsert.close();
-            } else {
-                JOptionPane.showMessageDialog(null, "La clase ya ha alcanzado su capacidad máxima.");
+            if (cantidadPases <= 0) {
+                JOptionPane.showMessageDialog(null, "El socio no tiene pases disponibles para inscribirse en la clase.");
+                return;
             }
+
+            PreparedStatement psCheck = con.prepareStatement(sqlCheckCapacity);
+            psCheck.setInt(1, clase.getId_clase());
+            ResultSet rsCheck = psCheck.executeQuery();
+
+            if (rsCheck.next()) {
+                int capacidad = rsCheck.getInt("capacidad");
+                if (capacidad > 0) {
+                    PreparedStatement psInsert = con.prepareStatement(sqlInsert);
+                    psInsert.setInt(1, socio.getId_Socio());
+                    psInsert.setInt(2, clase.getId_clase());
+                    int filasInsertadas = psInsert.executeUpdate();
+
+                    if (filasInsertadas > 0) {
+                        PreparedStatement psUpdate = con.prepareStatement(sqlUpdateCapacity);
+                        psUpdate.setInt(1, clase.getId_clase());
+                        psUpdate.executeUpdate();
+
+                        PreparedStatement psUpdatePases = con.prepareStatement(sqlUpdatePases);
+                        psUpdatePases.setInt(1, socio.getId_Socio());
+                        psUpdatePases.executeUpdate();
+
+                        JOptionPane.showMessageDialog(null, "El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre() + ". Pases restantes: " + (cantidadPases - 1));
+                        
+                        psUpdate.close();
+                        psUpdatePases.close();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo inscribir al socio en la clase.");
+                    }
+
+                    psInsert.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "La clase ya ha alcanzado su capacidad máxima.");
+                }
+            }
+
+            rsCheck.close();
+            psCheck.close();
+        } else {
+            JOptionPane.showMessageDialog(null, "El socio no tiene una membresía activa.");
         }
 
-        rsCheck.close();
-        psCheck.close();
+        rsMembresia.close();
+        psGetMembresia.close();
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al inscribir al socio en la clase: " + e.getMessage());
     }

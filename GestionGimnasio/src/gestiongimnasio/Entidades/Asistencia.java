@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class Asistencia {
     private int id_asistencia;
-    private Socio Socio;//no llamar ID y en singular
+    private Socio Socio;
     private Clase Clase;
     private Date fechaAsistencia;
 
