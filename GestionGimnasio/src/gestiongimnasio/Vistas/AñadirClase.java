@@ -193,25 +193,24 @@ public class AñadirClase extends javax.swing.JInternalFrame {
        // Verificar que se ha seleccionado un horario
     if (horarioSeleccionado != null && !horarioSeleccionado.isEmpty() && !horarioSeleccionado.equals("Seleccione un horario")) {
         cargarEntrenadores(horarioSeleccionado);
-    } else {
-        JOptionPane.showMessageDialog(this, "Por favor, seleccione un horario.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+    } 
+    
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Obtener los datos de los campos
+     
         String nombreClase = jTextField1.getText();
         String entrenadorNombre = (String) jComboBox2.getSelectedItem();
         String horario = (String) jComboBox1.getSelectedItem();
 
-        // Verificar que los campos no estén vacíos
+   
         if (nombreClase == null || nombreClase.isEmpty() || entrenadorNombre == null || entrenadorNombre.isEmpty() || horario == null || horario.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Obtener el Entrenador usando EntrenadorData
+      
         EntrenadorData entrenadorData = new EntrenadorData();
         Entrenador entrenador = entrenadorData.buscarEntrenadorPorNombre(entrenadorNombre);
 
@@ -225,17 +224,17 @@ public class AñadirClase extends javax.swing.JInternalFrame {
         nuevaClase.setNombre(nombreClase);
         nuevaClase.setIdEntrenador(entrenador);
         nuevaClase.setHorario(horario);
-        nuevaClase.setCapacidad(20); // Asume una capacidad por defecto, puedes cambiar esto
-        nuevaClase.setEstado(true); // Asume que la clase está activa por defecto
+        nuevaClase.setCapacidad(20); 
+        nuevaClase.setEstado(true); 
 
-        // Guardar la clase en la base de datos
+       
         ClaseData claseData = new ClaseData();
 
         claseData.guardarClase(nuevaClase);
 
-        // Mostrar un mensaje de confirmación
-        JOptionPane.showMessageDialog(this, "Clase agregada exitosamente.");
-        // Limpiar los campos
+       
+   
+      
         limpiarCampos();
     }//GEN-LAST:event_jButton1ActionPerformed
     private void limpiarCampos() {

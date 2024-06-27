@@ -21,10 +21,20 @@ public class ClaseData {
         con = Conexion.getConexion();
     }
 
-   public void guardarClase(Clase clase) {
-    String sql = "INSERT INTO clases(Nombre, ID_Entrenador, Horario, Capacidad, Estado) VALUES (?, ?, ?, ?, ?)";
+  public void guardarClase(Clase clase) {
+    String sqlCheck = "SELECT COUNT(*) FROM clases WHERE Horario = ?";
+    String sqlInsert = "INSERT INTO clases(Nombre, ID_Entrenador, Horario, Capacidad, Estado) VALUES (?, ?, ?, ?, ?)";
+
     try {
-        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement psCheck = con.prepareStatement(sqlCheck);
+        psCheck.setString(1, clase.getHorario());
+        ResultSet rsCheck = psCheck.executeQuery();
+
+        if (rsCheck.next() && rsCheck.getInt(1) > 0) {
+            JOptionPane.showMessageDialog(null, "Error: Ya existe una clase en el horario seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try (PreparedStatement ps = con.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, clase.getNombre());
             ps.setInt(2, clase.getIdEntrenador().getId_entrenadores());
             ps.setString(3, clase.getHorario());
@@ -38,12 +48,9 @@ public class ClaseData {
             }
         }
     } catch (SQLException ex) {
-        if (ex.getErrorCode() == 1062) { // Código de error para clave duplicada en MySQL
-            JOptionPane.showMessageDialog(null, "Error: El entrenador ya tiene una clase en el horario seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Clase: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-}
+        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Clase: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
    }
     public void listarClases() {
         String sql = "SELECT ID_Clase, Nombre, ID_Entrenador, Horario, Capacidad, Estado FROM clases";
