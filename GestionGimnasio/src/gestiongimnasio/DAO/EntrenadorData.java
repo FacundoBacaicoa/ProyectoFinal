@@ -66,7 +66,56 @@ public class EntrenadorData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla entrenadores");
         }
     }
+    
+public boolean eliminarEntrenador(int id) {
+    PreparedStatement psClases = null;
+    PreparedStatement psEntrenador = null;
+    boolean exito = false;
 
+    try {
+        String sqlClases = "DELETE FROM clases WHERE ID_Entrenador = ?";
+        psClases = con.prepareStatement(sqlClases);
+        psClases.setInt(1, id);
+        psClases.executeUpdate();
+
+        // Luego, eliminamos el entrenador
+        String sqlEntrenador = "DELETE FROM entrenadores WHERE ID_Entrenador = ?";
+        psEntrenador = con.prepareStatement(sqlEntrenador);
+        psEntrenador.setInt(1, id);
+        int resultado = psEntrenador.executeUpdate();
+
+        if (resultado > 0) {
+            con.commit();
+            exito = true;
+            JOptionPane.showMessageDialog(null, "Entrenador y sus clases asociadas eliminados con éxito");
+        } else {
+            con.rollback(); 
+            JOptionPane.showMessageDialog(null, "No se encontró el entrenador con ID: " + id);
+        }
+
+    } catch (SQLException ex) {
+        try {
+            if (con != null) con.rollback(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(null, "Error al eliminar el entrenador y sus clases: " + ex.getMessage());
+    } finally {
+        try {
+            if (psClases != null) psClases.close();
+            if (psEntrenador != null) psEntrenador.close();
+            if (con != null) {
+                con.setAutoCommit(true);  // Restauramos el auto-commit
+                con.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return exito;
+}
+    
     public DefaultTableModel mostrarEntrenadores() {
     String[] nombresColumnas = {"ID", "Nombre", "Apellido", "Especialidad", "Estado"};
     DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas) {

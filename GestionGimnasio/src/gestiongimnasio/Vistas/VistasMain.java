@@ -70,7 +70,7 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 765, Short.MAX_VALUE)
+            .addGap(0, 753, Short.MAX_VALUE)
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +191,10 @@ public class VistasMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(escritorio)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,24 +250,12 @@ public class VistasMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jmClaseInscribirActionPerformed
 
     private void jmClaseListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmClaseListaActionPerformed
-        // Remover todos los componentes del escritorio
         escritorio.removeAll();
         escritorio.repaint();
-
-        // Crear una nueva instancia de ListarClaseForm
         ListarClaseForm listarClaseForm = new ListarClaseForm();
-
-        // Configurar y añadir la instancia al escritorio
         listarClaseForm.setVisible(true);
         listarClaseForm.getContentPane().setBackground(new Color(56, 56, 56));
         escritorio.add(listarClaseForm);
-
-        // Asegurarse de que la ventana interna sea visible
-        try {
-            listarClaseForm.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_jmClaseListaActionPerformed
 
     private void jmListaSociosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmListaSociosActionPerformed
@@ -290,12 +281,8 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.repaint();
         HistoriadeMembresiasForm historiadeMembresiasForm = new HistoriadeMembresiasForm();
         historiadeMembresiasForm.setVisible(true);
+        historiadeMembresiasForm.getContentPane().setBackground(new Color(56, 56, 56));
         escritorio.add(historiadeMembresiasForm);
-        try {
-            historiadeMembresiasForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_jmHistorialMemActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -303,12 +290,8 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.repaint();
         GestionarMembresiaForm gestionarMembresiaForm = new GestionarMembresiaForm();
         gestionarMembresiaForm.setVisible(true);
+        gestionarMembresiaForm.getContentPane().setBackground(new Color(56, 56, 56));
         escritorio.add(gestionarMembresiaForm);
-        try {
-            gestionarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jmRegMembresiasActionPerformed(java.awt.event.ActionEvent evt) {
@@ -316,12 +299,8 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.repaint();
         RegistrarMembresiaForm registrarMembresiaForm = new RegistrarMembresiaForm();
         registrarMembresiaForm.setVisible(true);
+        registrarMembresiaForm.getContentPane().setBackground(new Color(56, 56, 56));
         escritorio.add(registrarMembresiaForm);
-        try {
-            registrarMembresiaForm.setMaximum(true); // Para que se maximice dentro del JDesktopPane
-        } catch (java.beans.PropertyVetoException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
