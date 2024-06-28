@@ -20,7 +20,7 @@ public class EntrenadorData {
     private Connection con = null;
 
     public EntrenadorData() {
-        con = Conexion.getConexion();
+        con = (Connection) Conexion.getConexion();
     }
 
     public void guardarEntrenador(Entrenador entrenador) {

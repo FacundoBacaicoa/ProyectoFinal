@@ -18,7 +18,7 @@ public class ClaseData {
     private Connection con = null;
 
     public ClaseData() {
-        con = Conexion.getConexion();
+        con = (Connection) Conexion.getConexion();
     }
 
   public void guardarClase(Clase clase) {
