@@ -1,4 +1,5 @@
 package gestiongimnasio.DAO;
+
 import gestiongimnasio.Entidades.Membresia;
 import gestiongimnasio.Entidades.Socio;
 import java.math.BigDecimal;
@@ -14,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MembresiaData {
+
     private Connection con = null;
 
     public MembresiaData() {
         con = Conexion.getConexion();
     }
+
     public boolean socioExists(int socioId) {
         String sql = "SELECT 1 FROM socios WHERE ID_Socio = ?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -33,7 +36,13 @@ public class MembresiaData {
     }
 
     public void registrarMembresia(Membresia membresia) {
+        // Verificar que la fecha de fin no sea anterior a la fecha de inicio
+        if (membresia.getFechaFin().before(membresia.getFechaInicio())) {
+            JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio.");
+            return;
+        }
         String sql = "INSERT INTO membresias (Id_Socio, CantidadPases, Fecha_inicio, Fecha_fin, Costo, Estado) VALUES (?, ?, ?, ?, ?, ?)";
+
         try {
             PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setInt(1, membresia.getSocio().getId_Socio());
@@ -56,11 +65,13 @@ public class MembresiaData {
             JOptionPane.showMessageDialog(null, "Error al acceder a la tabla Membresias: " + e.getMessage());
         }
     }
+
     private BigDecimal calcularCosto(int cantidadPases, int duracionMeses) {
         BigDecimal costoPorPase = new BigDecimal("10.0"); // Ejemplo: $10 por pase
         BigDecimal costo = costoPorPase.multiply(new BigDecimal(cantidadPases));
         return costo;
     }
+
     public void renovarMembresia(Membresia membresia, int duracionMeses) {
         String sql = "UPDATE membresias SET Fecha_fin = DATE_ADD(Fecha_fin, INTERVAL ? MONTH), Costo = Costo + ? WHERE Id_Membresia = ?";
         try {
@@ -126,15 +137,37 @@ public class MembresiaData {
         return membresias;
     }
 
-public Membresia obtenerMembresiaPorId(int idMembresia) {
-    Membresia membresia = null;
-    String sql = "SELECT * FROM membresias WHERE ID_Membresia = ?";
-    try (Connection conexion = Conexion.getConexion();
-         PreparedStatement ps = conexion.prepareStatement(sql)) {
-        ps.setInt(1, idMembresia);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                membresia = new Membresia();
+    public Membresia obtenerMembresiaPorId(int idMembresia) {
+        Membresia membresia = null;
+        String sql = "SELECT * FROM membresias WHERE ID_Membresia = ?";
+        try (Connection conexion = Conexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idMembresia);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    membresia = new Membresia();
+                    membresia.setId_membresia(rs.getInt("ID_Membresia"));
+                    Socio socio = new Socio();
+                    socio.setId_Socio(rs.getInt("Id_Socio"));
+                    membresia.setSocio(socio);
+                    membresia.setCantidadPases(rs.getInt("CantidadPases"));
+                    membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
+                    membresia.setFechaFin(rs.getDate("Fecha_fin"));
+                    membresia.setCosto(rs.getBigDecimal("Costo"));
+                    membresia.setEstado(rs.getBoolean("Estado"));
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener la membresía: " + e.getMessage());
+        }
+        return membresia;
+    }
+
+    public List<Membresia> obtenerMembresias() {
+        List<Membresia> membresias = new ArrayList<>();
+        String sql = "SELECT * FROM membresias";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Membresia membresia = new Membresia();
                 membresia.setId_membresia(rs.getInt("ID_Membresia"));
                 Socio socio = new Socio();
                 socio.setId_Socio(rs.getInt("Id_Socio"));
@@ -144,51 +177,27 @@ public Membresia obtenerMembresiaPorId(int idMembresia) {
                 membresia.setFechaFin(rs.getDate("Fecha_fin"));
                 membresia.setCosto(rs.getBigDecimal("Costo"));
                 membresia.setEstado(rs.getBoolean("Estado"));
+                membresias.add(membresia);
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al obtener las membresías: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al obtener la membresía: " + e.getMessage());
+        return membresias;
     }
-    return membresia;
-}
 
-public List<Membresia> obtenerMembresias() {
-    List<Membresia> membresias = new ArrayList<>();
-    String sql = "SELECT * FROM membresias";
-    try (Connection conn = Conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            Membresia membresia = new Membresia();
-            membresia.setId_membresia(rs.getInt("ID_Membresia"));
-            Socio socio = new Socio();
-            socio.setId_Socio(rs.getInt("Id_Socio"));
-            membresia.setSocio(socio);
-            membresia.setCantidadPases(rs.getInt("CantidadPases"));
-            membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
-            membresia.setFechaFin(rs.getDate("Fecha_fin"));
-            membresia.setCosto(rs.getBigDecimal("Costo"));
-            membresia.setEstado(rs.getBoolean("Estado"));
-            membresias.add(membresia);
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al obtener las membresías: " + e.getMessage());
-    }
-    return membresias;
-}
     public void actualizarMembresia(Membresia membresia) {
-    String sql = "UPDATE membresias SET Fecha_fin = ? WHERE ID_Membresia = ?";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setDate(1, new java.sql.Date(membresia.getFechaFin().getTime()));
-        ps.setInt(2, membresia.getId_membresia());
-        int filasActualizadas = ps.executeUpdate();
-        if (filasActualizadas > 0) {
-            System.out.println("Membresía actualizada exitosamente.");
-        } else {
-            System.out.println("No se pudo actualizar la membresía.");
+        String sql = "UPDATE membresias SET Fecha_fin = ? WHERE ID_Membresia = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDate(1, new java.sql.Date(membresia.getFechaFin().getTime()));
+            ps.setInt(2, membresia.getId_membresia());
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas > 0) {
+                System.out.println("Membresía actualizada exitosamente.");
+            } else {
+                System.out.println("No se pudo actualizar la membresía.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar la membresía: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al actualizar la membresía: " + e.getMessage());
     }
-}
 }

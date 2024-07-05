@@ -2,7 +2,6 @@
 package gestiongimnasio.Vistas;
 import gestiongimnasio.DAO.ClaseData;
 import gestiongimnasio.Entidades.Clase;
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 

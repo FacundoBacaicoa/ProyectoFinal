@@ -6,8 +6,6 @@ import gestiongimnasio.Entidades.Clase;
 import gestiongimnasio.Entidades.Socio;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**

@@ -142,6 +142,10 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                         .addGap(10, 10, 10)
                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ingresodeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(contentPaneLayout.createSequentialGroup()
                                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(contentPaneLayout.createSequentialGroup()
                                         .addGap(78, 78, 78)
@@ -167,28 +171,25 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel7))
-                                        .addGap(37, 37, 37)
+                                        .addGap(22, 22, 22)
+                                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTextField7)
+                                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
                                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(38, 38, 38)
-                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jLabel5)))))
+                                                .addComponent(jLabel5))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                                .addGap(13, 13, 13)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ingresodeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jTextField5)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)))))
                     .addGroup(contentPaneLayout.createSequentialGroup()
                         .addGap(251, 251, 251)
                         .addComponent(jLabel8)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,7 +236,7 @@ public class RegistrarMembresiaForm extends JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 32, Short.MAX_VALUE))
         );
 
         pack();
@@ -277,21 +278,33 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El nombre y apellido del socio no existen. Por favor, ingrese un nombre y apellido válidos.");
                 return;
             }
-
             int cantidadDePases = Integer.parseInt(jTextField1.getText());
             int duracionDelMes = Integer.parseInt(jTextField2.getText());
             Date selectedDateInicio = jDateChooser1.getDate();
+            Date selectedDateFin = jDateChooser2.getDate();
 
             if (selectedDateInicio == null) {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de inicio");
                 return;
             }
-
-            LocalDate localFechaInicio = selectedDateInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            LocalDate localFechaFin = localFechaInicio.plusMonths(duracionDelMes);
-            Date fechaFin = java.sql.Date.valueOf(localFechaFin);
+            if (selectedDateFin == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de fin");
+                return;
+            }
+            // Validar que la fecha de inicio no sea anterior a la fecha actual
+            Date currentDate = new Date();
+            if (selectedDateInicio.before(currentDate)) {
+                JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser anterior a la fecha actual");
+                return;
+            }
+            // Validar que la fecha de fin sea posterior a la fecha de inicio
+            if (selectedDateFin.before(selectedDateInicio)) {
+                JOptionPane.showMessageDialog(this, "La fecha de finalización no puede ser anterior a la fecha de inicio");
+                return;
+            }
 
             java.sql.Date fechaInicio = new java.sql.Date(selectedDateInicio.getTime());
+            java.sql.Date fechaFin = new java.sql.Date(selectedDateFin.getTime());
             BigDecimal costo = new BigDecimal(jTextField5.getText());
             boolean estado = jCheckBox1.isSelected();
 
@@ -311,14 +324,14 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocurrió un error al registrar la membresía: " + e.getMessage());
         }
-        }
+    }
 
-        public static void main(String[] args) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new RegistrarMembresiaForm().setVisible(true);
-                }
-            });
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RegistrarMembresiaForm().setVisible(true);
+            }
+        });
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
