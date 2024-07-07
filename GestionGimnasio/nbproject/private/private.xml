@@ -2,19 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/RegistrarMembresiaForm.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/ListaSocios.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/AñadirSocio.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/ListarClaseForm.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/AgregarEntrenador.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/HistoriadeMembresiasForm.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/VistasMain.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/GestionarMembresiaForm.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/InscribiraClase.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/AñadirClase.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/ListaEntrenadores.java</file>
-            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/BuscarClase.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
