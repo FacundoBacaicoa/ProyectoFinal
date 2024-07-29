@@ -51,6 +51,8 @@ public class VistasMain extends javax.swing.JFrame {
         jmSocios = new javax.swing.JMenu();
         jmAnadirSocios = new javax.swing.JMenuItem();
         jmListaSocios = new javax.swing.JMenuItem();
+        JmAsistencias = new javax.swing.JMenu();
+        JmAsist = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -185,6 +187,19 @@ public class VistasMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jmSocios);
 
+        JmAsistencias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestiongimnasio/Recursos/icons8-asistencia-30.png"))); // NOI18N
+        JmAsistencias.setText("Asistencias");
+
+        JmAsist.setText("Historial");
+        JmAsist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAsistActionPerformed(evt);
+            }
+        });
+        JmAsistencias.add(JmAsist);
+
+        jMenuBar1.add(JmAsistencias);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -294,6 +309,16 @@ public class VistasMain extends javax.swing.JFrame {
         escritorio.add(gestionarMembresiaForm);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void JmAsistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAsistActionPerformed
+          escritorio.removeAll();
+    escritorio.repaint();
+    HistorialAsistencias historialAsistenciasForm = new HistorialAsistencias();
+    historialAsistenciasForm.setVisible(true);
+    historialAsistenciasForm.getContentPane().setBackground(new Color(56, 56, 56));
+    escritorio.add(historialAsistenciasForm);
+ 
+    }//GEN-LAST:event_JmAsistActionPerformed
+
     private void jmRegMembresiasActionPerformed(java.awt.event.ActionEvent evt) {
         escritorio.removeAll();
         escritorio.repaint();
@@ -339,6 +364,8 @@ public class VistasMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JmAsist;
+    private javax.swing.JMenu JmAsistencias;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
