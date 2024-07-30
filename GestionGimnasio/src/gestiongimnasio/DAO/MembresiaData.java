@@ -36,11 +36,7 @@ public class MembresiaData {
     }
 
     public void registrarMembresia(Membresia membresia) {
-         // Verificar si el socio ya tiene una membresía activa
-    if (tieneMembresiaActiva(membresia.getSocio().getId_Socio())) {
-        JOptionPane.showMessageDialog(null, "El socio ya tiene una membresía activa.");
-        return;
-    }
+ 
         // Verificar que la fecha de fin no sea anterior a la fecha de inicio
         if (membresia.getFechaFin().before(membresia.getFechaInicio())) {
             JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio.");

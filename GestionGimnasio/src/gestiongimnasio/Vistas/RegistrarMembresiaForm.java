@@ -282,11 +282,11 @@ public class RegistrarMembresiaForm extends JInternalFrame {
             return;
         }
 
-        // Verificar si el socio ya tiene una membresía activa
-        if (membresiaData.tieneMembresiaActiva(socio.getId_Socio())) {
-            JOptionPane.showMessageDialog(this, "El socio ya tiene una membresía activa. No se puede registrar una nueva.");
+ 
+             if (membresiaData.tieneMembresiaActiva(socio.getId_Socio())) {
+            JOptionPane.showMessageDialog(this, "El socio ya tiene una membresía activa.");
             return;
-        }
+            }
 
         // Obtener y validar datos de la membresía
         int cantidadDePases = Integer.parseInt(jTextField1.getText());
