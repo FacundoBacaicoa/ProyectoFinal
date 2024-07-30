@@ -29,8 +29,50 @@ public class AsistenciaData {
         con = (Connection) Conexion.getConexion();
     }
     
-    
-    
+      public List<Asistencia> obtenerHistorialAsistenciasPorDni(int dni) {
+        List<Asistencia> asistencias = new ArrayList<>();
+        SocioDAO socioDAO = new SocioDAO();
+        Socio socio = socioDAO.buscarSocioPorDni(dni);
+        
+        if (socio == null) {
+            JOptionPane.showMessageDialog(null, "No se encontró un socio con el DNI proporcionado.");
+            return asistencias;
+        }
+
+        String sql = "SELECT a.id_asistencia, a.id_clase, a.fecha_asistencia, " +
+                     "c.nombre AS nombre_clase, c.horario " +
+                     "FROM asistencia a " +
+                     "JOIN clases c ON a.id_clase = c.id_clase " +
+                     "WHERE a.id_socio = ?";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, socio.getId_Socio());
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Asistencia asistencia = new Asistencia();
+                asistencia.setId_asistencia(rs.getInt("id_asistencia"));
+                asistencia.setFechaAsistencia(rs.getDate("fecha_asistencia"));
+                
+                Clase clase = new Clase();
+                clase.setId_clase(rs.getInt("id_clase"));
+                clase.setNombre(rs.getString("nombre_clase"));
+                clase.setHorario(rs.getString("horario"));
+                asistencia.setId_Clase(clase);
+                
+                asistencia.setId_Socio(socio);
+                
+                asistencias.add(asistencia);
+            }
+            
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener el historial de asistencias: " + ex.getMessage());
+        }
+        
+        return asistencias;
+    }
      public DefaultTableModel buscarAsistencia(String buscar) {
     String[] nombresColumnas = {"ID Asistencia", "DNI Socio", "Nombre Socio", "Fecha", "Clase", "Horario"};
     DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
