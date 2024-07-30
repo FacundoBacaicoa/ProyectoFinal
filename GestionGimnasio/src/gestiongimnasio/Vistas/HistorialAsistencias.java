@@ -35,8 +35,10 @@ public class HistorialAsistencias extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Asistencias");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Ingrese el Dni del Socio:");
 
         jTxt.addActionListener(new java.awt.event.ActionListener() {

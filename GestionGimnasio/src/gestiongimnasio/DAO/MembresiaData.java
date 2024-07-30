@@ -100,21 +100,21 @@ public class MembresiaData {
     }
 
     public void cancelarMembresia(Membresia membresia) {
-        String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, membresia.getId_membresia());
-            int filasActualizadas = ps.executeUpdate();
-            if (filasActualizadas > 0) {
-                membresia.setEstado(false);
-                System.out.println("Membresía cancelada.");
-            } else {
-                System.out.println("No se pudo cancelar la membresía.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al cancelar la membresía: " + e.getMessage());
+    String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, membresia.getId_membresia());
+        int filasActualizadas = ps.executeUpdate();
+        if (filasActualizadas > 0) {
+            membresia.setEstado(false);
+            System.out.println("Membresía cancelada exitosamente.");
+        } else {
+            System.out.println("No se pudo cancelar la membresía.");
         }
+    } catch (SQLException e) {
+        System.out.println("Error al cancelar la membresía: " + e.getMessage());
     }
+}
 
     public List<Membresia> obtenerMembresiasPorSocio(int idSocio) {
         List<Membresia> membresias = new ArrayList<>();
@@ -205,17 +205,17 @@ public class MembresiaData {
             System.out.println("Error al actualizar la membresía: " + e.getMessage());
         }
     }
-    public boolean tieneMembresiaActiva(int socioId) {
-    String sql = "SELECT 1 FROM membresias WHERE Id_Socio = ? AND Estado = true";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, socioId);
-        try (ResultSet rs = ps.executeQuery()) {
-            return rs.next();
+    public boolean tieneMembresiaActiva(int idSocio) {
+        String sql = "SELECT * FROM membresia WHERE id_socio = ? AND estado = true AND fecha_fin >= CURDATE()";
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idSocio);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // Retorna true si hay al menos una membresía activa
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al verificar membresía activa: " + e.getMessage());
+            return false;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
     }
-}
-
 }

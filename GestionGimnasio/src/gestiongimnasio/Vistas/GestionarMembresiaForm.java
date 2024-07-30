@@ -76,9 +76,10 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jButton4 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(470, 340));
+        setPreferredSize(new java.awt.Dimension(700, 340));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,7 +109,7 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID Membresía", "ID Socio", "Cantidad de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo", "Estado"
+                "ID Membresía", "ID Socio", "Cantidad de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo"
             }
         ){
             Class[] types = new Class [] {
@@ -164,20 +165,19 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     jLabel2.setForeground(new java.awt.Color(255, 255, 255));
     jLabel2.setText("GESTIONAR MEMBRESIAS");
 
+    jButton4.setBackground(new java.awt.Color(51, 51, 51));
+    jButton4.setForeground(new java.awt.Color(255, 255, 255));
+    jButton4.setText("Reactivar Membresìa");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton4ActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jButton2)
-                    .addGap(45, 45, 45)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(0, 17, Short.MAX_VALUE))
         .addGroup(layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -186,58 +186,88 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
+                            .addGap(112, 112, 112)
+                            .addComponent(jLabel1))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap()
                             .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(8, 8, 8)))
+                    .addGap(33, 33, 33)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addContainerGap())
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(jLabel2)
-            .addGap(124, 124, 124))
+        .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(27, 27, 27)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton2)
+                            .addGap(37, 37, 37)
+                            .addComponent(jButton4)
+                            .addGap(52, 52, 52)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(52, 52, 52)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(222, 222, 222)
+                    .addComponent(jLabel2)))
+            .addGap(0, 0, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
-            .addComponent(jLabel2)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGap(0, 0, 0)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jLabel2)
+            .addGap(8, 8, 8)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(jLabel1)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jLabel3)
-                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 0, 0)
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(12, 12, 12)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton3)
                 .addComponent(jButton1)
-                .addComponent(jButton2))
-            .addGap(0, 0, 0))
+                .addComponent(jButton2)
+                .addComponent(jButton3)
+                .addComponent(jButton4))
+            .addGap(17, 17, 17))
     );
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         try {
+        try {
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow != -1) {
             int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
             Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
 
             if (membresia != null) {
-                membresiaData.cancelarMembresia(membresia);
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.removeRow(selectedRow);
-                JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
+                int confirm = JOptionPane.showConfirmDialog(this, 
+                    "¿Está seguro de que desea cancelar esta membresía?", 
+                    "Confirmar cancelación", 
+                    JOptionPane.YES_NO_OPTION);
+                
+                if (confirm == JOptionPane.YES_OPTION) {
+                    membresiaData.cancelarMembresia(membresia);
+                    
+                    // Actualizar la tabla
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    model.setValueAt(false, selectedRow, 6); // Suponiendo que la columna de estado es la 7 (índice 6)
+                    
+                    JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
             }
@@ -245,7 +275,6 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
         }
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al cancelar la membresía: " + e.getMessage());
     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -286,6 +315,43 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+     try {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow != -1) {
+            int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
+            Date nuevaFechaFin = jDateChooser1.getDate();
+            if (nuevaFechaFin != null) {
+                Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
+                if (membresia != null) {
+                    // Verificar si la membresía está inactiva
+                    if (membresia.getFechaFin().before(new java.util.Date())) {
+                        // Establecer la nueva fecha de fin
+                        membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
+                        // Establecer la fecha de inicio como la fecha actual
+                        membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
+                        membresiaData.actualizarMembresia(membresia);
+                        // Actualizar la tabla
+                        jTable1.setValueAt(membresia.getFechaInicio(), selectedRow, 3); // Suponiendo que la columna 3 es la fecha de inicio
+                        jTable1.setValueAt(membresia.getFechaFin(), selectedRow, 4); // Suponiendo que la columna 4 es la fecha de fin
+                        JOptionPane.showMessageDialog(this, "Membresía reactivada exitosamente.");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Esta membresía aún está activa.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una nueva fecha de finalización.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al reactivar la membresía: " + e.getMessage());
+    }   
+    }//GEN-LAST:event_jButton4ActionPerformed
 
      private void buscarMembresias() {
         try {
@@ -354,7 +420,8 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private javax.swing.JButton jButton4;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
