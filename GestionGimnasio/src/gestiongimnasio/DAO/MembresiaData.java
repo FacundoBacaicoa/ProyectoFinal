@@ -35,8 +35,12 @@ public class MembresiaData {
         }
     }
 
-    public void registrarMembresia(Membresia membresia) {
  
+       
+   public void registrarMembresia(Membresia membresia) {
+         // Verificar si el socio ya tiene una membresía activa
+  
+    
         // Verificar que la fecha de fin no sea anterior a la fecha de inicio
         if (membresia.getFechaFin().before(membresia.getFechaInicio())) {
             JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio.");
@@ -201,17 +205,19 @@ public class MembresiaData {
             System.out.println("Error al actualizar la membresía: " + e.getMessage());
         }
     }
-    public boolean tieneMembresiaActiva(int idSocio) {
-        String sql = "SELECT * FROM membresia WHERE id_socio = ? AND estado = true AND fecha_fin >= CURDATE()";
-        try (Connection con = Conexion.getConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idSocio);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next(); // Retorna true si hay al menos una membresía activa
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al verificar membresía activa: " + e.getMessage());
-            return false;
+      public boolean tieneMembresiaActiva(int socioId) {
+    String sql = "SELECT 1 FROM membresias WHERE Id_Socio = ? AND Estado = true";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, socioId);
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
 }
+
+        }
+       
+

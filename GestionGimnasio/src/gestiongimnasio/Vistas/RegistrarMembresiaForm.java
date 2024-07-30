@@ -262,96 +262,77 @@ public class RegistrarMembresiaForm extends JInternalFrame {
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
                                          
-    try {
-        // Validar nombre y apellido del socio
-        String nombreCompleto = ingresodeNombre.getText().trim();
-        String[] partesNombre = nombreCompleto.split(" ");
 
-        if (partesNombre.length < 2) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese tanto el nombre como el apellido del socio.");
-            return;
-        }
+           // Validar que todos los campos estén completos
+        try {
+            String nombreCompleto = ingresodeNombre.getText().trim();
+            String[] partesNombre = nombreCompleto.split(" ");
 
-        String nombreSocio = partesNombre[0];
-        String apellidoSocio = partesNombre[1];
+            if (partesNombre.length < 2) {
+                JOptionPane.showMessageDialog(this, "Por favor, ingrese tanto el nombre como el apellido del socio.");
+                return;
+            }
 
-        Socio socio = socioData.buscarSocioPorNombreApellido(nombreSocio, apellidoSocio);
+            String nombreSocio = partesNombre[0];
+            String apellidoSocio = partesNombre[1];
 
-        if (socio == null) {
-            JOptionPane.showMessageDialog(this, "El nombre y apellido del socio no existen. Por favor, ingrese un nombre y apellido válidos.");
-            return;
-        }
+            Socio socio = socioData.buscarSocioPorNombreApellido(nombreSocio, apellidoSocio);
 
- 
+            if (socio == null) {
+                JOptionPane.showMessageDialog(this, "El nombre y apellido del socio no existen. Por favor, ingrese un nombre y apellido válidos.");
+                return;
+                
+            } 
              if (membresiaData.tieneMembresiaActiva(socio.getId_Socio())) {
             JOptionPane.showMessageDialog(this, "El socio ya tiene una membresía activa.");
             return;
+        }
+            int cantidadDePases = Integer.parseInt(jTextField1.getText());
+            int duracionDelMes = Integer.parseInt(jTextField2.getText());
+            Date selectedDateInicio = jDateChooser1.getDate();
+            Date selectedDateFin = jDateChooser2.getDate();
+
+            if (selectedDateInicio == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de inicio");
+                return;
+            }if (selectedDateFin == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de fin");
+                return;
+            }
+            // Validar que la fecha de inicio no sea anterior a la fecha actual
+            Date currentDate = new Date();
+            if (selectedDateInicio.before(currentDate)) {
+                JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser anterior a la fecha actual");
+                return;
+            }
+            // Validar que la fecha de fin sea posterior a la fecha de inicio
+            if (selectedDateFin.before(selectedDateInicio)) {
+                JOptionPane.showMessageDialog(this, "La fecha de finalización no puede ser anterior a la fecha de inicio");
+                return;
             }
 
-        // Obtener y validar datos de la membresía
-        int cantidadDePases = Integer.parseInt(jTextField1.getText());
-        int duracionDelMes = Integer.parseInt(jTextField2.getText());
-        Date selectedDateInicio = jDateChooser1.getDate();
-        Date selectedDateFin = jDateChooser2.getDate();
+            java.sql.Date fechaInicio = new java.sql.Date(selectedDateInicio.getTime());
+            java.sql.Date fechaFin = new java.sql.Date(selectedDateFin.getTime());
+            BigDecimal costo = new BigDecimal(jTextField5.getText());
+            boolean estado = jCheckBox1.isSelected();
 
-        if (selectedDateInicio == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de inicio");
-            return;
+            Membresia membresia = new Membresia();
+            membresia.setSocio(socio);
+            membresia.setCantidadPases(cantidadDePases);
+            membresia.setFechaInicio(fechaInicio);
+            membresia.setFechaFin(fechaFin);
+            membresia.setCosto(costo);
+            membresia.setEstado(estado);
+
+            membresiaData.registrarMembresia(membresia);
+
+            JOptionPane.showMessageDialog(this, "Membresía registrada exitosamente");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese todos los campos correctamente");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error al registrar la membresía: " + e.getMessage());
         }
-        if (selectedDateFin == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de fin");
-            return;
-        }
-
-        // Validar que la fecha de inicio no sea anterior a la fecha actual
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date startOfCurrentDay = calendar.getTime();
-
-        if (selectedDateInicio.before(startOfCurrentDay)) {
-            JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser anterior a la fecha actual");
-            return;
-        }
-
-        // Validar que la fecha de fin sea posterior a la fecha de inicio
-        if (selectedDateFin.before(selectedDateInicio)) {
-            JOptionPane.showMessageDialog(this, "La fecha de finalización no puede ser anterior a la fecha de inicio");
-            return;
-        }
-
-        java.sql.Date fechaInicio = new java.sql.Date(selectedDateInicio.getTime());
-        java.sql.Date fechaFin = new java.sql.Date(selectedDateFin.getTime());
-        BigDecimal costo = new BigDecimal(jTextField5.getText());
-        boolean estado = jCheckBox1.isSelected();
-
-        // Crear y configurar el objeto Membresia
-        Membresia membresia = new Membresia();
-        membresia.setSocio(socio);
-        membresia.setCantidadPases(cantidadDePases);
-        membresia.setFechaInicio(fechaInicio);
-        membresia.setFechaFin(fechaFin);
-        membresia.setCosto(costo);
-        membresia.setEstado(estado);
-
-        // Registrar la membresía
-        membresiaData.registrarMembresia(membresia);
-
-        JOptionPane.showMessageDialog(this, "Membresía registrada exitosamente");
-
-        // Opcional: Limpiar los campos después de registrar
-        limpiarCampos();
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese todos los campos numéricos correctamente");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Ocurrió un error al registrar la membresía: " + e.getMessage());
     }
-}
     private void limpiarCampos() {
     ingresodeNombre.setText("");
     jTextField1.setText("");
@@ -361,6 +342,7 @@ public class RegistrarMembresiaForm extends JInternalFrame {
     jDateChooser2.setDate(null);
     jCheckBox1.setSelected(false);
 }
+
 
 
     public static void main(String[] args) {
