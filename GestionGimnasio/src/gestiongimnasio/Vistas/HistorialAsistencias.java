@@ -2,6 +2,11 @@
 package gestiongimnasio.Vistas;
 
 import gestiongimnasio.DAO.AsistenciaData;
+import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -9,7 +14,8 @@ import javax.swing.table.DefaultTableModel;
  * @author facun
  */
 public class HistorialAsistencias extends javax.swing.JInternalFrame {
-
+    private int selectedRow = -1;
+     private Map<Integer, String> cambiosAsistencia = new HashMap<>(); // Para guardar los cambios
     /**
      * Creates new form HistorialAsistencias
      */
@@ -32,6 +38,9 @@ public class HistorialAsistencias extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        btnausente = new javax.swing.JButton();
+        btnpresente = new javax.swing.JButton();
+        btnguardar = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -57,6 +66,11 @@ public class HistorialAsistencias extends javax.swing.JInternalFrame {
 
             }
         ));
+        Tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(Tabla);
 
         jButton1.setText("Buscar");
@@ -66,43 +80,74 @@ public class HistorialAsistencias extends javax.swing.JInternalFrame {
             }
         });
 
+        btnausente.setText("Ausente");
+        btnausente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnausenteActionPerformed(evt);
+            }
+        });
+
+        btnpresente.setText("Presente");
+        btnpresente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpresenteActionPerformed(evt);
+            }
+        });
+
+        btnguardar.setText("Guardar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 92, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(79, 79, 79))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(77, 77, 77))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnausente, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(btnpresente, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
+                .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(jTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnausente, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnpresente, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnguardar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -115,20 +160,65 @@ public class HistorialAsistencias extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         buscarAsistencias(jTxt.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
-public void listarAsistencias() {
+
+    private void TablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMouseClicked
+      JTable table = (JTable) evt.getSource();
+        selectedRow = table.getSelectedRow();
+    
+    }//GEN-LAST:event_TablaMouseClicked
+
+    private void btnausenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnausenteActionPerformed
+           if (selectedRow != -1) {
+            cambiosAsistencia.put(selectedRow, "Ausente");
+            
+        }
+    }//GEN-LAST:event_btnausenteActionPerformed
+
+    private void btnpresenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpresenteActionPerformed
+       if (selectedRow != -1) {
+            cambiosAsistencia.put(selectedRow, "Presente");
+            
+        }
+    }//GEN-LAST:event_btnpresenteActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        guardarCambios();
+     
+    }//GEN-LAST:event_btnguardarActionPerformed
+
+    public void listarAsistencias() {
     AsistenciaData asistenciaData = new AsistenciaData();
     DefaultTableModel modelo = new DefaultTableModel();
     modelo.setColumnIdentifiers(new String[]{"ID Asistencia", "Fecha", "Clase", "Horario"});
     Tabla.setModel(modelo);
 }
-    public void buscarAsistencias(String buscar) {
-    AsistenciaData asistenciaData = new AsistenciaData();
-    DefaultTableModel modelo = asistenciaData.buscarAsistencia(buscar);
-    Tabla.setModel(modelo);
-}
+   
+      public void buscarAsistencias(String buscar) {
+        AsistenciaData asistenciaData = new AsistenciaData();
+        DefaultTableModel modelo = asistenciaData.buscarAsistencia(buscar);
+        Tabla.setModel(modelo);
+       
+    }
+    private void guardarCambios() {
+        AsistenciaData asistenciaData = new AsistenciaData();
+        for (Map.Entry<Integer, String> entry : cambiosAsistencia.entrySet()) {
+            int row = entry.getKey();
+            String estado = entry.getValue();
+            int idAsistencia = (int) Tabla.getValueAt(row, 0); // Asumiendo que el ID está en la primera columna
+            asistenciaData.actualizarEstadoAsistencia(idAsistencia, estado);
+        }
+        JOptionPane.showMessageDialog(this, "Cambios guardados exitosamente");
+        cambiosAsistencia.clear(); // Limpiar los cambios después de guardar
+        buscarAsistencias(jTxt.getText()); // Recargar la tabla
+    }
+ 
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tabla;
+    private javax.swing.JButton btnausente;
+    private javax.swing.JButton btnguardar;
+    private javax.swing.JButton btnpresente;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -70,41 +70,55 @@ public class AsistenciaData {
         
         return asistencias;
     }
-     public DefaultTableModel buscarAsistencia(String buscar) {
-    String[] nombresColumnas = {"ID Asistencia", "DNI Socio", "Nombre Socio", "Fecha", "Clase", "Horario"};
-    DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
-    String sql = "SELECT a.id_asistencia, s.DNI, s.Nombre, s.Apellido, a.fecha_asistencia, c.nombre AS nombre_clase, c.horario " +
-                 "FROM asistencia a " +
-                 "JOIN socios s ON a.id_socio = s.ID_Socio " +
-                 "JOIN clases c ON a.id_clase = c.id_clase " +
-                 "WHERE s.DNI LIKE ? " +
-                 "OR s.Nombre LIKE ? " +
-                 "OR s.Apellido LIKE ? " +
-                 "OR a.id_asistencia LIKE ? " +
-                 "ORDER BY a.fecha_asistencia DESC";
+   public DefaultTableModel buscarAsistencia(String buscar) {
+        String[] nombresColumnas = {"ID Asistencia", "DNI Socio", "Nombre Socio", "Fecha", "Clase", "Horario", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
+        String sql = "SELECT a.id_asistencia, s.DNI, s.Nombre, s.Apellido, a.fecha_asistencia, c.nombre AS nombre_clase, c.horario, a.estado " +
+                     "FROM asistencia a " +
+                     "JOIN socios s ON a.id_socio = s.ID_Socio " +
+                     "JOIN clases c ON a.id_clase = c.id_clase " +
+                     "WHERE s.DNI LIKE ? " +
+                     "OR s.Nombre LIKE ? " +
+                     "OR s.Apellido LIKE ? " +
+                     "OR a.id_asistencia LIKE ? " +
+                     "ORDER BY a.fecha_asistencia DESC";
 
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        String searchTerm = "%" + buscar + "%";
-        for (int i = 1; i <= 4; i++) {
-            ps.setString(i, searchTerm);
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            String searchTerm = "%" + buscar + "%";
+            for (int i = 1; i <= 4; i++) {
+                ps.setString(i, searchTerm);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] fila = new Object[7];
+                fila[0] = rs.getInt("id_asistencia");
+                fila[1] = rs.getString("DNI");
+                fila[2] = rs.getString("Nombre") + " " + rs.getString("Apellido");
+                fila[3] = rs.getDate("fecha_asistencia");
+                fila[4] = rs.getString("nombre_clase");
+                fila[5] = rs.getString("horario");
+                fila[6] = rs.getString("estado");
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar asistencias: " + e.getMessage());
         }
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Object[] fila = new Object[6];
-            fila[0] = rs.getInt("id_asistencia");
-            fila[1] = rs.getString("DNI");
-            fila[2] = rs.getString("Nombre") + " " + rs.getString("Apellido");
-            fila[3] = rs.getDate("fecha_asistencia");
-            fila[4] = rs.getString("nombre_clase");
-            fila[5] = rs.getString("horario");
-            modelo.addRow(fila);
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Error al buscar asistencias: " + e.getMessage());
+        return modelo;
     }
-    return modelo;
-}
+
+    public void actualizarEstadoAsistencia(int idAsistencia, String estado) {
+        String sql = "UPDATE asistencia SET estado = ? WHERE id_asistencia = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, estado);
+            ps.setInt(2, idAsistencia);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar el estado de asistencia: " + e.getMessage());
+        }
+    }
+
+
       public DefaultTableModel listarAsistencias(int dni) {
     String[] nombresColumnas = {"ID Asistencia", "Fecha", "Clase", "Horario"};
     DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
@@ -157,6 +171,7 @@ public class AsistenciaData {
 
     return asistencias;
 }
+   
     public void registrarAsistencia(int idSocio, Date fecha) {
         String sql = "INSERT INTO asistencia (ID_Socio, Fecha_asistencia) VALUES (?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
