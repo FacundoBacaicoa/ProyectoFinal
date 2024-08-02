@@ -160,8 +160,8 @@ public class AsistenciaData {
         while (rs.next()) {
             Asistencia asistencia = new Asistencia();
             asistencia.setId_asistencia(rs.getInt("Id_Asistencia"));
-            asistencia.setId_Socio(new Socio(rs.getInt("Id_Socio"))); // Aquí puedes ajustar según tu implementación de la clase Socio
-            asistencia.setId_Clase(new Clase(rs.getInt("Id_Clase"))); // Aquí puedes ajustar según tu implementación de la clase Clase
+            asistencia.setId_Socio(new Socio(rs.getInt("Id_Socio"))); 
+            asistencia.setId_Clase(new Clase(rs.getInt("Id_Clase"))); 
             asistencia.setFechaAsistencia(rs.getDate("Fecha_asistencia"));
             asistencias.add(asistencia);
         }

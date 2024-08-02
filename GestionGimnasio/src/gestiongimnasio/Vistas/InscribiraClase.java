@@ -120,9 +120,10 @@ public class InscribiraClase extends javax.swing.JInternalFrame {
     }
 
     for (Socio s : socios) {
-        if (s.getNombre().equals(socioSeleccionado)) {
-            socio = s;
-            break;
+      if ((s.getNombre() + " " + s.getApellido()).equals(socioSeleccionado)) {
+                socio = s;
+                break;
+            
         }
     }
 
@@ -158,9 +159,9 @@ public class InscribiraClase extends javax.swing.JInternalFrame {
     // Llenar JComboBox de socios
     jComboBox2.removeAllItems();
     jComboBox2.addItem("-Seleccionar Socio-");
-    for (Socio socio : socios) {
-        jComboBox2.addItem(socio.getNombre());
-    }
+for (Socio socio : socios) {
+    jComboBox2.addItem(socio.getNombre() + " " + socio.getApellido());
+}
 }
 
 
