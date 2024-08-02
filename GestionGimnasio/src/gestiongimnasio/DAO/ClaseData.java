@@ -73,29 +73,34 @@ public class ClaseData {
 
     }
 
-    public void listarClases() {
-        String sql = "SELECT ID_Clase, Nombre, ID_Entrenador, Horario, Capacidad, Estado FROM clases";
-        ArrayList<Clase> clases = new ArrayList<>();
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+  public List<Clase> listarClases() {
+    String sql = "SELECT c.ID_Clase, c.Nombre, c.ID_Entrenador, e.Nombre AS NombreEntrenador, c.Horario, c.Capacidad, c.Estado FROM clases c LEFT JOIN entrenadores e ON c.ID_Entrenador = e.ID_Entrenador";
+    ArrayList<Clase> clases = new ArrayList<>();
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Clase clase = new Clase();
+            clase.setId_clase(rs.getInt("ID_Clase"));
+            clase.setNombre(rs.getString("Nombre"));
 
-            while (rs.next()) {
-                Clase clase = new Clase();
-                clase.setId_clase(rs.getInt("id_clase"));
-                clase.setNombre(rs.getString("nombre"));
-                //Falta IdEntrenador
-                //Falta Horario
-                clase.setCapacidad(rs.getInt("capacidad"));
-                clase.setEstado(rs.getBoolean("estado"));
+            // Crear y asignar el entrenador
+            Entrenador entrenador = new Entrenador();
+            entrenador.setId_entrenadores(rs.getInt("ID_Entrenador"));
+            entrenador.setNombre(rs.getString("NombreEntrenador"));
+            clase.setIdEntrenador(entrenador);
 
-            }
-            ps.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al acceder a la tabla clases");
+            clase.setHorario(rs.getString("Horario"));
+            clase.setCapacidad(rs.getInt("Capacidad"));
+            clase.setEstado(rs.getBoolean("Estado"));
+            clases.add(clase);
         }
-
+        ps.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al acceder a la tabla clases");
     }
+    return clases;
+}
 
     public List<Clase> buscarClases(String nombre, String entrenador, String horario) {
         List<Clase> clases = new ArrayList<>();

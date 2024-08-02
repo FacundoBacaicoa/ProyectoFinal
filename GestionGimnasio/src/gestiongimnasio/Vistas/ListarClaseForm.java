@@ -123,25 +123,24 @@ public class ListarClaseForm extends javax.swing.JInternalFrame {
     ClaseData claseData = new ClaseData();
     
     // Obtener la lista de todas las clases
-    List<Clase> clases = claseData.listarTodasLasClases();
+      List<Clase> clases = claseData.listarClases();
     
     // Obtener el modelo de la tabla
-    DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+      DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
     
     // Limpiar el modelo antes de cargar los datos
-    modelo.setRowCount(0);
+      modelo.setRowCount(0);
     
     // Recorrer la lista de clases y agregar cada una al modelo de la tabla
-    for (Clase clase : clases) {
-        String entrenadorNombre = "N/A";
+     for (Clase clase : clases) {
+        String nombreEntrenador = "";
         if (clase.getIdEntrenador() != null) {
-            entrenadorNombre = clase.getIdEntrenador().getNombre() + " " + clase.getIdEntrenador().getApellido();
+            nombreEntrenador = clase.getIdEntrenador().getNombre();
         }
-
         modelo.addRow(new Object[]{
             clase.getId_clase(),
             clase.getNombre(),
-            entrenadorNombre,
+            nombreEntrenador,
             clase.getHorario(),
             clase.getCapacidad(),
             clase.isEstado() ? "Activo" : "Inactivo"
