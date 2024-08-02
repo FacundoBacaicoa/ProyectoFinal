@@ -9,9 +9,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.math.BigDecimal;
 import java.util.Date;
-
+import java.util.HashMap;
 
 import java.util.List;
+import java.util.Map;
 import javax.swing.event.TableModelEvent;
 
 /**
@@ -47,8 +48,9 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 }
             }
         });
-        
+
     }
+
     private void actualizarEstadoMembresia(int idMembresia, boolean nuevoEstado) {
         try {
             Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
@@ -60,20 +62,16 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Error al actualizar el estado de la membresía: " + e.getMessage());
         }
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
@@ -92,31 +90,19 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Nombre y Apellido del socio");
-
-        jTextField2.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField2.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextField2.setSelectedTextColor(new java.awt.Color(0, 0, 204));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
         jTable1.setBackground(new java.awt.Color(102, 102, 102));
         jTable1.setForeground(new java.awt.Color(153, 153, 153));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID Membresía", "ID Socio", "Cantidad de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo"
+                "ID Membresía", "ID Socio", "Cantidad de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo","Estado"
             }
         ){
             Class[] types = new Class [] {
                 Integer.class, Integer.class, Integer.class, java.sql.Date.class, java.sql.Date.class, BigDecimal.class, Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -142,15 +128,6 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
 
     jLabel3.setForeground(new java.awt.Color(255, 255, 255));
     jLabel3.setText("Nueva Fecha de finalizacion");
-
-    jButton1.setBackground(new java.awt.Color(51, 51, 51));
-    jButton1.setForeground(new java.awt.Color(255, 255, 255));
-    jButton1.setText("Actualizar");
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton1ActionPerformed(evt);
-        }
-    });
 
     jButton3.setBackground(new java.awt.Color(51, 51, 51));
     jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -178,44 +155,32 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addContainerGap(209, Short.MAX_VALUE)
+            .addComponent(jLabel2)
+            .addGap(250, 305, Short.MAX_VALUE))
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addComponent(jLabel3)
+            .addGap(78, 78, 78)
+            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         .addGroup(layout.createSequentialGroup()
+            .addContainerGap(41, Short.MAX_VALUE)
+            .addComponent(jButton2)
+            .addGap(37, 37, 37)
+            .addComponent(jButton4)
+            .addGap(39, 39, 39)
+            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(236, 236, 236))
+        .addGroup(layout.createSequentialGroup()
+            .addGap(47, 47, 47)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(47, 47, 47)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(112, 112, 112)
-                            .addComponent(jLabel1))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel3)
-                            .addGap(8, 8, 8)))
-                    .addGap(33, 33, 33)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(20, 20, 20)))
             .addContainerGap())
-        .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(27, 27, 27)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton2)
-                            .addGap(37, 37, 37)
-                            .addComponent(jButton4)
-                            .addGap(52, 52, 52)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(52, 52, 52)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(222, 222, 222)
-                    .addComponent(jLabel2)))
-            .addGap(0, 0, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,19 +189,14 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jLabel2)
-            .addGap(8, 8, 8)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel1)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel3)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(12, 12, 12)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+            .addGap(18, 18, 18)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel3))
+            .addGap(31, 31, 31)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton1)
                 .addComponent(jButton2)
                 .addComponent(jButton3)
                 .addComponent(jButton4))
@@ -246,188 +206,170 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancelarMembresia(int idMembresia) {
         try {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
             Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
-
             if (membresia != null) {
-                int confirm = JOptionPane.showConfirmDialog(this, 
-                    "¿Está seguro de que desea cancelar esta membresía?", 
-                    "Confirmar cancelación", 
-                    JOptionPane.YES_NO_OPTION);
-                
-                if (confirm == JOptionPane.YES_OPTION) {
-                    membresiaData.cancelarMembresia(membresia);
-                    
-                    // Actualizar la tabla
-                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                    model.setValueAt(false, selectedRow, 6); // Suponiendo que la columna de estado es la 7 (índice 6)
-                    
-                    JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
-                }
+                // Actualizar el estado a inactivo y borrar fechas
+                membresia.setEstado(false);
+                membresia.setFechaInicio(null);
+                membresia.setFechaFin(null);
+                membresiaData.actualizarMembresia(membresia);
+
+                // Actualizar la tabla
+                int selectedRow = jTable1.getSelectedRow();
+                jTable1.setValueAt(null, selectedRow, 3); // Columna de fecha de inicio
+                jTable1.setValueAt(null, selectedRow, 4); // Columna de fecha de fin
+                jTable1.setValueAt(false, selectedRow, 6); // Columna de estado
+
+                JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cancelar la membresía: " + e.getMessage());
         }
-    } catch (Exception e) {
     }
-    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        buscarMembresias();
-
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
-            Date nuevaFechaFin = jDateChooser1.getDate();
-            if (nuevaFechaFin != null) {
+            int selectedRow = jTable1.getSelectedRow();
+            if (selectedRow != -1) {
+                int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
                 Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
+
                 if (membresia != null) {
-                    membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
-                    membresiaData.actualizarMembresia(membresia);
+                    int confirm = JOptionPane.showConfirmDialog(this,
+                            "¿Está seguro de que desea cancelar esta membresía?",
+                            "Confirmar cancelación",
+                            JOptionPane.YES_NO_OPTION);
 
-                    // Actualizar la tabla
-                    jTable1.setValueAt(new java.sql.Date(nuevaFechaFin.getTime()), selectedRow, 4);
-                    JOptionPane.showMessageDialog(this, "Fecha de finalización actualizada exitosamente.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione una nueva fecha de finalización.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar la fecha de finalización: " + e.getMessage());
-    }
-    }//GEN-LAST:event_jButton1ActionPerformed
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        membresiaData.cancelarMembresia(membresia);
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-     try {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
-            Date nuevaFechaFin = jDateChooser1.getDate();
-            if (nuevaFechaFin != null) {
-                Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
-                if (membresia != null) {
-                    // Verificar si la membresía está inactiva
-                    if (membresia.getFechaFin().before(new java.util.Date())) {
-                        // Establecer la nueva fecha de fin
-                        membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
-                        // Establecer la fecha de inicio como la fecha actual
-                        membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
-                        membresiaData.actualizarMembresia(membresia);
                         // Actualizar la tabla
-                        jTable1.setValueAt(membresia.getFechaInicio(), selectedRow, 3); // Suponiendo que la columna 3 es la fecha de inicio
-                        jTable1.setValueAt(membresia.getFechaFin(), selectedRow, 4); // Suponiendo que la columna 4 es la fecha de fin
-                        JOptionPane.showMessageDialog(this, "Membresía reactivada exitosamente.");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Esta membresía aún está activa.");
+                        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                        model.setValueAt(false, selectedRow, 6); // Suponiendo que la columna de estado es la 7 (índice 6)
+
+                        JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione una nueva fecha de finalización.");
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
+        } catch (Exception e) {
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al reactivar la membresía: " + e.getMessage());
-    }   
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void reactivarMembresia(int idMembresia, Date nuevaFechaFin) {
+        try {
+            Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
+            if (membresia != null) {
+                    // Verificar si el socio ya tiene una membresía activa
+                List<Membresia> membresias = membresiaData.obtenerMembresiasPorSocio(membresia.getSocio().getId_Socio());
+                for (Membresia m : membresias) {
+                    if (m.isEstado() && m.getId_membresia() != idMembresia) {
+                        JOptionPane.showMessageDialog(this, "El socio ya tiene una membresía activa. No se puede activar otra membresía.");
+                        return;
+                    }
+                }
+                if (!membresia.isEstado()) {
+                    // Establecer nueva fecha de inicio y fin
+                    membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
+                    membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
+                    membresia.setEstado(true);
+                    membresiaData.actualizarMembresia(membresia);
+
+                    // Actualizar la tabla
+                    int selectedRow = jTable1.getSelectedRow();
+                    jTable1.setValueAt(membresia.getFechaInicio(), selectedRow, 3); // Columna de fecha de inicio
+                    jTable1.setValueAt(membresia.getFechaFin(), selectedRow, 4); // Columna de fecha de fin
+                    jTable1.setValueAt(true, selectedRow, 6); // Columna de estado
+
+                    JOptionPane.showMessageDialog(this, "Membresía reactivada exitosamente.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Esta membresía aún está activa.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al reactivar la membresía: " + e.getMessage());
+        }
+    }
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            int selectedRow = jTable1.getSelectedRow();
+            if (selectedRow != -1) {
+                int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
+                Date nuevaFechaFin = jDateChooser1.getDate();
+                if (nuevaFechaFin != null) {
+                    reactivarMembresia(idMembresia, nuevaFechaFin);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Por favor, seleccione una nueva fecha de finalización.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al reactivar la membresía: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-     private void buscarMembresias() {
-        try {
-            String nombreCompleto = jTextField2.getText().trim();
-            String[] partesNombre = nombreCompleto.split(" ");
-
-            if (partesNombre.length < 2) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese tanto el nombre como el apellido del socio.");
-                return;
-            }
-
-            String nombreSocio = partesNombre[0];
-            String apellidoSocio = partesNombre[1];
-
-            Socio socio = socioData.buscarSocioPorNombreApellido(nombreSocio, apellidoSocio);
-
-            if (socio == null) {
-                JOptionPane.showMessageDialog(this, "El nombre y apellido del socio no existen. Por favor, ingrese un nombre y apellido válidos.");
-                return;
-            }
-
-            List<Membresia> membresias = membresiaData.obtenerMembresiasPorSocio(socio.getId_Socio());
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
-
-            for (Membresia membresia : membresias) {
-                model.addRow(new Object[]{
-                    membresia.getId_membresia(),
-                    membresia.getSocio().getId_Socio(),
-                    membresia.getCantidadPases(),
-                    membresia.getFechaInicio(),
-                    membresia.getFechaFin(),
-                    membresia.getCosto(),
-                    membresia.isEstado()
-                });
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al buscar las membresías: " + e.getMessage());
-        }
-    }
     private void cargarDatos() {
-        try {
-            List<Membresia> membresias = membresiaData.obtenerMembresias();
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
-
-            for (Membresia membresia : membresias) {
-                model.addRow(new Object[]{
-                    membresia.getId_membresia(),
-                    membresia.getSocio().getId_Socio(),
-                    membresia.getCantidadPases(),
-                    membresia.getFechaInicio(),
-                    membresia.getFechaFin(),
-                    membresia.getCosto(),
-                    membresia.isEstado()
-                });
+    try {
+        List<Membresia> membresias = membresiaData.obtenerMembresias();
+        Map<Integer, Membresia> miembrosUnicos = new HashMap<>();
+        
+        for (Membresia membresia : membresias) {
+            int idSocio = membresia.getSocio().getId_Socio();
+            Membresia membresiaExistente = miembrosUnicos.get(idSocio);
+            if (membresiaExistente == null || membresia.getFechaFin().after(membresiaExistente.getFechaFin())) {
+                // Guardar la membresía si es la primera encontrada o si tiene una fecha de fin más reciente
+                miembrosUnicos.put(idSocio, membresia);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + e.getMessage());
         }
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
+
+        for (Membresia membresia : miembrosUnicos.values()) {
+            Socio socio = socioData.obtenerSocioPorId(membresia.getSocio().getId_Socio());
+            String nombreCompleto = socio.getNombre() + " " + socio.getApellido();
+            Boolean estado = membresia.isEstado();
+
+            model.addRow(new Object[]{
+                membresia.getId_membresia(),
+                nombreCompleto,
+                membresia.getCantidadPases(),
+                membresia.getFechaInicio(),
+                membresia.getFechaFin(),
+                membresia.getCosto(),
+                estado
+            });
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + e.getMessage());
     }
-    
+}
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,6 +12,7 @@ public class Asistencia {
     private Socio Socio;
     private Clase Clase;
     private Date fechaAsistencia;
+    
 
     public Asistencia() {
     }

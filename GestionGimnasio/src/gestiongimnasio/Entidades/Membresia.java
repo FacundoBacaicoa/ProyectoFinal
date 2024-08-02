@@ -1,4 +1,3 @@
-
 package gestiongimnasio.Entidades;
 
 import java.math.BigDecimal;
@@ -9,6 +8,7 @@ import java.util.Date;
  * @author facun
  */
 public class Membresia {
+
     private int id_membresia;
     private Socio socio;
     private int cantidadPases;
@@ -16,11 +16,12 @@ public class Membresia {
     private Date fechaFin;
     private BigDecimal costo;
     private boolean estado;
+    private Clase clase;
 
     public Membresia() {
     }
 
-    public Membresia(int id,Socio socio, int cantidadPases, Date fechaInicio, Date fechaFin, BigDecimal costo, boolean estado) {
+    public Membresia(int id, Socio socio, int cantidadPases, Date fechaInicio, Date fechaFin, BigDecimal costo, boolean estado, Clase clase) {
         this.id_membresia = id;
         this.socio = socio;
         this.cantidadPases = cantidadPases;
@@ -28,6 +29,7 @@ public class Membresia {
         this.fechaFin = fechaFin;
         this.costo = costo;
         this.estado = estado;
+        this.clase = clase;
     }
 
     public int getId() {
@@ -53,8 +55,6 @@ public class Membresia {
     public void setSocio(Socio socio) {
         this.socio = socio;
     }
-
-
 
     public int getCantidadPases() {
         return cantidadPases;
@@ -94,6 +94,14 @@ public class Membresia {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public Clase getClase() {
+        return clase;
+    }
+
+    public void setClase(Clase clase) {
+        this.clase = clase;
     }
 
     @Override

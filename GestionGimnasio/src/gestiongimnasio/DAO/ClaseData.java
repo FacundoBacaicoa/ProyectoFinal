@@ -19,6 +19,27 @@ public class ClaseData {
     public ClaseData() {
         con = (Connection) Conexion.getConexion();
     }
+    public Clase obtenerClasePorId(int id) {
+    Clase clase = null;
+    String sql = "SELECT * FROM clases WHERE ID_Clase = ?";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            clase = new Clase();
+            clase.setId_clase(rs.getInt("ID_Clase"));
+            clase.setNombre(rs.getString("Nombre"));
+            // Completa con los demás campos de la clase
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al obtener la clase: " + e.getMessage());
+    }
+    
+    return clase;
+}
+
 
     public void guardarClase(Clase clase) {
         String sqlCheck = "SELECT COUNT(*) FROM clases WHERE Horario = ?";

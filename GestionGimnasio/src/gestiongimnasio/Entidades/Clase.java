@@ -15,7 +15,7 @@ public class Clase {
 
     public Clase() {
     }
-
+    
     public Clase(int id_clase, String nombre,Entrenador id_entrenador, String horario, int capacidad, boolean estado) {
         this.id_clase = id_clase;
         this.nombre = nombre;
@@ -31,6 +31,9 @@ public class Clase {
 
     public void setIdEntrenador(Entrenador id_entrenador) {
         this.id_entrenador = id_entrenador;
+    }
+    public Clase(int id_clase) {
+        this.id_clase = id_clase;
     }
 
     public int getId_clase() {

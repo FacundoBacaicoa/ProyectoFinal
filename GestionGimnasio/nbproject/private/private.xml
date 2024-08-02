@@ -3,21 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Entidades/Clase.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/ListarClaseForm.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Entidades/Socio.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/MembresiaData.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/RegistrarMembresiaForm.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/SocioDAO.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/VistasMain.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/ClaseData.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/HistorialAsistencias.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/GestionarMembresiaForm.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/EntrenadorData.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/ListaSocios.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Entidades/Asistencia.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/AsistenciaData.java</file>
-            <file>file:/C:/Users/facun/OneDrive/Documentos/GitHub/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/HistoriadeMembresiasForm.java</file>
+            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/VistasMain.java</file>
+            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/AsistenciaData.java</file>
+            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/DAO/MembresiaData.java</file>
+            <file>file:/C:/Users/jorge/Desktop/proyectofinallaboratorio/ProyectoFinal/GestionGimnasio/src/gestiongimnasio/Vistas/Concurrencia.java</file>
         </group>
     </open-files>
 </project-private>

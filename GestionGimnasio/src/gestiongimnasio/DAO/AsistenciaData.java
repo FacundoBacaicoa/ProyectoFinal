@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package gestiongimnasio.DAO;
 
 import gestiongimnasio.Entidades.Asistencia;
@@ -14,7 +11,7 @@ import org.mariadb.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -126,5 +123,51 @@ public class AsistenciaData {
     
     return modelo;
 }
+   public void registrarAsistencia(int idSocio, int idClase, Date fecha) {
+    String sql = "INSERT INTO asistencia (ID_Socio, ID_Clase, Fecha_asistencia) VALUES (?, ?, ?)";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        ps.setInt(2, idClase);
+        ps.setDate(3, fecha);
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Asistencia registrada exitosamente.");
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al registrar asistencia: " + e.getMessage());
+    }
+}
+   
+    public List<Asistencia> obtenerAsistenciasPorIdSocio(int idSocio) {
+    List<Asistencia> asistencias = new ArrayList<>();
+    String sql = "SELECT * FROM asistencia WHERE Id_Socio = ?";
+
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Asistencia asistencia = new Asistencia();
+            asistencia.setId_asistencia(rs.getInt("Id_Asistencia"));
+            asistencia.setId_Socio(new Socio(rs.getInt("Id_Socio"))); // Aquí puedes ajustar según tu implementación de la clase Socio
+            asistencia.setId_Clase(new Clase(rs.getInt("Id_Clase"))); // Aquí puedes ajustar según tu implementación de la clase Clase
+            asistencia.setFechaAsistencia(rs.getDate("Fecha_asistencia"));
+            asistencias.add(asistencia);
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener las asistencias del socio: " + ex.getMessage());
+    }
+
+    return asistencias;
+}
+    public void registrarAsistencia(int idSocio, Date fecha) {
+        String sql = "INSERT INTO asistencia (ID_Socio, Fecha_asistencia) VALUES (?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idSocio);
+            ps.setDate(2, fecha);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Asistencia registrada exitosamente.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al registrar asistencia: " + e.getMessage());
+        }
+    }
+
 }
 

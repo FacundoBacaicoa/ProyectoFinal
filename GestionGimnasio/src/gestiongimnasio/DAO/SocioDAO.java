@@ -219,5 +219,33 @@ public Socio buscarSocioPorDni(int id) {
     }
     return socio;
 }
+public Socio obtenerSocioPorId(int id) {
+    String sql = "SELECT * FROM socios WHERE ID_Socio = ?";
+    Socio socio = null;
+
+    try (Connection conn = Conexion.getConexion(); 
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                socio = new Socio();
+                socio.setId_Socio(rs.getInt("ID_Socio"));
+                socio.setDni(rs.getInt("DNI"));
+                socio.setNombre(rs.getString("Nombre"));
+                socio.setApellido(rs.getString("Apellido"));
+                socio.setEdad(rs.getInt("Edad"));
+                socio.setCorreo(rs.getString("Correo"));
+                socio.setTelefono(rs.getString("Teléfono"));
+                socio.setEstado(rs.getBoolean("Estado"));
+            }
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al buscar socio por ID: " + ex.getMessage());
+    }
+
+    return socio;
+}
+
+
 
 }

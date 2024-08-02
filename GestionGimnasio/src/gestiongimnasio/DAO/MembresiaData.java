@@ -35,12 +35,9 @@ public class MembresiaData {
         }
     }
 
- 
-       
-   public void registrarMembresia(Membresia membresia) {
-         // Verificar si el socio ya tiene una membresía activa
-  
-    
+    public void registrarMembresia(Membresia membresia) {
+        // Verificar si el socio ya tiene una membresía activa
+
         // Verificar que la fecha de fin no sea anterior a la fecha de inicio
         if (membresia.getFechaFin().before(membresia.getFechaInicio())) {
             JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser anterior a la fecha de inicio.");
@@ -100,21 +97,20 @@ public class MembresiaData {
     }
 
     public void cancelarMembresia(Membresia membresia) {
-    String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
-    try (Connection con = Conexion.getConexion();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, membresia.getId_membresia());
-        int filasActualizadas = ps.executeUpdate();
-        if (filasActualizadas > 0) {
-            membresia.setEstado(false);
-            System.out.println("Membresía cancelada exitosamente.");
-        } else {
-            System.out.println("No se pudo cancelar la membresía.");
+        String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
+        try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, membresia.getId_membresia());
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas > 0) {
+                membresia.setEstado(false);
+                System.out.println("Membresía cancelada exitosamente.");
+            } else {
+                System.out.println("No se pudo cancelar la membresía.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cancelar la membresía: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al cancelar la membresía: " + e.getMessage());
     }
-}
 
     public List<Membresia> obtenerMembresiasPorSocio(int idSocio) {
         List<Membresia> membresias = new ArrayList<>();
@@ -190,34 +186,63 @@ public class MembresiaData {
         return membresias;
     }
 
-    public void actualizarMembresia(Membresia membresia) {
-        String sql = "UPDATE membresias SET Fecha_fin = ? WHERE ID_Membresia = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setDate(1, new java.sql.Date(membresia.getFechaFin().getTime()));
-            ps.setInt(2, membresia.getId_membresia());
+    public void actualizarMembresia(Membresia membresia) throws SQLException {
+        String sql = "UPDATE membresias SET CantidadPases = ?, fecha_inicio = ?, fecha_fin = ?, costo = ?, estado = ? WHERE id_membresia = ?";
+
+        try (Connection conn = Conexion.getConexion(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, membresia.getCantidadPases());
+            ps.setDate(2, new java.sql.Date(membresia.getFechaInicio().getTime()));
+            ps.setDate(3, new java.sql.Date(membresia.getFechaFin().getTime()));
+            ps.setBigDecimal(4, membresia.getCosto());
+            ps.setBoolean(5, membresia.isEstado());
+            ps.setInt(6, membresia.getId_membresia());
+
             int filasActualizadas = ps.executeUpdate();
-            if (filasActualizadas > 0) {
-                System.out.println("Membresía actualizada exitosamente.");
-            } else {
-                System.out.println("No se pudo actualizar la membresía.");
+            if (filasActualizadas == 0) {
+                throw new SQLException("No se pudo actualizar la membresía, no se encontró la ID.");
             }
         } catch (SQLException e) {
-            System.out.println("Error al actualizar la membresía: " + e.getMessage());
+            throw new SQLException("Error al actualizar la membresía: " + e.getMessage());
         }
     }
-      public boolean tieneMembresiaActiva(int socioId) {
-    String sql = "SELECT 1 FROM membresias WHERE Id_Socio = ? AND Estado = true";
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, socioId);
+
+    public boolean tieneMembresiaActiva(int socioId) {
+        String sql = "SELECT 1 FROM membresias WHERE Id_Socio = ? AND Estado = true";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, socioId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Membresia obtenerMembresiaActivaPorNombre(String nombreCompleto) {
+    Membresia membresia = null;
+    String sql = "SELECT m.* FROM membresias m JOIN socios s ON m.Id_Socio = s.ID_Socio WHERE CONCAT(s.Nombre, ' ', s.Apellido) = ? AND m.Estado = true";
+    try (Connection conexion = Conexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setString(1, nombreCompleto);
         try (ResultSet rs = ps.executeQuery()) {
-            return rs.next();
+            if (rs.next()) {
+                membresia = new Membresia();
+                membresia.setId_membresia(rs.getInt("ID_Membresia"));
+                Socio socio = new Socio();
+                socio.setId_Socio(rs.getInt("Id_Socio"));
+                membresia.setSocio(socio);
+                membresia.setCantidadPases(rs.getInt("CantidadPases"));
+                membresia.setFechaInicio(rs.getDate("Fecha_inicio"));
+                membresia.setFechaFin(rs.getDate("Fecha_fin"));
+                membresia.setCosto(rs.getBigDecimal("Costo"));
+                membresia.setEstado(rs.getBoolean("Estado"));
+            }
         }
     } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        JOptionPane.showMessageDialog(null, "Error al obtener la membresía activa: " + e.getMessage());
     }
+    return membresia;
 }
 
-        }
-       
 
+}

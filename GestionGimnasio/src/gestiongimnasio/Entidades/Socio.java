@@ -23,7 +23,9 @@ public class Socio {
         this.telefono = telefono;
         this.estado = estado;
     }
-
+    public Socio(int id) {
+        this.Id_socio = id;
+    }
     public int getId_Socio() {
         return Id_socio;
     }
