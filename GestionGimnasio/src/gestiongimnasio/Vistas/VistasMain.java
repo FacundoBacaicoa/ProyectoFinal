@@ -53,7 +53,6 @@ public class VistasMain extends javax.swing.JFrame {
         jmListaSocios = new javax.swing.JMenuItem();
         JmAsistencias = new javax.swing.JMenu();
         JmAsist = new javax.swing.JMenuItem();
-        JmAsist1 = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -199,14 +198,6 @@ public class VistasMain extends javax.swing.JFrame {
         });
         JmAsistencias.add(JmAsist);
 
-        JmAsist1.setText("Concurrencia");
-        JmAsist1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmAsist1ActionPerformed(evt);
-            }
-        });
-        JmAsistencias.add(JmAsist1);
-
         jMenuBar1.add(JmAsistencias);
 
         setJMenuBar(jMenuBar1);
@@ -328,16 +319,6 @@ public class VistasMain extends javax.swing.JFrame {
  
     }//GEN-LAST:event_JmAsistActionPerformed
 
-    private void JmAsist1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAsist1ActionPerformed
-        // Limpiar el escritorio y añadir la vista de Concurrencia
-    escritorio.removeAll();
-    escritorio.repaint();
-    Concurrencia concurrenciaForm = new Concurrencia();
-    concurrenciaForm.setVisible(true);
-    concurrenciaForm.getContentPane().setBackground(new Color(56, 56, 56)); // Opcional: Cambia el color de fondo
-    escritorio.add(concurrenciaForm);
-    }//GEN-LAST:event_JmAsist1ActionPerformed
-
     private void jmRegMembresiasActionPerformed(java.awt.event.ActionEvent evt) {
         escritorio.removeAll();
         escritorio.repaint();
@@ -384,7 +365,6 @@ public class VistasMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmAsist;
-    private javax.swing.JMenuItem JmAsist1;
     private javax.swing.JMenu JmAsistencias;
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;

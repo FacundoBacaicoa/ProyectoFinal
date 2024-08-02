@@ -172,17 +172,5 @@ public class AsistenciaData {
     return asistencias;
 }
    
-    public void registrarAsistencia(int idSocio, Date fecha) {
-        String sql = "INSERT INTO asistencia (ID_Socio, Fecha_asistencia) VALUES (?, ?)";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idSocio);
-            ps.setDate(2, fecha);
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Asistencia registrada exitosamente.");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al registrar asistencia: " + e.getMessage());
-        }
-    }
-
 }
 
