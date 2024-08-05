@@ -1,8 +1,10 @@
 package gestiongimnasio.Vistas;
 
 import gestiongimnasio.DAO.ClaseData;
+import gestiongimnasio.DAO.MembresiaData;
 import gestiongimnasio.DAO.SocioDAO;
 import gestiongimnasio.Entidades.Clase;
+import gestiongimnasio.Entidades.Membresia;
 import gestiongimnasio.Entidades.Socio;
 
 import javax.swing.*;
@@ -129,6 +131,14 @@ public class InscribiraClase extends javax.swing.JInternalFrame {
 
     if (clase == null || socio == null) {
         JOptionPane.showMessageDialog(this, "Clase o socio no encontrados.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+     // Verificar si el socio tiene una membresía activa
+    MembresiaData membresiaData = new MembresiaData();
+    boolean tieneActiva = membresiaData.tieneMembresiaActiva(socio.getId_Socio());
+
+    if (!tieneActiva) {
+        JOptionPane.showMessageDialog(this, "La membresía del socio está cancelada o no existe. No se puede inscribir en la clase.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 

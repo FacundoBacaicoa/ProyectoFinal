@@ -213,9 +213,8 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 membresia.setFechaFin(null);
                 membresiaData.actualizarMembresia(membresia);
 
-                
                 int selectedRow = jTable1.getSelectedRow();
-                jTable1.setValueAt(null, selectedRow, 3); 
+                jTable1.setValueAt(null, selectedRow, 3);
                 jTable1.setValueAt(false, selectedRow, 6);
 
                 JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
@@ -243,7 +242,7 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                     if (confirm == JOptionPane.YES_OPTION) {
                         membresiaData.cancelarMembresia(membresia);
                         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                        model.setValueAt(false, selectedRow, 6); 
+                        model.setValueAt(false, selectedRow, 6);
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
@@ -252,7 +251,7 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
             }
         } catch (Exception e) {
-                       JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
+            JOptionPane.showMessageDialog(this, "Membresía cancelada exitosamente.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -264,7 +263,7 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
         try {
             Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
             if (membresia != null) {
-                    // Verificar si el socio ya tiene una membresía activa
+                // Verificar si el socio ya tiene una membresía activa
                 List<Membresia> membresias = membresiaData.obtenerMembresiasPorSocio(membresia.getSocio().getId_Socio());
                 for (Membresia m : membresias) {
                     if (m.isEstado() && m.getId_membresia() != idMembresia) {
@@ -273,6 +272,12 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                     }
                 }
                 if (!membresia.isEstado()) {
+                    // Verificar que la nueva fecha de fin sea posterior a la fecha actual
+                    Date fechaActual = new Date();
+                    if (nuevaFechaFin.before(fechaActual)) {
+                        JOptionPane.showMessageDialog(this, "La nueva fecha de finalización debe ser posterior a la fecha actual.");
+                        return;
+                    }
                     // Establecer nueva fecha de inicio y fin
                     membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
                     membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
@@ -316,42 +321,41 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void cargarDatos() {
-    try {
-        List<Membresia> membresias = membresiaData.obtenerMembresias();
-        Map<Integer, Membresia> miembrosUnicos = new HashMap<>();
-        
-        for (Membresia membresia : membresias) {
-            int idSocio = membresia.getSocio().getId_Socio();
-            Membresia membresiaExistente = miembrosUnicos.get(idSocio);
-            if (membresiaExistente == null || membresia.getFechaFin().after(membresiaExistente.getFechaFin())) {
-                // Guardar la membresía si es la primera encontrada o si tiene una fecha de fin más reciente
-                miembrosUnicos.put(idSocio, membresia);
+        try {
+            List<Membresia> membresias = membresiaData.obtenerMembresias();
+            Map<Integer, Membresia> miembrosUnicos = new HashMap<>();
+
+            for (Membresia membresia : membresias) {
+                int idSocio = membresia.getSocio().getId_Socio();
+                Membresia membresiaExistente = miembrosUnicos.get(idSocio);
+                if (membresiaExistente == null || membresia.getFechaFin().after(membresiaExistente.getFechaFin())) {
+                    // Guardar la membresía si es la primera encontrada o si tiene una fecha de fin más reciente
+                    miembrosUnicos.put(idSocio, membresia);
+                }
             }
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
+
+            for (Membresia membresia : miembrosUnicos.values()) {
+                Socio socio = socioData.obtenerSocioPorId(membresia.getSocio().getId_Socio());
+                String nombreCompleto = socio.getNombre() + " " + socio.getApellido();
+                Boolean estado = membresia.isEstado();
+
+                model.addRow(new Object[]{
+                    membresia.getId_membresia(),
+                    nombreCompleto,
+                    membresia.getCantidadPases(),
+                    membresia.getFechaInicio(),
+                    membresia.getFechaFin(),
+                    membresia.getCosto(),
+                    estado
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + e.getMessage());
         }
-
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
-
-        for (Membresia membresia : miembrosUnicos.values()) {
-            Socio socio = socioData.obtenerSocioPorId(membresia.getSocio().getId_Socio());
-            String nombreCompleto = socio.getNombre() + " " + socio.getApellido();
-            Boolean estado = membresia.isEstado();
-
-            model.addRow(new Object[]{
-                membresia.getId_membresia(),
-                nombreCompleto,
-                membresia.getCantidadPases(),
-                membresia.getFechaInicio(),
-                membresia.getFechaFin(),
-                membresia.getCosto(),
-                estado
-            });
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + e.getMessage());
     }
-}
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
