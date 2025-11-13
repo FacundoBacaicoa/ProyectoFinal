@@ -94,7 +94,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;09:00 am&quot;, &quot;10:00 am&quot;, &quot;11:00 am&quot;, &quot;12:00 pm&quot;, &quot;01:00 pm&quot;, &quot;02:00 pm&quot;, &quot;03:00 pm&quot;, &quot;04:00 pm&quot;, &quot;05:00 pm&quot;, &quot;06:00 pm&quot;, &quot;07:00 pm&quot;, &quot;08:00 pm&quot;, &quot;09:00 pm&quot;, &quot;10:00 pm&quot;})" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;09:00 AM&quot;, &quot;10:00 AM&quot;, &quot;11:00 AM&quot;, &quot;12:00 pm&quot;, &quot;01:00 pm&quot;, &quot;02:00 pm&quot;, &quot;03:00 pm&quot;, &quot;04:00 pm&quot;, &quot;05:00 pm&quot;, &quot;06:00 pm&quot;, &quot;07:00 pm&quot;, &quot;08:00 pm&quot;, &quot;09:00 pm&quot;, &quot;10:00 pm&quot;})" type="code"/>
         </Property>
       </Properties>
       <Events>

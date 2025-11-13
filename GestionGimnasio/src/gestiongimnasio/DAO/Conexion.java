@@ -18,24 +18,40 @@ public class Conexion {
     private Conexion() {
     }
 
-    public static Connection getConexion() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                Class.forName("org.mariadb.jdbc.Driver");
-                connection = DriverManager.getConnection(URL + DB, USUARIO, PASSWORD);
-                LOGGER.info("Conexión establecida exitosamente.");
-            } else if (!connection.isValid(5)) {
-                connection.close();
-                connection = DriverManager.getConnection(URL + DB, USUARIO, PASSWORD);
-                LOGGER.info("Conexión restablecida exitosamente.");
+   public static Connection getConexion() {
+    try {
+        if (connection == null || connection.isClosed()) {
+            crearNuevaConexion();
+        } else {
+            try {
+                if (!connection.isValid(2)) {
+                    LOGGER.warning("Conexión inválida, intentando reconectar...");
+                    crearNuevaConexion();
+                }
+            } catch (SQLException ex) {
+                LOGGER.warning("Error al validar la conexión, intentando reconectar...");
+                crearNuevaConexion();
             }
-        } catch (ClassNotFoundException ex) {
-            LOGGER.log(Level.SEVERE, "Error al cargar los drivers", ex);
-            JOptionPane.showMessageDialog(null, "Error al cargar los drivers: " + ex.getMessage());
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error al conectarse a la base de datos", ex);
-            JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos: " + ex.getMessage());
         }
-        return connection;
+    } catch (SQLException ex) {
+        LOGGER.log(Level.SEVERE, "Error al verificar o cerrar conexión", ex);
+        JOptionPane.showMessageDialog(null, "Error al verificar conexión: " + ex.getMessage());
     }
+
+    return connection;
+}
+
+private static void crearNuevaConexion() {
+    try {
+        Class.forName("org.mariadb.jdbc.Driver");
+        connection = DriverManager.getConnection(URL + DB, USUARIO, PASSWORD);
+        LOGGER.info("Conexión creada correctamente.");
+    } catch (ClassNotFoundException ex) {
+        LOGGER.log(Level.SEVERE, "No se encontró el driver JDBC", ex);
+        JOptionPane.showMessageDialog(null, "No se encontró el driver JDBC: " + ex.getMessage());
+    } catch (SQLException ex) {
+        LOGGER.log(Level.SEVERE, "Error al crear la conexión", ex);
+        JOptionPane.showMessageDialog(null, "Error al crear la conexión: " + ex.getMessage());
+    }
+}
 }

@@ -15,40 +15,108 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.event.TableModelEvent;
 
-/**
- *
- * @author Jorge
- */
 public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
 
     private MembresiaData membresiaData;
     private SocioDAO socioData;
 
-    /**
-     * Creates new form GestionarMembresiaForm
-     */
     public GestionarMembresiaForm() {
         membresiaData = new MembresiaData();
         socioData = new SocioDAO();
         initComponents();
         cargarDatos();
-        // Agregar listener para cambios en la tabla
+
         jTable1.getModel().addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE) {
                 int row = e.getFirstRow();
                 int column = e.getColumn();
 
-                if (column == 6) { // La columna de estado es la séptima (índice 6)
+                if (column == 6) { 
                     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                     boolean nuevoEstado = (boolean) model.getValueAt(row, column);
                     int idMembresia = (int) model.getValueAt(row, 0);
 
-                    // Actualizar el estado en la base de datos
+                    
                     actualizarEstadoMembresia(idMembresia, nuevoEstado);
                 }
             }
         });
 
+    }
+
+    private void verificarYEliminarMembresiasSinPases() {
+        try {
+            List<Membresia> membresias = membresiaData.obtenerMembresias();
+            boolean huboCambios = false;
+
+            for (Membresia membresia : membresias) {
+
+                if (membresia.getCantidadPases() <= 0) {
+                    membresiaData.eliminarMembresia(membresia.getId_membresia());
+                    huboCambios = true;
+                }
+            }
+
+
+            if (huboCambios) {
+                cargarDatos();
+                JOptionPane.showMessageDialog(this,
+                        "Se han eliminado automáticamente las membresías sin pases disponibles.",
+                        "Membresías eliminadas",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al verificar membresías: " + e.getMessage());
+        }
+    }
+
+    private void verificarYActualizarMembresiasPorPases() {
+        try {
+            List<Membresia> membresias = membresiaData.obtenerMembresias();
+            boolean huboCambios = false;
+
+            for (Membresia membresia : membresias) {
+                if (membresia.isEstado() && membresia.getCantidadPases() <= 0) {
+                    membresia.setEstado(false);
+                    membresiaData.actualizarMembresia(membresia);
+                    huboCambios = true;
+                }
+            }
+
+            if (huboCambios) {
+                cargarDatos();
+                JOptionPane.showMessageDialog(this,
+                        "Se han desactivado automáticamente las membresías sin pases disponibles.",
+                        "Membresías actualizadas",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al verificar membresías: " + e.getMessage());
+        }
+    }
+
+    public void consumirPase(int idMembresia) {
+        try {
+            List<Membresia> membresias = membresiaData.obtenerMembresias();
+            boolean huboCambios = false;
+
+            for (Membresia membresia : membresias) {
+                if (membresia.getCantidadPases() <= 0) {
+                    membresiaData.eliminarMembresia(membresia.getId_membresia());
+                    huboCambios = true;
+                }
+            }
+
+            if (huboCambios) {
+                cargarDatos();
+                JOptionPane.showMessageDialog(this,
+                        "Se han eliminado automáticamente las membresías sin pases disponibles.",
+                        "Membresías eliminadas",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al verificar membresías: " + e.getMessage());
+        }
     }
 
     private void actualizarEstadoMembresia(int idMembresia, boolean nuevoEstado) {
@@ -74,10 +142,11 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jButton4 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
-        setPreferredSize(new java.awt.Dimension(700, 340));
+        setPreferredSize(new java.awt.Dimension(700, 500));
+        setVisible(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,12 +159,13 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jTable1.setBackground(new java.awt.Color(102, 102, 102));
-        jTable1.setForeground(new java.awt.Color(153, 153, 153));
+        jTable1.setBackground(new java.awt.Color(255, 255, 255));
+        jTable1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jTable1.setForeground(new java.awt.Color(0, 0, 0));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "ID Membresía", "Nombre", "Cant. de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo"
+                "ID Membresía", "Nombre", "Cant. de Pases", "Fecha de Inicio", "Fecha de Fin", "Costo", "Estado"
             }
         ){
             Class[] types = new Class [] {
@@ -114,7 +184,9 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             }
         }
     );
-    jTable1.setGridColor(new java.awt.Color(153, 153, 153));
+    jTable1.setGridColor(new java.awt.Color(0, 0, 0));
+    jTable1.setSelectionBackground(new java.awt.Color(153, 255, 153));
+    jTable1.setSelectionForeground(new java.awt.Color(0, 0, 0));
     jScrollPane1.setViewportView(jTable1);
 
     jButton2.setBackground(new java.awt.Color(51, 51, 51));
@@ -156,29 +228,31 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
-            .addGap(47, 47, 47)
+            .addGap(32, 32, 32)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(229, 229, 229))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(109, 109, 109)
-                                .addComponent(jButton4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGap(20, 20, 20)))
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addGap(249, 249, 249))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addComponent(jScrollPane1)
+                    .addGap(20, 20, 20))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(10, 10, 10)
+                    .addComponent(jButton2)
+                    .addGap(117, 117, 117)
+                    .addComponent(jButton4)
+                    .addGap(85, 85, 85)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)))
             .addContainerGap())
+        .addGroup(layout.createSequentialGroup()
+            .addGap(33, 33, 33)
+            .addComponent(jLabel3)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,18 +261,21 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel2)
-            .addGap(18, 18, 18)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18, 18, 18)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabel3)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(26, 26, 26)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel3)))
+            .addGap(45, 45, 45)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jButton2)
+                .addComponent(jButton4)
                 .addComponent(jButton3))
-            .addGap(17, 17, 17))
+            .addGap(97, 97, 97))
     );
 
     pack();
@@ -263,7 +340,6 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
         try {
             Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
             if (membresia != null) {
-                // Verificar si el socio ya tiene una membresía activa
                 List<Membresia> membresias = membresiaData.obtenerMembresiasPorSocio(membresia.getSocio().getId_Socio());
                 for (Membresia m : membresias) {
                     if (m.isEstado() && m.getId_membresia() != idMembresia) {
@@ -272,23 +348,19 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                     }
                 }
                 if (!membresia.isEstado()) {
-                    // Verificar que la nueva fecha de fin sea posterior a la fecha actual
                     Date fechaActual = new Date();
                     if (nuevaFechaFin.before(fechaActual)) {
                         JOptionPane.showMessageDialog(this, "La nueva fecha de finalización debe ser posterior a la fecha actual.");
                         return;
                     }
-                    // Establecer nueva fecha de inicio y fin
                     membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
                     membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
-                    membresia.setEstado(true);
-                    membresiaData.actualizarMembresia(membresia);
+                    membresiaData.renovarMembresia(membresia, 1);
 
-                    // Actualizar la tabla
                     int selectedRow = jTable1.getSelectedRow();
-                    jTable1.setValueAt(membresia.getFechaInicio(), selectedRow, 3); // Columna de fecha de inicio
-                    jTable1.setValueAt(membresia.getFechaFin(), selectedRow, 4); // Columna de fecha de fin
-                    jTable1.setValueAt(true, selectedRow, 6); // Columna de estado
+                    jTable1.setValueAt(membresia.getFechaInicio(), selectedRow, 3);
+                    jTable1.setValueAt(membresia.getFechaFin(), selectedRow, 4);
+                    jTable1.setValueAt(true, selectedRow, 6);
 
                     JOptionPane.showMessageDialog(this, "Membresía reactivada exitosamente.");
                 } else {
@@ -307,8 +379,34 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
             if (selectedRow != -1) {
                 int idMembresia = (int) jTable1.getValueAt(selectedRow, 0);
                 Date nuevaFechaFin = jDateChooser1.getDate();
+
                 if (nuevaFechaFin != null) {
-                    reactivarMembresia(idMembresia, nuevaFechaFin);
+                    Membresia membresia = membresiaData.obtenerMembresiaPorId(idMembresia);
+                    if (membresia != null) {
+
+                        Membresia activa = membresiaData.obtenerMembresiaActivaPorNombre(
+                                membresia.getSocio().getNombre() + " " + membresia.getSocio().getApellido()
+                        );
+                        if (activa != null && activa.getId_membresia() != membresia.getId_membresia()) {
+                            JOptionPane.showMessageDialog(this, "El socio ya tiene otra membresía activa.");
+                            return;
+                        }
+
+                        int cantidadPases = calcularPasesPorCosto(membresia.getCosto());
+
+                        membresia.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
+                        membresia.setFechaFin(new java.sql.Date(nuevaFechaFin.getTime()));
+                        membresia.setEstado(true);
+                        membresia.setCantidadPases(cantidadPases);
+
+                        membresiaData.renovarMembresia(membresia, cantidadPases);
+
+                        cargarDatos();
+
+                        JOptionPane.showMessageDialog(this, "Membresía reactivada correctamente.");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró la membresía.");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "Por favor, seleccione una nueva fecha de finalización.");
                 }
@@ -316,6 +414,7 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione una membresía de la tabla.");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al reactivar la membresía: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -329,13 +428,12 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                 int idSocio = membresia.getSocio().getId_Socio();
                 Membresia membresiaExistente = miembrosUnicos.get(idSocio);
                 if (membresiaExistente == null || membresia.getFechaFin().after(membresiaExistente.getFechaFin())) {
-                    // Guardar la membresía si es la primera encontrada o si tiene una fecha de fin más reciente
                     miembrosUnicos.put(idSocio, membresia);
                 }
             }
 
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
+            model.setRowCount(0);
 
             for (Membresia membresia : miembrosUnicos.values()) {
                 Socio socio = socioData.obtenerSocioPorId(membresia.getSocio().getId_Socio());
@@ -349,11 +447,29 @@ public class GestionarMembresiaForm extends javax.swing.JInternalFrame {
                     membresia.getFechaInicio(),
                     membresia.getFechaFin(),
                     membresia.getCosto(),
-                    estado
-                });
+                    membresia.isEstado(),});
             }
+
+            verificarYEliminarMembresiasSinPases();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar los datos: " + e.getMessage());
+        }
+    }
+
+    private int calcularPasesPorCosto(BigDecimal costo) {
+        if (costo.compareTo(new BigDecimal("1000")) == 0) {
+            return 1;
+        } else if (costo.compareTo(new BigDecimal("3000")) == 0) {
+            return 5;
+        } else if (costo.compareTo(new BigDecimal("6000")) == 0) {
+            return 10;
+        } else if (costo.compareTo(new BigDecimal("9000")) == 0) {
+            return 15;
+        } else if (costo.compareTo(new BigDecimal("20000")) == 0) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 

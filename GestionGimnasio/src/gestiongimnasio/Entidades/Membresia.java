@@ -1,18 +1,13 @@
 package gestiongimnasio.Entidades;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- *
- * @author facun
- */
 public class Membresia {
 
     private int id_membresia;
     private Socio socio;
     private int cantidadPases;
-    private Date fechaInicio;//al colocar la fecha de inicio se carga sola la fecha de fin en la vista no permitir que se carge la fecha de fin 
+    private Date fechaInicio;
     private Date fechaFin;
     private BigDecimal costo;
     private boolean estado;

@@ -48,7 +48,7 @@ public class AñadirClase extends javax.swing.JInternalFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"09:00 am", "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm"}));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"09:00 AM", "10:00 AM", "11:00 AM", "12:00 pm", "01:00 pm", "02:00 pm", "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm", "08:00 pm", "09:00 pm", "10:00 pm"}));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -132,55 +132,84 @@ public class AñadirClase extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  private void cargarEntrenadores(String horario) {
-    // Crear una instancia de EntrenadorData y ClaseData
+ private void cargarEntrenadores(String horario) {
+    System.out.println("=== CARGANDO ENTRENADORES ===");
+    System.out.println("Horario filtro: " + horario);
+    
     EntrenadorData entrenadorData = new EntrenadorData();
     ClaseData claseData = new ClaseData();
     
     // Obtener la lista de entrenadores ocupados en el horario seleccionado
-    List<Clase> clasesConMismoHorario = claseData.buscarClases(null, null, horario);
+    List<Clase> clasesConMismoHorario = new ArrayList<>();
     List<Integer> entrenadoresOcupados = new ArrayList<>();
-    for (Clase clase : clasesConMismoHorario) {
-        entrenadoresOcupados.add(clase.getIdEntrenador().getId_entrenadores());
+    
+    if (horario != null && !horario.equals("-Seleccionar Horario-")) {
+        // Convertir horario a formato 24h para la búsqueda
+        try {
+            String horarioParaBusqueda = horario.replaceAll("[^\\x20-\\x7E]", "").trim().toUpperCase();
+            java.text.SimpleDateFormat formatoEntrada = new java.text.SimpleDateFormat("hh:mm a", java.util.Locale.ENGLISH);
+            java.text.SimpleDateFormat formatoSQL = new java.text.SimpleDateFormat("HH:mm:ss");
+            formatoEntrada.setLenient(false);
+            
+            java.util.Date horaAMPM = formatoEntrada.parse(horarioParaBusqueda);
+            String hora24 = formatoSQL.format(horaAMPM);
+            
+            System.out.println("Buscando clases con horario: " + hora24);
+            clasesConMismoHorario = claseData.buscarClases(null, null, hora24);
+            
+            for (Clase clase : clasesConMismoHorario) {
+                entrenadoresOcupados.add(clase.getIdEntrenador().getId_entrenadores());
+            }
+        } catch (Exception e) {
+            System.err.println("Error convirtiendo horario para filtro: " + e.getMessage());
+        }
     }
 
-    // Mensajes de depuración
-    System.out.println("Clases encontradas para el horario " + horario + ": " + clasesConMismoHorario.size());
-    for (Clase clase : clasesConMismoHorario) {
-        System.out.println("Clase ID: " + clase.getId_clase() + ", Entrenador ID: " + clase.getIdEntrenador().getId_entrenadores());
-    }
-    System.out.println("Entrenadores ocupados en el horario " + horario + ": " + entrenadoresOcupados);
+    System.out.println("Entrenadores ocupados: " + entrenadoresOcupados);
 
-    // Obtener el modelo de la tabla de entrenadores
+    // Obtener todos los entrenadores
     DefaultTableModel modelo = entrenadorData.mostrarEntrenadores();
+    System.out.println("Total entrenadores en BD: " + modelo.getRowCount());
 
     // Limpiar el JComboBox antes de llenarlo
     jComboBox2.removeAllItems();
     jComboBox2.addItem("-Seleccionar Entrenador-");
 
     for (int i = 0; i < modelo.getRowCount(); i++) {
-        // Asegurarse de que el ID es un Integer
         Integer idEntrenador = (Integer) modelo.getValueAt(i, 0);
-        // Mensaje de depuración
-        System.out.println("Evaluando entrenador ID: " + idEntrenador);
+        String nombre = modelo.getValueAt(i, 1).toString();
+        
+        System.out.println("Evaluando entrenador: ID=" + idEntrenador + " Nombre=" + nombre);
+        
         if (!entrenadoresOcupados.contains(idEntrenador)) {
-            String nombre = modelo.getValueAt(i, 1).toString(); // Columna "Nombre"
             jComboBox2.addItem(nombre);
+            System.out.println("Entrenador añadido: " + nombre);
         } else {
-            // Mensaje de depuración
-            System.out.println("Entrenador " + idEntrenador + " está ocupado y no se añadirá.");
+            System.out.println("Entrenador ocupado, no añadido: " + nombre);
         }
     }
+    
+    System.out.println("Total items en combo: " + jComboBox2.getItemCount());
 }
 
-    private void cargarHorarios() {
-        jComboBox1.removeAllItems();
-        jComboBox1.addItem("-Seleccionar Horario-");
-        for (int hour = 9; hour <= 22; hour++) {
-            String time = String.format("%02d:00 %s", hour % 12 == 0 ? 12 : hour % 12, hour < 12 ? "AM" : "PM");
-            jComboBox1.addItem(time);
+private void cargarHorarios() {
+    jComboBox1.removeAllItems();
+    jComboBox1.addItem("-Seleccionar Horario-");
+    
+    // Generar horarios con formato consistente
+    for (int hour = 9; hour <= 22; hour++) {
+        String ampm = hour < 12 ? "AM" : "PM";
+        int displayHour = hour;
+        if (hour > 12) {
+            displayHour = hour - 12;
+        } else if (hour == 0) {
+            displayHour = 12;
         }
+        
+        String time = String.format("%02d:00 %s", displayHour, ampm);
+        jComboBox1.addItem(time);
     }
+}
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // Capturar el nombre del entrenador seleccionado
         entrenadorSeleccionado = (String) jComboBox2.getSelectedItem();
@@ -222,43 +251,84 @@ public class AñadirClase extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     
-        String nombreClase = jTextField1.getText();
-        String entrenadorNombre = (String) jComboBox2.getSelectedItem();
-        String horario = (String) jComboBox1.getSelectedItem();
+    String nombreClase = jTextField1.getText();
+    String entrenadorNombre = (String) jComboBox2.getSelectedItem();
+    String horario = (String) jComboBox1.getSelectedItem();
 
-   
-        if (nombreClase == null || nombreClase.isEmpty() || entrenadorNombre == null || entrenadorNombre.isEmpty() || horario == null || horario.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    // DEBUG: Imprimir valores capturados
+    System.out.println("=== DEBUG GUARDADO ===");
+    System.out.println("Nombre clase: '" + nombreClase + "'");
+    System.out.println("Entrenador seleccionado: '" + entrenadorNombre + "'");
+    System.out.println("Horario seleccionado: '" + horario + "'");
 
-      
-        EntrenadorData entrenadorData = new EntrenadorData();
-        Entrenador entrenador = entrenadorData.buscarEntrenadorPorNombre(entrenadorNombre);
+    if (nombreClase == null || nombreClase.isEmpty() ||
+        entrenadorNombre == null || entrenadorNombre.isEmpty() ||
+        horario == null || horario.isEmpty() ||
+        entrenadorNombre.equals("-Seleccionar Entrenador-") ||
+        horario.equals("-Seleccionar Horario-")) {
+        
+        System.out.println("ERROR: Campos incompletos");
+        System.out.println("nombreClase vacío: " + (nombreClase == null || nombreClase.isEmpty()));
+        System.out.println("entrenadorNombre vacío: " + (entrenadorNombre == null || entrenadorNombre.isEmpty()));
+        System.out.println("horario vacío: " + (horario == null || horario.isEmpty()));
+        
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        if (entrenador == null) {
-            JOptionPane.showMessageDialog(this, "Entrenador no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    // Convertir el horario al formato "HH:mm:ss" compatible con la base de datos
+    String hora24;
+    try {
+        horario = horario.replaceAll("[^\\x20-\\x7E]", "").trim().toUpperCase();
+        System.out.println("Horario normalizado: '" + horario + "'");
 
-        // Crear objeto Clase
-        Clase nuevaClase = new Clase();
-        nuevaClase.setNombre(nombreClase);
-        nuevaClase.setIdEntrenador(entrenador);
-        nuevaClase.setHorario(horario);
-        nuevaClase.setCapacidad(20); 
-        nuevaClase.setEstado(true); 
+        java.text.SimpleDateFormat formatoEntrada = new java.text.SimpleDateFormat("hh:mm a", java.util.Locale.ENGLISH);
+        java.text.SimpleDateFormat formatoSQL = new java.text.SimpleDateFormat("HH:mm:ss");
+        formatoEntrada.setLenient(false);
 
-       
-        ClaseData claseData = new ClaseData();
+        java.util.Date horaAMPM = formatoEntrada.parse(horario);
+        hora24 = formatoSQL.format(horaAMPM);
+        System.out.println("Hora convertida a 24h: '" + hora24 + "'");
+    } catch (Exception e) {
+        System.err.println("Error parseando hora: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Formato de hora inválido: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        claseData.guardarClase(nuevaClase);
+    // Buscar al entrenador
+    EntrenadorData entrenadorData = new EntrenadorData();
+    System.out.println("Buscando entrenador: '" + entrenadorNombre + "'");
+    
+    Entrenador entrenador = entrenadorData.buscarEntrenadorPorNombre(entrenadorNombre);
+    System.out.println("Entrenador encontrado: " + (entrenador != null ? entrenador.getId_entrenadores() : "NULL"));
 
-       
-   
-      
-        limpiarCampos();
+    if (entrenador == null) {
+        System.out.println("ERROR: Entrenador no encontrado");
+        JOptionPane.showMessageDialog(this, "Entrenador no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Crear objeto Clase
+    Clase nuevaClase = new Clase();
+    nuevaClase.setNombre(nombreClase);
+    nuevaClase.setIdEntrenador(entrenador);
+    nuevaClase.setHorario(hora24);
+    nuevaClase.setCapacidad(20);
+    nuevaClase.setEstado(true);
+
+    System.out.println("Clase a guardar:");
+    System.out.println("- Nombre: " + nuevaClase.getNombre());
+    System.out.println("- Entrenador ID: " + nuevaClase.getIdEntrenador().getId_entrenadores());
+    System.out.println("- Horario: " + nuevaClase.getHorario());
+    System.out.println("- Capacidad: " + nuevaClase.getCapacidad());
+    System.out.println("- Estado: " + nuevaClase.isEstado());
+
+    // Guardar la clase
+    ClaseData claseData = new ClaseData();
+    claseData.guardarClase(nuevaClase);
+
+    limpiarCampos();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

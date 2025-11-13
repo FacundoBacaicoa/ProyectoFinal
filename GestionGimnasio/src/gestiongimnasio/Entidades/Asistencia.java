@@ -1,12 +1,7 @@
-
 package gestiongimnasio.Entidades;
 
 import java.util.Date;
 
-/**
- *
- * @author facun
- */
 public class Asistencia {
     private int id_asistencia;
     private Socio Socio;

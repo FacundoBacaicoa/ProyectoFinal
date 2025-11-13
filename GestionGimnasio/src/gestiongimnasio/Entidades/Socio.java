@@ -11,7 +11,6 @@ public class Socio {
     private boolean estado;
 
     public Socio() {
-        // Constructor vacío
     }
 
     public Socio(int dni, String nombre, String apellido, int edad, String correo, String telefono, boolean estado) {

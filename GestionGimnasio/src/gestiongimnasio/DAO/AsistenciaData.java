@@ -15,10 +15,6 @@ import java.sql.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author facun
- */
 public class AsistenciaData {
       private Connection con = null;
 
@@ -71,7 +67,7 @@ public class AsistenciaData {
         return asistencias;
     }
    public DefaultTableModel buscarAsistencia(String buscar) {
-        String[] nombresColumnas = {"ID Asistencia", "DNI Socio", "Nombre Socio", "Fecha", "Clase", "Horario", "Estado"};
+        String[] nombresColumnas = {"ID Asistencia", "DNI Socio", "Nombre Socio", "Fecha", "Clase", "Horario"};
         DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
         String sql = "SELECT a.id_asistencia, s.DNI, s.Nombre, s.Apellido, a.fecha_asistencia, c.nombre AS nombre_clase, c.horario, a.estado " +
                      "FROM asistencia a " +
@@ -98,7 +94,6 @@ public class AsistenciaData {
                 fila[3] = rs.getDate("fecha_asistencia");
                 fila[4] = rs.getString("nombre_clase");
                 fila[5] = rs.getString("horario");
-                fila[6] = rs.getString("estado");
                 modelo.addRow(fila);
             }
         } catch (SQLException e) {
@@ -170,6 +165,25 @@ public class AsistenciaData {
     }
 
     return asistencias;
+}
+    
+    public String obtenerEstadoAsistencia(int idAsistencia) {
+    String estado = "";
+    String sql = "SELECT estado FROM asistencia WHERE id_asistencia = ?";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idAsistencia);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            estado = rs.getString("estado");
+        }
+        rs.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al obtener el estado de asistencia: " + e.getMessage());
+    }
+    
+    return estado != null ? estado : "";
 }
    
 }

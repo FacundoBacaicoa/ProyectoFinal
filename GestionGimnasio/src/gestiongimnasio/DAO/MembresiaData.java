@@ -4,22 +4,21 @@ import gestiongimnasio.Entidades.Membresia;
 import gestiongimnasio.Entidades.Socio;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MembresiaData {
 
     private Connection con = null;
+        private SocioDAO socioData;
 
     public MembresiaData() {
         con = Conexion.getConexion();
+        
     }
 
     public boolean socioExists(int socioId) {
@@ -65,33 +64,29 @@ public class MembresiaData {
         }
     }
 
-    private BigDecimal calcularCosto(int cantidadPases, int duracionMeses) {
-        BigDecimal costoPorPase = new BigDecimal("10.0"); // Ejemplo: $10 por pase
-        BigDecimal costo = costoPorPase.multiply(new BigDecimal(cantidadPases));
-        return costo;
-    }
+public void renovarMembresia(Membresia membresia, int cantidadPases) {
+    String sql = "UPDATE membresias SET Fecha_inicio = ?, Fecha_fin = ?, CantidadPases = ?, Costo = ?, Estado = ? WHERE Id_Membresia = ?";
 
-    public void renovarMembresia(Membresia membresia, int duracionMeses) {
-        String sql = "UPDATE membresias SET Fecha_fin = DATE_ADD(Fecha_fin, INTERVAL ? MONTH), Costo = Costo + ? WHERE Id_Membresia = ?";
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, duracionMeses);
-            BigDecimal costoRenovacion = calcularCosto(membresia.getCantidadPases(), duracionMeses);
-            ps.setBigDecimal(2, costoRenovacion);
-            ps.setInt(3, membresia.getId_membresia());
-            int filasActualizadas = ps.executeUpdate();
-            if (filasActualizadas > 0) {
-                LocalDate nuevaFechaFin = membresia.getFechaFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusMonths(duracionMeses);
-                membresia.setFechaFin(Date.valueOf(nuevaFechaFin));
-                membresia.setCosto(membresia.getCosto().add(costoRenovacion));
-                System.out.println("Membresía renovada hasta: " + nuevaFechaFin);
-            } else {
-                System.out.println("No se pudo renovar la membresía.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al renovar la membresía: " + e.getMessage());
+    try (Connection conn = Conexion.getConexion(); 
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setDate(1, new java.sql.Date(membresia.getFechaInicio().getTime()));
+        ps.setDate(2, new java.sql.Date(membresia.getFechaFin().getTime()));
+        ps.setInt(3, cantidadPases);
+        ps.setBigDecimal(4, membresia.getCosto());
+        ps.setBoolean(5, true);
+        ps.setInt(6, membresia.getId_membresia());
+
+        int filas = ps.executeUpdate();
+        if (filas > 0) {
+            System.out.println("Membresía renovada y activada correctamente.");
+        } else {
+            System.out.println("No se pudo renovar la membresía.");
         }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al renovar la membresía: " + e.getMessage());
     }
+}
 
     public void cancelarMembresia(Membresia membresia) {
         String sql = "UPDATE membresias SET Estado = false WHERE Id_Membresia = ?";
@@ -240,6 +235,198 @@ public class MembresiaData {
     }
     return membresia;
 }
+public List<Object[]> buscarMembresiasPorNombre(String texto) {
+    List<Object[]> resultados = new ArrayList<>();
+    String sql = "SELECT m.*, s.Nombre, s.Apellido " +
+                "FROM membresias m " +
+                "JOIN socios s ON m.Id_Socio = s.ID_Socio " +
+                "WHERE LOWER(CONCAT(s.Nombre, ' ', s.Apellido)) LIKE ?";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, "%" + texto.toLowerCase() + "%");
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String nombreCompleto = rs.getString("Nombre") + " " + rs.getString("Apellido");
+                Object[] fila = {
+                    rs.getInt("ID_Membresia"),
+                    nombreCompleto,
+                    rs.getInt("CantidadPases"),
+                    rs.getDate("Fecha_inicio"),
+                    rs.getDate("Fecha_fin"),
+                    rs.getBigDecimal("Costo"),
+                    rs.getBoolean("Estado") ? "Activo" : "Inactivo"
+                };
+                resultados.add(fila);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al buscar membresías por nombre: " + e.getMessage());
+    }
+    return resultados;
+}
 
+public List<Object[]> obtenerTodasLasMembresiasConNombres() {
+    List<Object[]> resultados = new ArrayList<>();
+    String sql = "SELECT m.*, s.Nombre, s.Apellido " +
+                "FROM membresias m " +
+                "JOIN socios s ON m.Id_Socio = s.ID_Socio " +
+                "ORDER BY s.Nombre, s.Apellido";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String nombreCompleto = rs.getString("Nombre") + " " + rs.getString("Apellido");
+                Object[] fila = {
+                    rs.getInt("ID_Membresia"),
+                    nombreCompleto,
+                    rs.getInt("CantidadPases"),
+                    rs.getDate("Fecha_inicio"),
+                    rs.getDate("Fecha_fin"),
+                    rs.getBigDecimal("Costo"),
+                    rs.getBoolean("Estado") ? "Activo" : "Inactivo"
+                };
+                resultados.add(fila);
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener todas las membresías: " + e.getMessage());
+    }
+    return resultados;
+}
+
+public boolean descontarPase(int dniSocio) {
+    int idSocio = obtenerIdSocioPorDni(dniSocio);
+    if (idSocio == -1) {
+        JOptionPane.showMessageDialog(null, "No se encontró un socio con el DNI: " + dniSocio);
+        return false;
+    }
+    
+    String sql = "UPDATE membresias SET CantidadPases = CantidadPases - 1 " +
+                 "WHERE Id_Socio = ? AND Estado = true AND CantidadPases > 0";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        int filasActualizadas = ps.executeUpdate();
+        
+        if (filasActualizadas > 0) {
+            System.out.println("Pase descontado exitosamente para el socio con DNI: " + dniSocio);
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "No se pudo descontar el pase. El socio no tiene membresía activa o no tiene pases disponibles.");
+            return false;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al descontar pase: " + e.getMessage());
+        return false;
+    }
+}
+
+public boolean devolverPase(int dniSocio) {
+    int idSocio = obtenerIdSocioPorDni(dniSocio);
+    if (idSocio == -1) {
+        JOptionPane.showMessageDialog(null, "No se encontró un socio con el DNI: " + dniSocio);
+        return false;
+    }
+    
+    String sql = "UPDATE membresias SET CantidadPases = CantidadPases + 1 " +
+                 "WHERE Id_Socio = ? AND Estado = true";
+    
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        int filasActualizadas = ps.executeUpdate();
+        
+        if (filasActualizadas > 0) {
+            System.out.println("Pase devuelto exitosamente para el socio con DNI: " + dniSocio);
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "No se pudo devolver el pase. El socio no tiene membresía activa.");
+            return false;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al devolver pase: " + e.getMessage());
+        return false;
+    }
+}
+public int obtenerIdSocioPorDni(int dni) {
+    String sql = "SELECT ID_Socio FROM socios WHERE DNI = ?";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, dni);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("ID_Socio");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener ID del socio por DNI: " + e.getMessage());
+    }
+    return -1;
+}
+
+public int obtenerPasesDisponibles(int dniSocio) {
+    int idSocio = obtenerIdSocioPorDni(dniSocio);
+    if (idSocio == -1) {
+        return -1;
+    }
+    
+    String sql = "SELECT CantidadPases FROM membresias WHERE Id_Socio = ? AND Estado = true";
+    try (PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("CantidadPases");
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener pases disponibles: " + e.getMessage());
+    }
+    return -1;
+}
+
+public Membresia obtenerUltimaMembresiaDeSocio(int idSocio) {
+    Membresia membresia = null;
+    String sql = "SELECT * FROM membresias WHERE ID_Socio = ? ORDER BY Fecha_Fin DESC LIMIT 1";
+    try (Connection conexion = Conexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, idSocio);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            membresia = new Membresia();
+            membresia.setId_membresia(rs.getInt("ID_Membresia"));
+            membresia.setCantidadPases(rs.getInt("Cantidad_Pases"));
+            membresia.setFechaInicio(rs.getDate("Fecha_Inicio"));
+            membresia.setFechaFin(rs.getDate("Fecha_Fin"));
+            membresia.setCosto(rs.getBigDecimal("Costo"));
+            membresia.setEstado(rs.getBoolean("Estado"));
+
+            Socio socio = socioData.obtenerSocioPorId(idSocio);
+            membresia.setSocio(socio);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener la última membresía: " + e.getMessage());
+    }
+    return membresia;
+}
+
+public boolean eliminarMembresia(int idMembresia) {
+    String sql = "DELETE FROM membresias WHERE Id_Membresia = ?";
+    try (Connection conn = Conexion.getConexion(); 
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setInt(1, idMembresia);
+        int filasEliminadas = ps.executeUpdate();
+        
+        if (filasEliminadas > 0) {
+            System.out.println("Membresía eliminada exitosamente. ID: " + idMembresia);
+            return true;
+        } else {
+            System.out.println("No se pudo eliminar la membresía. ID no encontrado: " + idMembresia);
+            return false;
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al eliminar la membresía: " + e.getMessage());
+        return false;
+    }
+}
 
 }

@@ -29,7 +29,7 @@ public void agregarSocio(Socio socio) throws SQLException {
         ps.setString(3, socio.getApellido());
         ps.setInt(4, socio.getEdad());
         ps.setString(5, socio.getCorreo());
-        ps.setString(6, socio.getTelefono()); // Cambiar a setString
+        ps.setString(6, socio.getTelefono()); 
         ps.setBoolean(7, socio.isEstado());
         ps.executeUpdate();
         JOptionPane.showMessageDialog(null, "Socio guardado correctamente.");
@@ -41,8 +41,7 @@ public void agregarSocio(Socio socio) throws SQLException {
 
     public DefaultTableModel listarSocios() {
 
-        String[] nombresColumnas = {"ID_Socio", "DNI" , "Nombre", "Apellido","Edad","Correo","Teléfono","Estado"};//Indica el nombre de las columnas en la tabla
-
+        String[] nombresColumnas = {"ID_Socio", "DNI" , "Nombre", "Apellido","Edad","Correo","Teléfono","Estado"};
         String[] registros = new String[8];
 
         DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
@@ -246,6 +245,30 @@ public Socio obtenerSocioPorId(int id) {
     return socio;
 }
 
+public List<Socio> buscarSociosPorNombreParcial(String texto) {
+    List<Socio> lista = new ArrayList<>();
+    String sql = "SELECT * FROM socio WHERE nombre ILIKE ? OR apellido ILIKE ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, texto + "%");
+        ps.setString(2, texto + "%");
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Socio s = new Socio();
+            s.setId_Socio(rs.getInt("id_socio"));
+            s.setNombre(rs.getString("nombre"));
+            s.setApellido(rs.getString("apellido"));
+            lista.add(s);
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al buscar socios parcialmente: " + ex.getMessage());
+    }
+    
+    return lista;
+}
 
 
 }

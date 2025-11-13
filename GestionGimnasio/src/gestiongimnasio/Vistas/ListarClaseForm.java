@@ -1,19 +1,12 @@
-
 package gestiongimnasio.Vistas;
+
 import gestiongimnasio.DAO.ClaseData;
 import gestiongimnasio.Entidades.Clase;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-/**
- *
- * @author cinti
- */
 public class ListarClaseForm extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form ListarClaseForm
-     */
     public ListarClaseForm() {
         initComponents();
     }
@@ -119,19 +112,11 @@ public class ListarClaseForm extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Crear una instancia de ClaseData para acceder a la base de datos
+
     ClaseData claseData = new ClaseData();
-    
-    // Obtener la lista de todas las clases
       List<Clase> clases = claseData.listarClases();
-    
-    // Obtener el modelo de la tabla
       DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-    
-    // Limpiar el modelo antes de cargar los datos
       modelo.setRowCount(0);
-    
-    // Recorrer la lista de clases y agregar cada una al modelo de la tabla
      for (Clase clase : clases) {
         String nombreEntrenador = "";
         if (clase.getIdEntrenador() != null) {
@@ -149,8 +134,7 @@ public class ListarClaseForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Cerrar el formulario
-    this.dispose();
+         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

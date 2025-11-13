@@ -1,17 +1,12 @@
-
 package gestiongimnasio.Entidades;
 
-/**
- *
- * @author facun
- */
 public class Entrenador {
      private int id_entrenadores;
     private int dni;
     private String nombre;
     private String apellido;
     private String especialidad;
-    private boolean estado;//que todo el borrado sea logico menos la asistencia 
+    private boolean estado;
 
     public Entrenador() {
     }

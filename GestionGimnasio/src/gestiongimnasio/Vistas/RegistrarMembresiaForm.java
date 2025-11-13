@@ -8,26 +8,72 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
-
 import java.util.Date;
 import javax.swing.*;
 
-/**
- *
- * @author Jorge
- */
 public class RegistrarMembresiaForm extends JInternalFrame {
 
     private MembresiaData membresiaData;
     private SocioDAO socioData;
 
-    /**
-     * Creates new form NewJInternalFrame
-     */
     public RegistrarMembresiaForm() {
         membresiaData = new MembresiaData();
         socioData = new SocioDAO();
         initComponents();
+        configurarFormulario();
+    }
+
+    private void configurarFormulario() {
+        jDateChooser2.setEnabled(false);
+        jComboBox1.addActionListener(e -> calcularFechaFinYCosto());
+        jDateChooser1.addPropertyChangeListener("date", e -> calcularFechaFinYCosto());
+    }
+   
+    private void calcularFechaFinYCosto() {
+        String planSeleccionado = (String) jComboBox1.getSelectedItem();
+        Date fechaInicio = jDateChooser1.getDate();
+        if (planSeleccionado == null || planSeleccionado.equals("-Seleccionar-") || fechaInicio == null) {
+            jDateChooser2.setDate(null);
+            return;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaInicio);
+
+        BigDecimal costo = BigDecimal.ZERO;
+        int cantidadPases = 0;
+
+        switch (planSeleccionado) {
+            case "Pase Individual":
+                cantidadPases = 1;
+                costo = new BigDecimal("1000");
+                cal.add(Calendar.MONTH,1);
+                break;
+            case "Plan 5 Pases":
+                cantidadPases = 5;
+                costo = new BigDecimal("3000");
+                cal.add(Calendar.MONTH, 1);
+                break;
+            case "Plan 10 Pases":
+                cantidadPases = 10;
+                costo = new BigDecimal("6000");
+                cal.add(Calendar.MONTH, 1);
+                break;
+            case "Plan 15 Pases":
+                cantidadPases = 15;
+                costo = new BigDecimal("9000");
+                cal.add(Calendar.MONTH, 1);
+                break;
+            case "Plan Pase Libre":
+                cantidadPases = -1;
+                costo = new BigDecimal("20000");
+                cal.add(Calendar.MONTH, 1);
+                break;
+        }
+
+        jDateChooser2.setDate(cal.getTime());
+
+        String pasesTexto = cantidadPases == -1 ? "Ilimitado" : String.valueOf(cantidadPases);
+        jLabel5.setText("Clases: " + pasesTexto + " | Costo: $" + costo);
     }
 
     @SuppressWarnings("unchecked")
@@ -35,48 +81,29 @@ public class RegistrarMembresiaForm extends JInternalFrame {
     private void initComponents() {
 
         contentPane = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         buttonOK = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         ingresodeNombre = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         contentPane.setBackground(new java.awt.Color(56, 56, 56));
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Cantidad De Pases");
-
-        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
-
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Duracion del mes");
-
-        jTextField2.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Fecha fin");
+        jLabel3.setText("Fecha de Finalización");
 
         buttonOK.setBackground(new java.awt.Color(51, 51, 51));
         buttonOK.setForeground(new java.awt.Color(255, 255, 255));
-        buttonOK.setText("Registrar membresia");
+        buttonOK.setText("Registrar Membresia");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonOKActionPerformed(evt);
@@ -87,34 +114,13 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         jLabel4.setText("Nombre y apellido del socio");
 
         ingresodeNombre.setBackground(new java.awt.Color(102, 102, 102));
-        ingresodeNombre.setForeground(new java.awt.Color(204, 204, 204));
         ingresodeNombre.setSelectedTextColor(new java.awt.Color(204, 204, 204));
-
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Costo");
-
-        jTextField5.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Fecha de inicio");
 
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Membresia ID");
-
-        jTextField7.setBackground(new java.awt.Color(102, 102, 102));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-
         jCheckBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.setText("Estado");
+        jCheckBox1.setText("Activo");
 
         jButton1.setBackground(new java.awt.Color(51, 51, 51));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -129,96 +135,87 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("REGISTRAR MEMBRESIA");
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Plan");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Seleccionar-", "Pase Individual", "Plan 5 Pases", "Plan 10 Pases", "Plan 15 Pases", "Plan Pase Libre" }));
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Estado de Membresia");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
+        jLabel5.setText(" ");
+
         javax.swing.GroupLayout contentPaneLayout = new javax.swing.GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ingresodeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(37, 37, 37)
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addGap(78, 78, 78)
-                                .addComponent(buttonOK))
-                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(16, 16, 16)))
-                                .addGap(38, 38, 38)
                                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                    .addGroup(contentPaneLayout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(44, 44, 44)))
                                 .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7))
-                                .addGap(22, 22, 22)
-                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCheckBox1)))
-                        .addContainerGap())))
-            .addGroup(contentPaneLayout.createSequentialGroup()
-                .addGap(251, 251, 251)
-                .addComponent(jLabel8)
-                .addContainerGap())
+                                    .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel8)
+                                        .addComponent(ingresodeNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCheckBox1)))))
+                    .addGroup(contentPaneLayout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(buttonOK)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 137, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contentPaneLayout.createSequentialGroup()
                 .addComponent(jLabel8)
-                .addGap(3, 3, 3)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ingresodeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(contentPaneLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ingresodeNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jCheckBox1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                        .addComponent(buttonOK)
-                        .addContainerGap())))
+                            .addGroup(contentPaneLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(50, 50, 50))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)))
+                        .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43)
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3))
+                .addGap(50, 50, 50)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jCheckBox1))
+                .addGap(48, 48, 48)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(contentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonOK)
+                    .addComponent(jButton1))
+                .addGap(33, 33, 33))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -232,9 +229,7 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(contentPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+            .addComponent(contentPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -245,22 +240,12 @@ public class RegistrarMembresiaForm extends JInternalFrame {
     }//GEN-LAST:event_jDateChooser1ComponentHidden
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Cerrar el formulario
+
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
-
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-                                         
 
-           // Validar que todos los campos estén completos
         try {
             String nombreCompleto = ingresodeNombre.getText().trim();
             String[] partesNombre = nombreCompleto.split(" ");
@@ -278,14 +263,19 @@ public class RegistrarMembresiaForm extends JInternalFrame {
             if (socio == null) {
                 JOptionPane.showMessageDialog(this, "El nombre y apellido del socio no existen. Por favor, ingrese un nombre y apellido válidos.");
                 return;
-
             }
+            
             if (membresiaData.tieneMembresiaActiva(socio.getId_Socio())) {
                 JOptionPane.showMessageDialog(this, "El socio ya tiene una membresía activa.");
                 return;
             }
-            int cantidadDePases = Integer.parseInt(jTextField1.getText());
-            int duracionDelMes = Integer.parseInt(jTextField2.getText());
+
+            String planSeleccionado = (String) jComboBox1.getSelectedItem();
+            if (planSeleccionado == null || planSeleccionado.equals("-Seleccionar-")) {
+                JOptionPane.showMessageDialog(this, "Por favor, seleccione un plan.");
+                return;
+            }
+
             Date selectedDateInicio = jDateChooser1.getDate();
             Date selectedDateFin = jDateChooser2.getDate();
 
@@ -294,10 +284,10 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                 return;
             }
             if (selectedDateFin == null) {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione la fecha de fin");
+                JOptionPane.showMessageDialog(this, "Error: La fecha de fin no se calculó correctamente");
                 return;
             }
-            // Validar que la fecha de inicio no sea anterior a la fecha actual
+
             Date currentDate = new Date();
             if (selectedDateInicio.before(currentDate)) {
                 Calendar calendar = Calendar.getInstance();
@@ -313,16 +303,36 @@ public class RegistrarMembresiaForm extends JInternalFrame {
                     JOptionPane.showMessageDialog(this, "La fecha de inicio no puede ser anterior a la fecha actual");
                     return;
                 }
-}
-            // Validar que la fecha de fin sea posterior a la fecha de inicio
-            if (selectedDateFin.before(selectedDateInicio)) {
-                JOptionPane.showMessageDialog(this, "La fecha de finalización no puede ser anterior a la fecha de inicio");
-                return;
+            }
+
+            int cantidadDePases = 0;
+            BigDecimal costo = BigDecimal.ZERO;
+            
+            switch (planSeleccionado) {
+                case "Pase Individual":
+                    cantidadDePases = 1;
+                    costo = new BigDecimal("1000");
+                    break;
+                case "Plan 5 Pases":
+                    cantidadDePases = 5;
+                    costo = new BigDecimal("3000");
+                    break;
+                case "Plan 10 Pases":
+                    cantidadDePases = 10;
+                    costo = new BigDecimal("6000");
+                    break;
+                case "Plan 15 Pases":
+                    cantidadDePases = 15;
+                    costo = new BigDecimal("9000");
+                    break;
+                case "Plan Pase Libre":
+                    cantidadDePases = -1;
+                    costo = new BigDecimal("20000");
+                    break;
             }
 
             java.sql.Date fechaInicio = new java.sql.Date(selectedDateInicio.getTime());
             java.sql.Date fechaFin = new java.sql.Date(selectedDateFin.getTime());
-            BigDecimal costo = new BigDecimal(jTextField5.getText());
             boolean estado = jCheckBox1.isSelected();
 
             Membresia membresia = new Membresia();
@@ -335,24 +345,26 @@ public class RegistrarMembresiaForm extends JInternalFrame {
 
             membresiaData.registrarMembresia(membresia);
 
-            JOptionPane.showMessageDialog(this, "Membresía registrada exitosamente");
+            JOptionPane.showMessageDialog(this, "Membresía registrada exitosamente\n" +
+                "Plan: " + planSeleccionado + "\n" +
+                "Clases: " + (cantidadDePases == -1 ? "Ilimitadas" : cantidadDePases) + "\n" +
+                "Costo: $" + costo);
+            
+            limpiarCampos();
+            
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese todos los campos correctamente");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Ocurrió un error al registrar la membresía: " + e.getMessage());
         }
     }
+
     private void limpiarCampos() {
-    ingresodeNombre.setText("");
-    jTextField1.setText("");
-    jTextField2.setText("");
-    jTextField5.setText("");
-    jDateChooser1.setDate(null);
-    jDateChooser2.setDate(null);
-    jCheckBox1.setSelected(false);
-}
-
-
+        ingresodeNombre.setText("");
+        jDateChooser1.setDate(null);
+        jDateChooser2.setDate(null);
+        jCheckBox1.setSelected(false);
+    }
 
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -362,10 +374,6 @@ public class RegistrarMembresiaForm extends JInternalFrame {
         });
     }//GEN-LAST:event_buttonOKActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;
@@ -373,6 +381,7 @@ public class RegistrarMembresiaForm extends JInternalFrame {
     private javax.swing.JTextField ingresodeNombre;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -381,11 +390,6 @@ public class RegistrarMembresiaForm extends JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

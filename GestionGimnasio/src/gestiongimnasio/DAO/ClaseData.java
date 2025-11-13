@@ -31,7 +31,6 @@ public class ClaseData {
             clase = new Clase();
             clase.setId_clase(rs.getInt("ID_Clase"));
             clase.setNombre(rs.getString("Nombre"));
-            // Completa con los demás campos de la clase
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al obtener la clase: " + e.getMessage());
@@ -127,7 +126,7 @@ public class ClaseData {
                 clase.setId_clase(rs.getInt("id_clase"));
                 clase.setNombre(rs.getString("nombre_clase"));
                 Entrenador entrenadorObj = new Entrenador();
-                entrenadorObj.setId_entrenadores(rs.getInt("ID_Entrenador")); // Ajuste aquí
+                entrenadorObj.setId_entrenadores(rs.getInt("ID_Entrenador"));
                 entrenadorObj.setNombre(rs.getString("nombre_entrenador"));
                 entrenadorObj.setApellido(rs.getString("apellido"));
                 clase.setIdEntrenador(entrenadorObj);
@@ -188,7 +187,7 @@ public class ClaseData {
                             psUpdatePases.setInt(1, socio.getId_Socio());
                             psUpdatePases.executeUpdate();
 
-                            JOptionPane.showMessageDialog(null, "El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre() + ". Pases restantes: " + (cantidadPases - 1));
+                            JOptionPane.showMessageDialog(null, "El socio " + socio.getNombre() + " fue inscrito correctamente en la clase " + clase.getNombre());
 
                             psUpdate.close();
                             psUpdatePases.close();

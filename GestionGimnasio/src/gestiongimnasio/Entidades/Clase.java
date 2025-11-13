@@ -1,10 +1,5 @@
-
 package gestiongimnasio.Entidades;
 
-/**
- *
- * @author facun
- */
 public class Clase {
        private int id_clase;
     private String nombre;
